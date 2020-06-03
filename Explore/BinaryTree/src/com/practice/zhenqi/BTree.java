@@ -1,8 +1,6 @@
 package com.practice.zhenqi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class BTree {
@@ -133,8 +131,90 @@ public class BTree {
     }
 
     /**
+     * Recursively traverse the binary tree in post-order
+     * @param node The starting node
+     */
+    private void postTravRecursive(Node node) {
+        if(node != null) {
+            postTravRecursive(node.lchild);
+            postTravRecursive(node.rchild);
+            traversalResult.add(node.value);
+        }
+    }
+
+    /**
+     * Iteratively traverse the binary tree in post-order
+     * @param node The starting node
+     */
+    private void postTravIterative(Node node) {
+        Stack<Node> nodeStack = new Stack<>();
+        List<Node> traversedNodes = new ArrayList<>();
+
+        Node curNode = node;
+        nodeStack.push(curNode);
+        do {
+            if(curNode.lchild != null && !traversedNodes.contains(curNode.lchild)) {
+                curNode = curNode.lchild;
+                nodeStack.push(curNode);
+                continue;
+            }
+
+            if(curNode.rchild != null && !traversedNodes.contains(curNode.rchild)) {
+                curNode = curNode.rchild;
+                nodeStack.push(curNode);
+                continue;
+            }
+
+            traversalResult.add(curNode.value);
+            traversedNodes.add(nodeStack.pop());
+            if(!nodeStack.isEmpty()) {
+                curNode = nodeStack.peek();
+            }
+        } while(!nodeStack.isEmpty());
+    }
+
+    /**
+     * Traverse the binary tree in level-order
+     * @param node The starting node
+     */
+    private void levelTrav(Node node) {
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<Node> nodeQueue = new LinkedList<>();
+        List<Integer> levelRecords = new ArrayList<>();
+
+        int curLevel = 0;
+        Node curNode;
+        List<Integer> values = new ArrayList<>();
+        int levelRecIdx = 0;
+        nodeQueue.add(node);
+        levelRecords.add(curLevel);
+
+        do {
+            curNode = nodeQueue.remove();
+            curLevel = levelRecords.get(levelRecIdx);
+
+            if(levelRecIdx > 0 && curLevel != levelRecords.get(levelRecIdx - 1)) {
+                result.add(values);
+                values = new ArrayList<>();
+                //values.clear();
+            }
+            values.add(curNode.value);
+            traversalResult.add(curNode.value);
+
+            if(curNode.lchild != null) {
+                nodeQueue.add(curNode.lchild);
+                levelRecords.add(curLevel + 1);
+            }
+            if(curNode.rchild != null) {
+                nodeQueue.add(curNode.rchild);
+                levelRecords.add(curLevel + 1);
+            }
+            levelRecIdx++;
+        } while(!nodeQueue.isEmpty());
+        result.add(values);
+    }
+    /**
      * Initialize the $traversalResult
-     *
      */
     private void initTravResult() {
         if(traversalResult == null) {
@@ -189,6 +269,13 @@ public class BTree {
         }
         String[] nodeStrings = sequence.substring(1, sequence.length() - 1).split(",");
         List<Integer> nodeValues = new ArrayList<>();
+
+        /*
+         * The for loop extends the input sequence to
+         * a representation of complete binary tree.
+         * For example: [1,null,2,3] => [1,null,2,null,null,3]
+         * This will help to build the tree in preorder.
+         */
         for(String nodeString : nodeStrings) {
             if(nodeValues.size() == 0) {
                 try {
@@ -260,7 +347,6 @@ public class BTree {
      * Public API for inorder traversal
      * @param option Two implementations: 0 - Recursive, 1 - iterative
      */
-    // option: 0 - Recursive, 1 - iterative
     public void inorderTraverse(int option) {
         if(option == 0) {
             inorderTraverse();
@@ -282,6 +368,44 @@ public class BTree {
         initTravResult();
         if(isNotEmpty()) {
             inTravRecursive(root);
+        }
+        travResultToString();
+    }
+
+    /**
+     * Public API for post-order traversal
+     * @param option Two implementations: 0 - Recursive, 1 - iterative
+     */
+    public void postorderTraverse(int option) {
+        if(option == 0) {
+            inorderTraverse();
+        } else {
+            LOG.info("Iterative Post-order Traversal:\n");
+            initTravResult();
+            if(isNotEmpty()) {
+                postTravIterative(root);
+            }
+            travResultToString();
+        }
+    }
+
+    /**
+     * Public API for post-order traversal, make the recursive implementation as default
+     */
+    public void postorderTraverse() {
+        LOG.info("Recursive Post-order Traversal:\n");
+        initTravResult();
+        if(isNotEmpty()) {
+            postTravRecursive(root);
+        }
+        travResultToString();
+    }
+
+    public void levelorderTraverse() {
+        LOG.info("Level-order Traversal:\n");
+        initTravResult();
+        if(isNotEmpty()) {
+            levelTrav(root);
         }
         travResultToString();
     }
