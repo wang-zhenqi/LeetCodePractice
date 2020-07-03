@@ -5,6 +5,9 @@ The codes created by myself when practising, different language uses different b
 ### Explore
 Correspond to the Explore session of LeetCode.
 
+### LCOF
+Correspond to the problem collection of the book LCOF.
+
 ## Branches
 ### Java
 This branch contains the codes written in Java.
