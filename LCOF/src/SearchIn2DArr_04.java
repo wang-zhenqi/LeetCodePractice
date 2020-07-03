@@ -26,6 +26,12 @@ class SearchIn2DArr_04 {
     private int target;
     private boolean ans;
 
+    /*
+     * Version 1
+     * Binary search on 2D
+     * In each iteration, pick up the middle point, then divide the whole
+     * matrix into two. For each sub-matrix, repeat the process recursively.
+     */
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
         if(matrix.length == 0) {
             return false;

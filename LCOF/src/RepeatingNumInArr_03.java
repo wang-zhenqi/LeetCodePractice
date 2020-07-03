@@ -14,6 +14,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class RepeatingNumInArr_03 {
+
+    /*
+     * Version 1
+     * Using the 'Bucket' idea, assign a bucket for each number.
+     * While traversing the 'nums' array, throw every number into its
+     * corresponding bucket. When a bucket has more than one element,
+     * the repeating number is there.
+     *
+     * It's a bit space consuming. The space complexity is O(n).
+     * If use the hash function, it won't need to reoccupy the n-element space
+     * at the beginning.
+     */
     public int findRepeatNumber(int[] nums) {
         int[] scope = new int[nums.length];
         for(int num : nums) {

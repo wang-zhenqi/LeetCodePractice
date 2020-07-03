@@ -20,6 +20,14 @@ class ListNode {
 }
 
 class ReversePrintLinkList_06 {
+
+    /*
+     * This is quite easy, traverse the link list twice.
+     * First time to get the length of the link list, then build an array
+     * with this length.
+     * Second time to assign every value of the node to the array from back
+     * to front.
+     */
     public int[] reversePrint(ListNode head) {
         int count = 0;
         for(ListNode node = head; node != null; node = node.next) {

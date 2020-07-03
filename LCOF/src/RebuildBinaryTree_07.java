@@ -16,8 +16,6 @@
  * 0 <= 节点个数 <= 5000
  */
 
-import com.sun.source.tree.Tree;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,6 +39,14 @@ class RebuildBinaryTree_07 {
     int[] oriInorder;
     int compStage;
 
+    /*
+     * Version 1
+     * Build a native tree according to the preorder result,
+     * leading up to a tree that every node only has a left child.
+     * And then traverse the inorder result, adjust the nodes to their
+     * appropriate positions.
+     * It's too slow, the time complexity might be close to O(n^2).
+     */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         int length = preorder.length;
         if(length == 0) {
@@ -66,7 +72,10 @@ class RebuildBinaryTree_07 {
         //Traverse the tree in inorder, and compare the result with the given one.
         while(true) {
             inorderTraverse(root);
-            if(arrow == null) {
+
+            // After traversal, the arrow is going to be moved as the target's
+            // right child.
+            if(arrow == null) { // It means the tree is finished rebuilding.
                 break;
             }
             else {
@@ -84,6 +93,8 @@ class RebuildBinaryTree_07 {
         Stack<TreeNode> stack = new Stack<>();
         Stack<TreeNode> traversed = new Stack<>();
         stack.push(root);
+
+        // The goal of this function is to find which node needs to be moved.
         while(!stack.isEmpty()) {
             TreeNode cur = stack.peek();
             if(cur.left != null) {

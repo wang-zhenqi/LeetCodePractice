@@ -8,6 +8,13 @@
  */
 
 class WhiteSpaceReplace_05 {
+
+    /*
+     * This problem is quite simple. When traversing the original string,
+     * judge every character. If it is not a space, then append it to the
+     * result string; otherwise, append "%20" to the result string.
+     * The time complexity is O(n).
+     */
     public String replaceSpace(String s) {
 //        s.replace(" ", "%20");
         StringBuilder result = new StringBuilder();
