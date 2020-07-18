@@ -22,127 +22,39 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class SearchIn2DArr_04 {
-    private int[][] ori_matrix;
-    private int target;
-    private boolean ans;
 
     /*
-     * Version 1
-     * Binary search on 2D
-     * In each iteration, pick up the middle point, then divide the whole
-     * matrix into two. For each sub-matrix, repeat the process recursively.
+     * Version 2
+     * Search from the upper right corner (or lower left corner).
+     * Decide going down or left by comparing the current element
+     * until finally find the number.
      */
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
-        if(matrix.length == 0) {
+        int rowNumber = matrix.length;
+        if(rowNumber == 0) {
             return false;
         }
-        for(int[] ele : matrix) {
-            if(ele.length == 0) {
-                return false;
-            }
-        }
-        this.target = target;
-        this.ori_matrix = matrix;
-        this.ans = false;
 
-        int[] upperleft = {0, 0};
-        int[] lowerright = {matrix.length - 1, matrix[0].length - 1};
-        findNumberInSubArr(upperleft, lowerright);
-        return ans;
-    }
-    private void findNumberInSubArr(int[] p1, int[] p2) {
-        if(ans) {
-            return;
+        int columnNumber = matrix[0].length;
+        if(columnNumber == 0) {
+            return false;
         }
-        int[] midPoint = getMidPoint(p1, p2);
-        if(target == ori_matrix[midPoint[0]][midPoint[1]]) {
-            ans = true;
-            return;
-        }
-        //split the array: sub1(p11, p12), sub2(p21, p22);
-        int[][] sections = split(p1, p2, midPoint);
-        if(sections[0][0] != -1) {
-            int[] vet1 = new int[2];
-            int[] vet2 = new int[2];
-            vet1[0] = sections[0][0];
-            vet1[1] = sections[0][1];
-            vet2[0] = sections[0][2];
-            vet2[1] = sections[0][3];
-            findNumberInSubArr(vet1, vet2);
-        }
-        if(sections[1][0] != -1) {
-            int[] vet1 = new int[2];
-            int[] vet2 = new int[2];
-            vet1[0] = sections[1][0];
-            vet1[1] = sections[1][1];
-            vet2[0] = sections[1][2];
-            vet2[1] = sections[1][3];
-            findNumberInSubArr(vet1, vet2);
-        }
-    }
 
-    private int[] getMidPoint(int[] p1, int[] p2) {
-        int[] coordinary = new int[2];
-        coordinary[0] = (p2[0] + p1[0] + 1) / 2;
-        coordinary[1] = (p2[1] + p1[1] + 1) / 2;
-        return coordinary;
-    }
-
-    private int[][] split(int[] p1, int[] p2, int[] mp) {
-        int[][] subArrayPoints = new int[2][4];
-        if(ori_matrix[mp[0]][mp[1]] < target) {
-            if(mp[1] == p2[1]) {
-                subArrayPoints[0][0] = -1;
-                subArrayPoints[0][1] = -1;
-                subArrayPoints[0][2] = -1;
-                subArrayPoints[0][3] = -1;
+        int rowIndex = 0, columnIndex = columnNumber - 1;
+        while(columnIndex >= 0 && rowIndex <= rowNumber - 1) {
+            if(target == matrix[rowIndex][columnIndex]) {
+                return true;
             }
-            else {
-                subArrayPoints[0][0] = p1[0];
-                subArrayPoints[0][1] = mp[1] + 1;
-                subArrayPoints[0][2] = mp[0];
-                subArrayPoints[0][3] = p2[1];
+            if(target < matrix[rowIndex][columnIndex]) {
+                columnIndex--;
+                continue;
             }
-            if(mp[0] == p2[0]) {
-                subArrayPoints[1][0] = -1;
-                subArrayPoints[1][1] = -1;
-                subArrayPoints[1][2] = -1;
-                subArrayPoints[1][3] = -1;
-            }
-            else {
-                subArrayPoints[1][0] = mp[0] + 1;
-                subArrayPoints[1][1] = p1[1];
-                subArrayPoints[1][2] = p2[0];
-                subArrayPoints[1][3] = p2[1];
+            if(target > matrix[rowIndex][columnIndex]) {
+                rowIndex++;
+                continue;
             }
         }
-        else {
-            if(mp[1] == p1[1]) {
-                subArrayPoints[0][0] = -1;
-                subArrayPoints[0][1] = -1;
-                subArrayPoints[0][2] = -1;
-                subArrayPoints[0][3] = -1;
-            }
-            else {
-                subArrayPoints[0][0] = p1[0];
-                subArrayPoints[0][1] = p1[1];
-                subArrayPoints[0][2] = p2[0];
-                subArrayPoints[0][3] = mp[1] - 1;
-            }
-            if(mp[0] == p1[0]) {
-                subArrayPoints[1][0] = -1;
-                subArrayPoints[1][1] = -1;
-                subArrayPoints[1][2] = -1;
-                subArrayPoints[1][3] = -1;
-            }
-            else {
-                subArrayPoints[1][0] = p1[0];
-                subArrayPoints[1][1] = mp[1];
-                subArrayPoints[1][2] = mp[0] - 1;
-                subArrayPoints[1][3] = p2[1];
-            }
-        }
-        return subArrayPoints;
+        return false;
     }
 }
 
@@ -153,13 +65,13 @@ class TestClass_04 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int[][] matrix = {{}};
-        int target = 1;
+        int[][] matrix = {{-5}};
+        int target = -5;
 
         boolean ret = new SearchIn2DArr_04().findNumberIn2DArray(matrix, target);
 
         String out = booleanToString(ret);
 
-        System.out.print(out);
+        System.out.println(out);
     }
 }
