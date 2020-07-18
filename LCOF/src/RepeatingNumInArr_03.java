@@ -12,25 +12,20 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 
 class RepeatingNumInArr_03 {
 
     /*
-     * Version 1
-     * Using the 'Bucket' idea, assign a bucket for each number.
-     * While traversing the 'nums' array, throw every number into its
-     * corresponding bucket. When a bucket has more than one element,
-     * the repeating number is there.
-     *
-     * It's a bit space consuming. The space complexity is O(n).
-     * If use the hash function, it won't need to preoccupy the n-element space
+     * Version 2
+     * Using the hash function, it won't need to preoccupy the n-element space
      * at the beginning.
+     * However, in practice, it's a little bit slower than version 1.
      */
     public int findRepeatNumber(int[] nums) {
-        int[] scope = new int[nums.length];
+        HashSet<Integer> hashSet = new HashSet<>();
         for(int num : nums) {
-            scope[num] = scope[num] + 1;
-            if(scope[num] > 1) {
+            if(!hashSet.add(num)) {
                 return num;
             }
         }
@@ -65,7 +60,7 @@ class TestClass_03 {
 
             String out = String.valueOf(ret);
 
-            System.out.print(out);
+            System.out.println(out);
         }
     }
 }
