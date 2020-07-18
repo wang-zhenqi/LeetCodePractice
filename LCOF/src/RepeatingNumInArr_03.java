@@ -23,7 +23,7 @@ class RepeatingNumInArr_03 {
      * the repeating number is there.
      *
      * It's a bit space consuming. The space complexity is O(n).
-     * If use the hash function, it won't need to reoccupy the n-element space
+     * If use the hash function, it won't need to preoccupy the n-element space
      * at the beginning.
      */
     public int findRepeatNumber(int[] nums) {
