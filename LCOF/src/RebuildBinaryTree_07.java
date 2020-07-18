@@ -19,9 +19,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 class TreeNode {
     int val;
@@ -32,102 +32,51 @@ class TreeNode {
     }
 }
 
+/*
+ * Version 2
+ * Use preorder sequence to determine the root node of the whole tree and
+ * its subtrees.
+ * Use inorder sequence to determine the left child and right child.
+ * Rebuild the tree recursively.
+ */
 class RebuildBinaryTree_07 {
-    TreeNode target = null;
-    TreeNode arrow = null;
-    int compIndex = 0;
-    int[] oriInorder;
-    int compStage;
+    private int locatedIndex;
+    private int[] originalPreorder;
+    HashMap<Integer, Integer> inorderIndex;
 
-    /*
-     * Version 1
-     * Build a naive tree according to the preorder result,
-     * leading up to a tree that every node only has a left child.
-     * And then traverse the inorder result, adjust the nodes to their
-     * appropriate positions.
-     * It's too slow, the time complexity might be close to O(n^2).
-     */
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        int length = preorder.length;
-        if(length == 0) {
+    private TreeNode recursivelyBuildTree(int inorderStartIndex, int inorderEndIndex) {
+        if(inorderStartIndex > inorderEndIndex) {
             return null;
         }
-        oriInorder = inorder;
 
         TreeNode root = null;
-        TreeNode current = root;
-        //Construct a simple tree that suit the preorder.
-        for(int i = 0; i < length; i++) {
-            TreeNode tmp = new TreeNode(preorder[i]);
-            if(root == null) {
-                root = tmp;
-                current = root;
-            }
-            else {
-                current.left = tmp;
-                current = current.left;
-            }
+        Integer pivotIndex = inorderIndex.get(originalPreorder[locatedIndex + 1]);
+        if(pivotIndex != null) {
+            root = new TreeNode(originalPreorder[++locatedIndex]);
         }
 
-        //Traverse the tree in inorder, and compare the result with the given one.
-        while(true) {
-            inorderTraverse(root);
-
-            // After traversal, the arrow is going to be moved as the target's
-            // right child.
-            if(arrow == null) { // It means the tree is finished rebuilding.
-                break;
-            }
-            else {
-                target.right = arrow;
-            }
+        if(root == null) {
+            return null;
         }
+
+        root.left = recursivelyBuildTree(inorderStartIndex, pivotIndex - 1);
+        root.right = recursivelyBuildTree(pivotIndex + 1, inorderEndIndex);
         return root;
     }
 
-    private void inorderTraverse(TreeNode root) {
-        compIndex = 0;
-        compStage = 0;
-        arrow = null;
-        target = null;
-        Stack<TreeNode> stack = new Stack<>();
-        Stack<TreeNode> traversed = new Stack<>();
-        stack.push(root);
-
-        // The goal of this function is to find which node needs to be moved.
-        while(!stack.isEmpty()) {
-            TreeNode cur = stack.peek();
-            if(cur.left != null) {
-                if(!traversed.contains(cur.left)) {
-                    stack.push(cur.left);
-                    continue;
-                }
-            }
-
-            if(cur.val == oriInorder[compIndex]) {
-                target = cur;
-                compIndex++;
-                if(target.left == arrow && arrow != null) {
-                    target.left = null;
-                    compStage = 1;
-                }
-            }
-            else {
-                if(compStage == 0) {
-                    arrow = cur;
-                }
-                else {
-                    break;
-                }
-            }
-            traversed.push(stack.pop());
-
-            if(cur.right != null) {
-                if(!traversed.contains(cur.right)) {
-                    stack.push(cur.right);
-                }
-            }
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if(preorder.length == 0 || inorder.length == 0) {
+            return null;
         }
+
+        inorderIndex = new HashMap<>();
+        locatedIndex = -1;
+        originalPreorder = preorder.clone();
+        for(int i = 0; i < inorder.length; i++) {
+            inorderIndex.put(inorder[i], i);
+        }
+
+        return recursivelyBuildTree(0, inorder.length - 1);
     }
 }
 
