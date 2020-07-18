@@ -41,7 +41,7 @@ class RebuildBinaryTree_07 {
 
     /*
      * Version 1
-     * Build a native tree according to the preorder result,
+     * Build a naive tree according to the preorder result,
      * leading up to a tree that every node only has a left child.
      * And then traverse the inorder result, adjust the nodes to their
      * appropriate positions.
