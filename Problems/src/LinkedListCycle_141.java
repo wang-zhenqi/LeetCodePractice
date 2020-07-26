@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Given a linked list, determine if it has a cycle in it.
@@ -16,17 +18,19 @@ import java.io.InputStreamReader;
  */
 
 public class LinkedListCycle_141 {
-    //Version 1, fast and slow pointer.
+    //Version 2, using hash set to store the scanned nodes.
     public boolean hasCycle(ListNode head) {
-        ListNode fast = head, slow = head;
-        while(fast != null && fast.next != null && slow != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if(fast == slow) {
-                return true;
+        if(head == null) {
+            return false;
+        }
+        Set<ListNode> set = new HashSet<>();
+        while(set.add(head)) {
+            head = head.next;
+            if(head == null) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
 
