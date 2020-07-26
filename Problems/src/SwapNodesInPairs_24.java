@@ -27,46 +27,21 @@ public class SwapNodesInPairs_24 {
      * @return
      */
     public ListNode swapPairs(ListNode head) {
-        if(head == null) {
-            return null;
+        ListNode prev = new ListNode(0);
+        result = prev;
+        prev.next = head;
+        ListNode first, second;
+
+        while(prev.next != null && prev.next.next != null) {
+            first = prev.next;
+            second = first.next;
+
+            first.next = second.next;
+            second.next = first;
+            prev.next = second;
+            prev = first;
         }
-        if(head.next == null) {
-            return head;
-        }
-
-        ListNode first = head, second = head.next;
-        ListNode cur1 = first, cur2 = second;
-        // separate
-        while((cur1 != null && cur1.next != null) ||
-                (cur2 != null && cur2.next != null)) {
-            if(cur1 != null && cur1.next != null) {
-                cur1.next = cur1.next.next;
-                cur1 = cur1.next;
-            }
-            if(cur2 != null && cur2.next != null) {
-                cur2.next = cur2.next.next;
-                cur2 = cur2.next;
-            }
-        }
-
-        // merge
-        ListNode tail = second;
-        result = second;
-        while(second != null && first != null) {
-            ListNode n2 = second.next;
-            second = second.next;
-
-            tail.next = first;
-            first = first.next;
-            tail = tail.next;
-
-            if(n2 != null) {
-                tail.next = n2;
-                tail = tail.next;
-            }
-        }
-
-        return result;
+        return result.next;
     }
 }
 
