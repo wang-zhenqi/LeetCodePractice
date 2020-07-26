@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Given a linked list, return the node where the cycle begins.
@@ -19,20 +17,28 @@ import java.util.Set;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class LinkedListCycleII_142 {
-    // version 1. Using hash set to store the nodes that's been scanned.
+    // version 2. Using fast and slow pointers.
     public ListNode detectCycle(ListNode head) {
-        ListNode result = null;
-        if(head != null) {
-            Set<ListNode> set = new HashSet<>();
-            while(set.add(head)) {
-                head = head.next;
-                if(head == null) {
-                    return null;
-                }
+        ListNode fast = head, slow = head;
+        boolean flag = false;
+        while(fast != null && fast.next != null && slow != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) {
+                flag = true;
+                break;
             }
-            result = head;
         }
-        return result;
+        if(flag) {
+            ListNode ptr = head;
+            while(ptr != slow) {
+                ptr = ptr.next;
+                slow = slow.next;
+            }
+            return slow;
+        } else {
+            return null;
+        }
     }
 }
 
