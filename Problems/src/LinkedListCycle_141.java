@@ -3,54 +3,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Reverse a singly linked list.
+ * Given a linked list, determine if it has a cycle in it.
  *
- * Example:
- *
- * Input: 1->2->3->4->5->NULL
- * Output: 5->4->3->2->1->NULL
- *
- * Follow up:
- * A linked list can be reversed either iteratively or recursively.
- * Could you implement both?
+ * To represent a cycle in the given linked list,
+ * we use an integer pos which represents the position (0-indexed)
+ * in the linked list where tail connects to.
+ * If pos is -1, then there is no cycle in the linked list.
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/reverse-linked-list
+ * 链接：https://leetcode-cn.com/problems/linked-list-cycle
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 
-// Definition for singly-linked list.
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
-
-public class ReverseLinkedList_206 {
-    /**
-     * Version 2. No need to use extra spaces.
-     * a new node.
-     * @param head
-     * @return The reversed linked list.
-     */
-    public ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode cur = head;
-        ListNode next;
-        while(cur != null) {
-            next = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = next;
+public class LinkedListCycle_141 {
+    //Version 1, fast and slow pointer.
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while(fast != null && fast.next != null && slow != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) {
+                return true;
+            }
         }
-        return prev;
+        return false;
     }
 }
 
-class MainClass {
+class MainClass_141 {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
@@ -81,17 +61,8 @@ class MainClass {
         return dummyRoot.next;
     }
 
-    public static String listNodeToString(ListNode node) {
-        if (node == null) {
-            return "[]";
-        }
-
-        String result = "";
-        while (node != null) {
-            result += Integer.toString(node.val) + ", ";
-            node = node.next;
-        }
-        return "[" + result.substring(0, result.length() - 2) + "]";
+    public static String booleanToString(boolean input) {
+        return input ? "True" : "False";
     }
 
     public static void main(String[] args) throws IOException {
@@ -99,10 +70,23 @@ class MainClass {
         String line;
         while ((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
+            line = in.readLine();
+            int pos = Integer.parseInt(line);
 
-            ListNode ret = new ReverseLinkedList_206().reverseList(head);
+            ListNode tmp = null, p = head, tail = null;
+            for(int i = 0; p != null; i++, p = p.next) {
+                if(i == pos) {
+                    tmp = p;
+                }
+                if(p.next == null) {
+                    tail = p;
+                }
+            }
+            tail.next = tmp;
 
-            String out = listNodeToString(ret);
+            boolean ret = new LinkedListCycle_141().hasCycle(head);
+
+            String out = booleanToString(ret);
 
             System.out.print(out);
         }
