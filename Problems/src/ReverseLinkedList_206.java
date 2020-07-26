@@ -50,7 +50,7 @@ public class ReverseLinkedList_206 {
     }
 }
 
-class MainClass {
+class MainClass_206 {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
