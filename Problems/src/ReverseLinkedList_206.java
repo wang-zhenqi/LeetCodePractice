@@ -28,17 +28,20 @@ class ListNode {
 
 public class ReverseLinkedList_206 {
     /**
-     * Version 1. Using a node indicating the previous one, and when reading
+     * Version 2. No need to use extra spaces.
      * a new node.
      * @param head
      * @return The reversed linked list.
      */
     public ListNode reverseList(ListNode head) {
         ListNode prev = null;
-        for(ListNode cur = head; cur != null; cur = cur.next) {
-            ListNode newNode = new ListNode(cur.val);
-            newNode.next = prev;
-            prev = newNode;
+        ListNode cur = head;
+        ListNode next;
+        while(cur != null) {
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
         }
         return prev;
     }
