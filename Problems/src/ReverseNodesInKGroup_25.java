@@ -25,7 +25,7 @@ import java.io.InputStreamReader;
  */
 
 public class ReverseNodesInKGroup_25 {
-    // Similar to ReverseLinkedList_206, using several pointers to reorder the
+    // Similar to SwapNodesInPairs_24, using several pointers to reorder the
     // linked list.
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode[] nodeArray = new ListNode[k];
