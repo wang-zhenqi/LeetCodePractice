@@ -99,10 +99,9 @@ class MainClass_232 {
         myQueue.printQueue();
         System.out.println("Pop an element " + myQueue.pop());
         myQueue.printQueue();
-        myQueue.peek();
-        myQueue.printQueue();
+        System.out.println("Top of the queue is " + myQueue.peek());
         System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
-        System.out.println("Pop and element " + myQueue.pop());
+        System.out.println("Pop an element " + myQueue.pop());
         System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
     }
 }
