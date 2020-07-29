@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 /**
  * Given two strings s and t , write a function to determine if t is an anagram of s.
  *
@@ -11,41 +10,27 @@ import java.util.HashMap;
  */
 public class ValidAnagram_242 {
     public boolean isAnagram(String s, String t) {
-        HashMap<Character, Integer> letterMap = new HashMap<>();
         int sLen = s.length();
         int tLen = t.length();
         if(sLen != tLen) {
             return false;
-        } else if(sLen == 0) {
-            return true;
         }
 
+        int[] count = new int[26];
+        char[] sChar = s.toCharArray();
+        char[] tChar = t.toCharArray();
+
         for(int i = 0; i < sLen; i++) {
-            char curChar = s.charAt(i);
-            Integer value;
-            if((value = letterMap.get(curChar)) == null) {
-                letterMap.put(curChar, 1);
-            } else {
-                letterMap.put(curChar, value + 1);
-            }
+            count[sChar[i] - 'a']++;
         }
 
         for(int i = 0; i < tLen; i++) {
-            char curChar = t.charAt(i);
-            Integer value;
-            if((value = letterMap.get(curChar)) == null) {
+            count[tChar[i] - 'a']--;
+            if(count[tChar[i] - 'a'] < 0) {
                 return false;
-            } else {
-                letterMap.put(curChar, --value);
-                if(value == 0) {
-                    letterMap.remove(curChar);
-                }
             }
         }
 
-        if(!letterMap.isEmpty()) {
-            return false;
-        }
         return true;
     }
 }
