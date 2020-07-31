@@ -22,8 +22,8 @@ public class ImplementQueueUsingStacks_232 {
      * int param_3 = obj.peek();
      * boolean param_4 = obj.empty();
      */
-    private Stack<Integer> innerStack;
-    private Stack<Integer> tmpStack;
+    private final Stack<Integer> innerStack;
+    private final Stack<Integer> tmpStack;
 
     /**
      * Initialize your data structure here.

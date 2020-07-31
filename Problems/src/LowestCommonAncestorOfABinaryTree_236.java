@@ -96,7 +96,7 @@ class MainClass_236 {
                 continue;
             }
 
-            output += String.valueOf(node.val) + ", ";
+            output += node.val + ", ";
             nodeQueue.add(node.left);
             nodeQueue.add(node.right);
         }

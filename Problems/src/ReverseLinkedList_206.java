@@ -88,7 +88,7 @@ class MainClass_206 {
 
         String result = "";
         while (node != null) {
-            result += Integer.toString(node.val) + ", ";
+            result += node.val + ", ";
             node = node.next;
         }
         return "[" + result.substring(0, result.length() - 2) + "]";

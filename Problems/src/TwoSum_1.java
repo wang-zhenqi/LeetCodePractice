@@ -59,7 +59,7 @@ class MainClass_1 {
         String result = "";
         for(int index = 0; index < length; index++) {
             int number = nums[index];
-            result += Integer.toString(number) + ", ";
+            result += number + ", ";
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
     }

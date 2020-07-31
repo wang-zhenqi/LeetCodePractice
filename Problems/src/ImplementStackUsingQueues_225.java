@@ -22,7 +22,7 @@ public class ImplementStackUsingQueues_225 {
      * boolean param_4 = obj.empty();
      */
 
-    private Deque<Integer> innerQueue;
+    private final Deque<Integer> innerQueue;
 
     /** Initialize your data structure here. */
     public ImplementStackUsingQueues_225() {
