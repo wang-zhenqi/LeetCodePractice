@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.Arrays;
 
 /**
  * Given an array of size n, find the majority element. The majority element is
@@ -16,19 +16,8 @@ import java.util.HashMap;
  */
 public class MajorityElement_169 {
     public int majorityElement(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for(int i = 0; i < nums.length; i++) {
-            Integer count;
-            if((count = map.get(nums[i])) != null) {
-                map.put(nums[i], count + 1);
-            } else {
-                map.put(nums[i], 1);
-            }
-            if(map.get(nums[i]) > nums.length / 2) {
-                return nums[i];
-            }
-        }
-        return nums[nums.length - 1];
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
     }
 
     private static int[] stringToIntegerArray(String input) {
