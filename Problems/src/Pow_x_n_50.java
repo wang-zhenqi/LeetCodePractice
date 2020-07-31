@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.util.HashMap;
 
 /**
  * Implement pow(x, n), which calculates x raised to the power n (x^n).
@@ -15,16 +14,21 @@ public class Pow_x_n_50 {
         if(x == 1.0 || n == 1) {
             return x;
         }
+        double result = 1.0;
         if(n < 0) {
             x = 1 / x;
+            result *= x;
             n = -(n + 1);
-            return x * myPow(x, n);
         }
-        if(n % 2 == 0) {
-            return myPow(x * x, n / 2);
-        } else {
-            return x * myPow(x * x, n / 2);
+
+        while(n > 0) {
+            if((n & 1) == 1) {
+                result *= x;
+            }
+            x *= x;
+            n >>= 1;
         }
+        return result;
     }
 
     private static String doubleToString(double input) {
