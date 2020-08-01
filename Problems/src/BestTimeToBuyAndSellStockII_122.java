@@ -20,17 +20,30 @@ import java.io.InputStreamReader;
 public class BestTimeToBuyAndSellStockII_122 {
     public int maxProfit(int[] prices) {
         /*
-         * Version 1, brutal force, skip.
-         * Version 2, greedy method, O(N).
+         * Version 3, DP
+         * dp[i][s] represents the maximum profit by day i, and the status on that day
+         * is s, where s = {0 (no stock held) | 1 (stock held)}.
          *
-         * for prices from day 1 to day n-1:
-         *     maxProfit += (prices[i] - prices[i-1] > 0) ? prices[i] - prices[i-1] : 0
+         * dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+         * dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+         *
+         * return dp[n-1][0]
          */
-        int maxProfit = 0;
-        for(int i = 1; i < prices.length; i++) {
-            maxProfit += Math.max(prices[i] - prices[i - 1], 0);
+
+        if(prices.length == 0) {
+            return 0;
         }
-        return maxProfit;
+
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+
+        for(int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+
+        return dp[prices.length - 1][0];
     }
 
     private static int[] stringToIntegerArray(String input) {
