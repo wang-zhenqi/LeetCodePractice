@@ -20,21 +20,26 @@ import java.io.InputStreamReader;
 public class BestTimeToBuyAndSellStock_121 {
     public int maxProfit(int[] prices) {
         /*
-         * Version 1, brutal force, O(N^2)
-         * foreach inPrice in prices:
-         *     foreach outPrice after inPrice:
-         *         maxProfit = max(MAX, outPrice - inPrice)
-         * return maxProfit
+         * Version 2, dynamic programming, O(N)
+         * dp[i] represents the maximum profit on day i.
+         * dp[i] = max(dp[i-1], prices[i] - minPrice)
+         *
+         * foreach price in prices:
+         *     minPrice = min(minPrice, prices[i])
+         *     dp[i] = max(dp[i-1], prices[i] - minPrice)
+         * return dp[n-1]
          */
-        int maxProfit = 0;
-        for(int i = 0; i < prices.length; i++) {
-            for(int j = i + 1; j < prices.length; j++) {
-                if(prices[j] - prices[i] > maxProfit) {
-                    maxProfit = prices[j] - prices[i];
-                }
-            }
+        if(prices.length == 0) {
+            return 0;
         }
-        return maxProfit;
+        int minPrice = prices[0];
+        int[] dp = new int[prices.length];
+        dp[0] = 0;
+        for(int i = 1; i < prices.length; i++) {
+            minPrice = Math.min(minPrice, prices[i]);
+            dp[i] = Math.max(dp[i - 1], prices[i] - minPrice);
+        }
+        return dp[prices.length - 1];
     }
 
     private static int[] stringToIntegerArray(String input) {
