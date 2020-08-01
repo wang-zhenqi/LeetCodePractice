@@ -18,20 +18,50 @@ import java.util.List;
 public class MajorityElementII_229 {
     public List<Integer> majorityElement(int[] nums) {
         List<Integer> result = new ArrayList<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
+
+        Integer candidate1 = null, candidate2 = null;
+        int vote1 = 0, vote2 = 0;
 
         for(int num : nums) {
-            Integer count;
-            if((count = map.get(num)) == null) {
-                count = 1;
-                map.put(num, count);
-            } else {
-                map.put(num, ++count);
+            if(candidate1 != null && candidate1 == num) {
+                vote1++;
+                continue;
             }
-            if(count > nums.length / 3 && !result.contains(num)) {
-                result.add(num);
+            if(candidate2 != null && candidate2 == num) {
+                vote2++;
+                continue;
+            }
+            if(vote1 == 0) {
+                candidate1 = num;
+                vote1 = 1;
+                continue;
+            }
+            if(vote2 == 0) {
+                candidate2 = num;
+                vote2 = 1;
+                continue;
+            }
+            vote1--;
+            vote2--;
+        }
+
+        vote1 = 0;
+        vote2 = 0;
+        for(int num : nums) {
+            if(num == candidate1) {
+                vote1++;
+            }
+            if(candidate2 != null && num == candidate2) {
+                vote2++;
             }
         }
+        if(vote1 > nums.length / 3) {
+            result.add(candidate1);
+        }
+        if(vote2 > nums.length / 3) {
+            result.add(candidate2);
+        }
+
         return result;
     }
 
