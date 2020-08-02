@@ -21,23 +21,65 @@ import java.util.Arrays;
 public class BestTimeToBuyAndSellStockIII_123 {
     public int maxProfit(int[] prices) {
         /*
-         * Version 1, Brutal force, O(N^2)
-         * From beginning to the end, divide the whole prices into two at every
-         * position, calculate the maximum profit of each part, and then choose the
-         * maximum.
+         * Version 2, DP, O(N)
+         * dp[i][k][s] represents the status of transaction k on day i.
+         * status: 0 - no stock held, 1 - stock held.
+         * k: in the kth transaction, k = {0, 1, 2}. 0: neither bought nor sold;
+         *     1: bought or sold once; 2: bought or sold twice.
+         *     if (k, s) = (1, 1), it means that it bought the stock for once, and still
+         *         in hold of that stock.
+         *     if (k, s) = (2, 0), it means that it had been bought - sold - bought - sold
+         *         the stock, and now no stock is held.
+         * original values:
+         *     dp[i][0][0] = 0, dp[i][0][1] = -inf (means this is impossible)
+         *     dp[0][1][1] = -prices[0]
+         *     dp[0][1][0] = dp[0][2][0] = dp[0][2][1] = -inf
+         * formula:
+         *     dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
+         *     dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][0] - prices[i])
+         *     dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])
+         *     dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])
+         * return:
+         *     (dp[n-1][2][0] != -inf) ? dp[n-1][2][0] :
+         *                               ((dp[n-1][1][0] != -inf) ? dp[n-1][1][0] : 0)
          */
-        int result = 0;
-        BestTimeToBuyAndSellStock_121 single = new BestTimeToBuyAndSellStock_121();
-        for(int i = 0; i < prices.length; i++) {
-            int[] left = Arrays.copyOfRange(prices, 0, i);
-            int[] right = Arrays.copyOfRange(prices, i, prices.length);
-            int leftMax = single.maxProfit(left);
-            int rightMax = single.maxProfit(right);
-            if(leftMax + rightMax > result) {
-                result = leftMax + rightMax;
+        int n = prices.length, invalid = Integer.MIN_VALUE;
+
+        if(n < 2) {
+            return 0;
+        }
+
+        int[][][] dp = new int[prices.length][3][2];
+        for(int i = 0; i < n; i++) {
+            dp[i][0][0] = 0;
+            dp[i][0][1] = invalid;
+            dp[i][1][0] = invalid;
+            dp[i][1][1] = invalid;
+            dp[i][2][0] = invalid;
+            dp[i][2][1] = invalid;
+        }
+        dp[0][1][1] = -prices[0];
+
+        for(int i = 1; i < n; i++) {
+            dp[i][1][1] = Math.max(dp[i-1][1][1], dp[i-1][0][0] - prices[i]);
+
+            if(dp[i - 1][1][1] != invalid) {
+                dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i]);
+            }
+
+            if(dp[i - 1][1][0] != invalid) {
+                dp[i][2][1] = Math.max(dp[i - 1][2][1], dp[i - 1][1][0] - prices[i]);
+            }
+
+            if(dp[i - 1][2][1] != invalid) {
+                dp[i][2][0] = Math.max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i]);
             }
         }
-        return result;
+
+        if(dp[n - 1][2][0] < 0 && dp[n - 1][1][0] < 0) {
+            return 0;
+        }
+        return Math.max(dp[n - 1][2][0], dp[n - 1][1][0]);
     }
 
     private static int[] stringToIntegerArray(String input) {
