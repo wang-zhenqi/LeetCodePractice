@@ -21,27 +21,7 @@ import java.util.Arrays;
 public class BestTimeToBuyAndSellStockIII_123 {
     public int maxProfit(int[] prices) {
         /*
-         * Version 2, DP, O(N)
-         * dp[i][k][s] represents the status of transaction k on day i.
-         * status: 0 - no stock held, 1 - stock held.
-         * k: in the kth transaction, k = {0, 1, 2}. 0: neither bought nor sold;
-         *     1: bought or sold once; 2: bought or sold twice.
-         *     if (k, s) = (1, 1), it means that it bought the stock for once, and still
-         *         in hold of that stock.
-         *     if (k, s) = (2, 0), it means that it had been bought - sold - bought - sold
-         *         the stock, and now no stock is held.
-         * original values:
-         *     dp[i][0][0] = 0, dp[i][0][1] = -inf (means this is impossible)
-         *     dp[0][1][1] = -prices[0]
-         *     dp[0][1][0] = dp[0][2][0] = dp[0][2][1] = -inf
-         * formula:
-         *     dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
-         *     dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][0] - prices[i])
-         *     dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])
-         *     dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])
-         * return:
-         *     (dp[n-1][2][0] != -inf) ? dp[n-1][2][0] :
-         *                               ((dp[n-1][1][0] != -inf) ? dp[n-1][1][0] : 0)
+         * Version 3, simplified DP, time: O(N), space: O(1)
          */
         int n = prices.length, invalid = Integer.MIN_VALUE;
 
@@ -49,37 +29,16 @@ public class BestTimeToBuyAndSellStockIII_123 {
             return 0;
         }
 
-        int[][][] dp = new int[prices.length][3][2];
-        for(int i = 0; i < n; i++) {
-            dp[i][0][0] = 0;
-            dp[i][0][1] = invalid;
-            dp[i][1][0] = invalid;
-            dp[i][1][1] = invalid;
-            dp[i][2][0] = invalid;
-            dp[i][2][1] = invalid;
-        }
-        dp[0][1][1] = -prices[0];
+        int dpi20 = 0, dpi21 = invalid, dpi10 = 0, dpi11 = invalid;
 
-        for(int i = 1; i < n; i++) {
-            dp[i][1][1] = Math.max(dp[i-1][1][1], dp[i-1][0][0] - prices[i]);
-
-            if(dp[i - 1][1][1] != invalid) {
-                dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i]);
-            }
-
-            if(dp[i - 1][1][0] != invalid) {
-                dp[i][2][1] = Math.max(dp[i - 1][2][1], dp[i - 1][1][0] - prices[i]);
-            }
-
-            if(dp[i - 1][2][1] != invalid) {
-                dp[i][2][0] = Math.max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i]);
-            }
+        for(int price : prices) {
+            dpi20 = Math.max(dpi20, dpi21 + price);
+            dpi21 = Math.max(dpi21, dpi10 - price);
+            dpi10 = Math.max(dpi10, dpi11 + price);
+            dpi11 = Math.max(dpi11, -price);
         }
 
-        if(dp[n - 1][2][0] < 0 && dp[n - 1][1][0] < 0) {
-            return 0;
-        }
-        return Math.max(dp[n - 1][2][0], dp[n - 1][1][0]);
+        return dpi20;
     }
 
     private static int[] stringToIntegerArray(String input) {
