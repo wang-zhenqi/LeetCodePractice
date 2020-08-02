@@ -19,23 +19,12 @@ import java.util.Queue;
  * 链接：https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class LowestCommonAncestorOfABinarySearchTree_235 {
-    public TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
-        if(root.val > p && root.val > q) {
-            return lowestCommonAncestor(root.left, p, q);
-        } else if(root.val < p && root.val < q) {
-            return lowestCommonAncestor(root.right, p, q);
-        } else {
-            return root;
-        }
-    }
-}
 
-class MainClass_235 {
-    public static TreeNode stringToTreeNode(String input) {
+public class LowestCommonAncestorOfABinarySearchTree_235 {
+    private static TreeNode stringToTreeNode(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return null;
         }
 
@@ -49,25 +38,25 @@ class MainClass_235 {
         while(!nodeQueue.isEmpty()) {
             TreeNode node = nodeQueue.remove();
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int leftNumber = Integer.parseInt(item);
                 node.left = new TreeNode(leftNumber);
                 nodeQueue.add(node.left);
             }
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int rightNumber = Integer.parseInt(item);
                 node.right = new TreeNode(rightNumber);
                 nodeQueue.add(node.right);
@@ -76,8 +65,8 @@ class MainClass_235 {
         return root;
     }
 
-    public static String treeNodeToString(TreeNode root) {
-        if (root == null) {
+    private static String treeNodeToString(TreeNode root) {
+        if(root == null) {
             return "[]";
         }
 
@@ -87,7 +76,7 @@ class MainClass_235 {
         while(!nodeQueue.isEmpty()) {
             TreeNode node = nodeQueue.remove();
 
-            if (node == null) {
+            if(node == null) {
                 output += "null, ";
                 continue;
             }
@@ -102,7 +91,7 @@ class MainClass_235 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             TreeNode root = stringToTreeNode(line);
             line = in.readLine();
             int p = Integer.parseInt(line);
@@ -114,6 +103,26 @@ class MainClass_235 {
             String out = treeNodeToString(ret);
 
             System.out.print(out);
+        }
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
+        if(root.val > p && root.val > q) {
+            return lowestCommonAncestor(root.left, p, q);
+        } else if(root.val < p && root.val < q) {
+            return lowestCommonAncestor(root.right, p, q);
+        } else {
+            return root;
+        }
+    }
+
+    private static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
         }
     }
 }

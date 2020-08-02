@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
  * If there is no cycle, return null.
  *
  * To represent a cycle in the given linked list, we use an integer pos which
- * represents the position (0-indexed) in the linked list where tail connects to.
+ * represents the position (0-indexed) in the linked list where tail connects to.
  * If pos is -1, then there is no cycle in the linked list.
  *
  * Note: Do not modify the linked list.
@@ -17,36 +17,10 @@ import java.io.InputStreamReader;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class LinkedListCycleII_142 {
-    // version 2. Using fast and slow pointers.
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast = head, slow = head;
-        boolean flag = false;
-        while(fast != null && fast.next != null && slow != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if(fast == slow) {
-                flag = true;
-                break;
-            }
-        }
-        if(flag) {
-            ListNode ptr = head;
-            while(ptr != slow) {
-                ptr = ptr.next;
-                slow = slow.next;
-            }
-            return slow;
-        } else {
-            return null;
-        }
-    }
-}
-
-class MainClass_142 {
-    public static int[] stringToIntegerArray(String input) {
+    private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -59,7 +33,7 @@ class MainClass_142 {
         return output;
     }
 
-    public static ListNode stringToListNode(String input) {
+    private static ListNode stringToListNode(String input) {
         // Generate array from the input
         int[] nodeValues = stringToIntegerArray(input);
 
@@ -76,7 +50,7 @@ class MainClass_142 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
             line = in.readLine();
             int pos = Integer.parseInt(line);
@@ -98,6 +72,41 @@ class MainClass_142 {
             } else {
                 System.out.println(ret.val);
             }
+        }
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        // version 2. Using fast and slow pointers.
+        ListNode fast = head, slow = head;
+        boolean flag = false;
+        while(fast != null && fast.next != null && slow != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) {
+                flag = true;
+                break;
+            }
+        }
+        if(flag) {
+            ListNode ptr = head;
+            while(ptr != slow) {
+                ptr = ptr.next;
+                slow = slow.next;
+            }
+            return slow;
+        } else {
+            return null;
+        }
+    }
+
+    // Definition for singly-linked list.
+    private static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
         }
     }
 }

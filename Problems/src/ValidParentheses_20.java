@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -13,13 +11,32 @@ import java.util.Stack;
  *
  * Open brackets must be closed by the same type of brackets.
  * Open brackets must be closed in the correct order.
- * Note that an empty string is also considered valid.
+ * Note that an empty string is also considered valid.
  *
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/valid-parentheses
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
+
 public class ValidParentheses_20 {
+    private static String booleanToString(boolean input) {
+        return input ? "True" : "False";
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while((line = in.readLine()) != null) {
+            //String s = stringToString(line);
+
+            boolean ret = new ValidParentheses_20().isValid(line);
+
+            String out = booleanToString(ret);
+
+            System.out.print(out);
+        }
+    }
+
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();
         for(int i = 0; i < s.length(); i++) {
@@ -50,32 +67,5 @@ public class ValidParentheses_20 {
             }
         }
         return stack.empty();
-    }
-}
-
-class MainClass_20 {
-    /*public static String stringToString(String input) {
-        if (input == null) {
-            return "null";
-        }
-        return Json.value(input).toString();
-    }*/
-
-    public static String booleanToString(boolean input) {
-        return input ? "True" : "False";
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String line;
-        while ((line = in.readLine()) != null) {
-            //String s = stringToString(line);
-
-            boolean ret = new ValidParentheses_20().isValid(line);
-
-            String out = booleanToString(ret);
-
-            System.out.print(out);
-        }
     }
 }

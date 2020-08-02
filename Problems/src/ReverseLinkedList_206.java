@@ -19,42 +19,11 @@ import java.io.InputStreamReader;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 
-// Definition for singly-linked list.
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
-
 public class ReverseLinkedList_206 {
-    /**
-     * Version 2. No need to use extra spaces.
-     * a new node.
-     * @param head
-     * @return The reversed linked list.
-     */
-    public ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode cur = head;
-        ListNode next;
-        while(cur != null) {
-            next = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = next;
-        }
-        return prev;
-    }
-}
-
-class MainClass_206 {
-    public static int[] stringToIntegerArray(String input) {
+    private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -67,7 +36,7 @@ class MainClass_206 {
         return output;
     }
 
-    public static ListNode stringToListNode(String input) {
+    private static ListNode stringToListNode(String input) {
         // Generate array from the input
         int[] nodeValues = stringToIntegerArray(input);
 
@@ -81,14 +50,14 @@ class MainClass_206 {
         return dummyRoot.next;
     }
 
-    public static String listNodeToString(ListNode node) {
-        if (node == null) {
+    private static String listNodeToString(ListNode node) {
+        if(node == null) {
             return "[]";
         }
 
-        String result = "";
-        while (node != null) {
-            result += node.val + ", ";
+        StringBuilder result = new StringBuilder();
+        while(node != null) {
+            result.append(node.val).append(", ");
             node = node.next;
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
@@ -97,7 +66,7 @@ class MainClass_206 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
 
             ListNode ret = new ReverseLinkedList_206().reverseList(head);
@@ -105,6 +74,37 @@ class MainClass_206 {
             String out = listNodeToString(ret);
 
             System.out.print(out);
+        }
+    }
+
+    public ListNode reverseList(ListNode head) {
+        /*
+         * Version 2. No need to use extra spaces.
+         * a new node.
+         * @param head
+         * @return The reversed linked list.
+         */
+
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode next;
+        while(cur != null) {
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
+    // Definition for singly-linked list.
+    private static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
         }
     }
 }

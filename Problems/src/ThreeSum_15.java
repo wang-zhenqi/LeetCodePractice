@@ -18,61 +18,12 @@ import java.util.List;
  * 链接：https://leetcode-cn.com/problems/3sum
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
+
 public class ThreeSum_15 {
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        /*if(nums.length <= 2) {
-            return result;
-        }*/
-
-        Arrays.sort(nums);
-
-        for(int i = 0; i < nums.length - 2; i++) {
-            int j = i + 1, k = nums.length - 1;
-            while(j < k) {
-                if(nums[i] + nums[j] + nums[k] > 0) {
-                    k--;
-                } else if(nums[i] + nums[j] + nums[k] < 0) {
-                    j++;
-                } else {
-                    List<Integer> triplet = new ArrayList<>();
-                    triplet.add(nums[i]);
-                    triplet.add(nums[j]);
-                    triplet.add(nums[k]);
-                    result.add(triplet);
-                    while(j < k) {
-                        boolean f1 = false, f2 = false;
-                        if(nums[j] == nums[j + 1]) {
-                            j++;
-                        } else {
-                            f1 = true;
-                        }
-                        if(nums[k] == nums[k - 1]) {
-                            k--;
-                        } else {
-                            f2 = true;
-                        }
-                        if(f1 && f2) {
-                            j++;
-                            k--;
-                            break;
-                        }
-                    }
-                }
-            }
-            while(nums[i] == nums[i + 1] && i < nums.length - 2) {
-                i++;
-            }
-        }
-        return result;
-    }
-}
-
-class MainClass_15 {
-    public static int[] stringToIntegerArray(String input) {
+    private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -85,8 +36,8 @@ class MainClass_15 {
         return output;
     }
 
-    public static String integerArrayListToString(List<Integer> nums, int length) {
-        if (length == 0) {
+    private static String integerArrayListToString(List<Integer> nums, int length) {
+        if(length == 0) {
             return "[]";
         }
 
@@ -98,13 +49,13 @@ class MainClass_15 {
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
 
-    public static String integerArrayListToString(List<Integer> nums) {
+    private static String integerArrayListToString(List<Integer> nums) {
         return integerArrayListToString(nums, nums.size());
     }
 
-    public static String int2dListToString(List<List<Integer>> nums) {
+    private static String int2dListToString(List<List<Integer>> nums) {
         StringBuilder sb = new StringBuilder("[");
-        for (List<Integer> list: nums) {
+        for(List<Integer> list : nums) {
             sb.append(integerArrayListToString(list));
             sb.append(",");
         }
@@ -116,7 +67,7 @@ class MainClass_15 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             List<List<Integer>> ret = new ThreeSum_15().threeSum(nums);
@@ -125,5 +76,41 @@ class MainClass_15 {
 
             System.out.print(out);
         }
+    }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+
+        for(int i = 0; i < nums.length - 2; i++) {
+            if(i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int j = i + 1, k = nums.length - 1;
+            while(j < k) {
+                if(nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                } else if(nums[i] + nums[j] + nums[k] < 0) {
+                    j++;
+                } else {
+                    List<Integer> triplet = new ArrayList<>();
+                    triplet.add(nums[i]);
+                    triplet.add(nums[j]);
+                    triplet.add(nums[k]);
+                    result.add(triplet);
+                    while(j < k && nums[j] == nums[j + 1]) {
+                        j++;
+                    }
+
+                    while(j < k && nums[k] == nums[k - 1]) {
+                        k--;
+                    }
+                    j++;
+                    k--;
+                }
+            }
+        }
+        return result;
     }
 }

@@ -18,27 +18,10 @@ import java.util.Set;
  */
 
 public class LinkedListCycle_141 {
-    //Version 2, using hash set to store the scanned nodes.
-    public boolean hasCycle(ListNode head) {
-        if(head == null) {
-            return false;
-        }
-        Set<ListNode> set = new HashSet<>();
-        while(set.add(head)) {
-            head = head.next;
-            if(head == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-class MainClass_141 {
-    public static int[] stringToIntegerArray(String input) {
+    private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -51,7 +34,7 @@ class MainClass_141 {
         return output;
     }
 
-    public static ListNode stringToListNode(String input) {
+    private static ListNode stringToListNode(String input) {
         // Generate array from the input
         int[] nodeValues = stringToIntegerArray(input);
 
@@ -65,14 +48,14 @@ class MainClass_141 {
         return dummyRoot.next;
     }
 
-    public static String booleanToString(boolean input) {
+    private static String booleanToString(boolean input) {
         return input ? "True" : "False";
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
             line = in.readLine();
             int pos = Integer.parseInt(line);
@@ -93,6 +76,33 @@ class MainClass_141 {
             String out = booleanToString(ret);
 
             System.out.print(out);
+        }
+    }
+
+    public boolean hasCycle(ListNode head) {
+        //Version 2, using hash set to store the scanned nodes.
+
+        if(head == null) {
+            return false;
+        }
+        Set<ListNode> set = new HashSet<>();
+        while(set.add(head)) {
+            head = head.next;
+            if(head == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Definition for singly-linked list.
+    private static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
         }
     }
 }

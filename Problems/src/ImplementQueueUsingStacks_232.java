@@ -33,6 +33,21 @@ public class ImplementQueueUsingStacks_232 {
         tmpStack = new Stack<>();
     }
 
+    public static void main(String[] args) {
+        ImplementQueueUsingStacks_232 myQueue = new ImplementQueueUsingStacks_232();
+        myQueue.printQueue();
+        myQueue.push(1);
+        myQueue.printQueue();
+        myQueue.push(2);
+        myQueue.printQueue();
+        System.out.println("Pop an element " + myQueue.pop());
+        myQueue.printQueue();
+        System.out.println("Top of the queue is " + myQueue.peek());
+        System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
+        System.out.println("Pop an element " + myQueue.pop());
+        System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
+    }
+
     /**
      * Push element x to the back of queue.
      */
@@ -86,22 +101,5 @@ public class ImplementQueueUsingStacks_232 {
         while(!tmpStack.empty()) {
             innerStack.push(tmpStack.pop());
         }
-    }
-}
-
-class MainClass_232 {
-    public static void main(String[] args) {
-        ImplementQueueUsingStacks_232 myQueue = new ImplementQueueUsingStacks_232();
-        myQueue.printQueue();
-        myQueue.push(1);
-        myQueue.printQueue();
-        myQueue.push(2);
-        myQueue.printQueue();
-        System.out.println("Pop an element " + myQueue.pop());
-        myQueue.printQueue();
-        System.out.println("Top of the queue is " + myQueue.peek());
-        System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
-        System.out.println("Pop an element " + myQueue.pop());
-        System.out.println("The queue is " + (myQueue.empty() ? "empty." : "not empty."));
     }
 }

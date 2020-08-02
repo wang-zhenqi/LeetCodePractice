@@ -1,5 +1,6 @@
 import java.util.Deque;
 import java.util.LinkedList;
+
 /**
  * Implement the following operations of a stack using queues.
  *
@@ -24,27 +25,52 @@ public class ImplementStackUsingQueues_225 {
 
     private final Deque<Integer> innerQueue;
 
-    /** Initialize your data structure here. */
+    /**
+     * Initialize your data structure here.
+     */
     public ImplementStackUsingQueues_225() {
         innerQueue = new LinkedList<>();
     }
 
-    /** Push element x onto stack. */
+    public static void main(String[] args) {
+        ImplementStackUsingQueues_225 myStack = new ImplementStackUsingQueues_225();
+        myStack.printStack();
+        myStack.push(1);
+        myStack.printStack();
+        myStack.push(2);
+        myStack.printStack();
+        System.out.println("Pop an element " + myStack.pop());
+        myStack.printStack();
+        System.out.println("Top of the Stack is " + myStack.top());
+        System.out.println("The queue is " + (myStack.empty() ? "empty." : "not empty."));
+        System.out.println("Pop an element " + myStack.pop());
+        System.out.println("The queue is " + (myStack.empty() ? "empty." : "not empty."));
+    }
+
+    /**
+     * Push element x onto stack.
+     */
     public void push(int x) {
         innerQueue.addLast(x);
     }
 
-    /** Removes the element on top of the stack and returns that element. */
+    /**
+     * Removes the element on top of the stack and returns that element.
+     */
     public int pop() {
         return innerQueue.removeLast();
     }
 
-    /** Get the top element. */
+    /**
+     * Get the top element.
+     */
     public int top() {
         return innerQueue.getLast();
     }
 
-    /** Returns whether the stack is empty. */
+    /**
+     * Returns whether the stack is empty.
+     */
     public boolean empty() {
         return innerQueue.isEmpty();
     }
@@ -63,22 +89,5 @@ public class ImplementStackUsingQueues_225 {
             innerQueue.addFirst(t);
         }
         System.out.println(sb.toString());
-    }
-}
-
-class MainClass_225 {
-    public static void main(String[] args) {
-        ImplementStackUsingQueues_225 myStack = new ImplementStackUsingQueues_225();
-        myStack.printStack();
-        myStack.push(1);
-        myStack.printStack();
-        myStack.push(2);
-        myStack.printStack();
-        System.out.println("Pop an element " + myStack.pop());
-        myStack.printStack();
-        System.out.println("Top of the Stack is " + myStack.top());
-        System.out.println("The queue is " + (myStack.empty() ? "empty." : "not empty."));
-        System.out.println("Pop an element " + myStack.pop());
-        System.out.println("The queue is " + (myStack.empty() ? "empty." : "not empty."));
     }
 }

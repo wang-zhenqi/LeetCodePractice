@@ -7,6 +7,26 @@ import java.text.DecimalFormat;
  * Implement pow(x, n), which calculates x raised to the power n (x^n).
  */
 public class Pow_x_n_50 {
+    private static String doubleToString(double input) {
+        return new DecimalFormat("0.00000").format(input);
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while((line = in.readLine()) != null) {
+            double x = Double.parseDouble(line);
+            line = in.readLine();
+            int n = Integer.parseInt(line);
+
+            double ret = new Pow_x_n_50().myPow(x, n);
+
+            String out = doubleToString(ret);
+
+            System.out.print(out);
+        }
+    }
+
     public double myPow(double x, int n) {
         if(n == 0) {
             return 1.0;
@@ -29,25 +49,5 @@ public class Pow_x_n_50 {
             n >>= 1;
         }
         return result;
-    }
-
-    private static String doubleToString(double input) {
-        return new DecimalFormat("0.00000").format(input);
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String line;
-        while ((line = in.readLine()) != null) {
-            double x = Double.parseDouble(line);
-            line = in.readLine();
-            int n = Integer.parseInt(line);
-
-            double ret = new Pow_x_n_50().myPow(x, n);
-
-            String out = doubleToString(ret);
-
-            System.out.print(out);
-        }
     }
 }

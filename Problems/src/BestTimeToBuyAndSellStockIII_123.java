@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  * Say you have an array for which the ith element is the price of
@@ -19,6 +18,36 @@ import java.util.Arrays;
  */
 
 public class BestTimeToBuyAndSellStockIII_123 {
+    private static int[] stringToIntegerArray(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if(input.length() == 0) {
+            return new int[0];
+        }
+
+        String[] parts = input.split(",");
+        int[] output = new int[parts.length];
+        for(int index = 0; index < parts.length; index++) {
+            String part = parts[index].trim();
+            output[index] = Integer.parseInt(part);
+        }
+        return output;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while((line = in.readLine()) != null) {
+            int[] prices = stringToIntegerArray(line);
+
+            int ret = new BestTimeToBuyAndSellStockIII_123().maxProfit(prices);
+
+            String out = String.valueOf(ret);
+
+            System.out.print(out);
+        }
+    }
+
     public int maxProfit(int[] prices) {
         /*
          * Version 3, simplified DP, time: O(N), space: O(1)
@@ -39,35 +68,5 @@ public class BestTimeToBuyAndSellStockIII_123 {
         }
 
         return dpi20;
-    }
-
-    private static int[] stringToIntegerArray(String input) {
-        input = input.trim();
-        input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
-            return new int[0];
-        }
-
-        String[] parts = input.split(",");
-        int[] output = new int[parts.length];
-        for(int index = 0; index < parts.length; index++) {
-            String part = parts[index].trim();
-            output[index] = Integer.parseInt(part);
-        }
-        return output;
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String line;
-        while ((line = in.readLine()) != null) {
-            int[] prices = stringToIntegerArray(line);
-
-            int ret = new BestTimeToBuyAndSellStockIII_123().maxProfit(prices);
-
-            String out = String.valueOf(ret);
-
-            System.out.print(out);
-        }
     }
 }

@@ -1,12 +1,12 @@
 import java.util.PriorityQueue;
 
 /**
- * Design a class to find the kth largest element in a stream.
+ * Design a class to find the kth largest element in a stream.
  * Note that it is the kth largest element in the sorted order,
  * not the kth distinct element.
  *
- * Your KthLargest class will have a constructor which accepts an integer
- * k and an integer array nums, which contains initial elements from the stream.
+ * Your KthLargest class will have a constructor which accepts an integer
+ * k and an integer array nums, which contains initial elements from the stream.
  * For each call to the method KthLargest.add, return the element representing the
  * kth largest element in the stream.
  *
@@ -33,18 +33,6 @@ public class KthLargestElementInAStream_703 {
         }
     }
 
-    public int add(int val) {
-        if(priorityQueue.size() < kth) {
-            priorityQueue.add(val);
-        } else if(val > priorityQueue.peek()){
-            priorityQueue.remove();
-            priorityQueue.add(val);
-        }
-        return priorityQueue.peek();
-    }
-}
-
-class MainClass_703 {
     public static void main(String[] args) {
         int k = 2;
         int[] arr = {0};
@@ -54,5 +42,15 @@ class MainClass_703 {
         System.out.println(kthLargest.add(-2));
         System.out.println(kthLargest.add(-4));
         System.out.println(kthLargest.add(3));
+    }
+
+    public int add(int val) {
+        if(priorityQueue.size() < kth) {
+            priorityQueue.add(val);
+        } else if(val > priorityQueue.peek()) {
+            priorityQueue.remove();
+            priorityQueue.add(val);
+        }
+        return priorityQueue.peek();
     }
 }

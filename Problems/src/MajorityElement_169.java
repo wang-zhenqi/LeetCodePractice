@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  * Given an array of size n, find the majority element. The majority element is
@@ -15,27 +14,10 @@ import java.util.Arrays;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class MajorityElement_169 {
-    public int majorityElement(int[] nums) {
-        int candidate = nums[0];
-        int vote = 1;
-        for(int i = 1; i < nums.length; i++) {
-            if(nums[i] != candidate) {
-                vote--;
-                if(vote <= 0) {
-                    candidate = nums[i];
-                    vote = 1;
-                }
-            } else {
-                vote++;
-            }
-        }
-        return candidate;
-    }
-
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -51,7 +33,7 @@ public class MajorityElement_169 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             int ret = new MajorityElement_169().majorityElement(nums);
@@ -60,5 +42,22 @@ public class MajorityElement_169 {
 
             System.out.print(out);
         }
+    }
+
+    public int majorityElement(int[] nums) {
+        int candidate = nums[0];
+        int vote = 1;
+        for(int i = 1; i < nums.length; i++) {
+            if(nums[i] != candidate) {
+                vote--;
+                if(vote <= 0) {
+                    candidate = nums[i];
+                    vote = 1;
+                }
+            } else {
+                vote++;
+            }
+        }
+        return candidate;
     }
 }
