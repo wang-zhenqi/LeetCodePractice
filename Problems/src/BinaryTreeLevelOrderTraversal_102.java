@@ -67,7 +67,7 @@ public class BinaryTreeLevelOrderTraversal_102 {
         String result = "";
         for(int index = 0; index < length; index++) {
             Integer number = nums.get(index);
-            result += Integer.toString(number) + ", ";
+            result += number + ", ";
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
@@ -103,7 +103,8 @@ public class BinaryTreeLevelOrderTraversal_102 {
 
     public List<List<Integer>> levelOrder(TreeNode root) {
         /*
-         * Version 1, Common BFS, time: O(N), space: O(N).
+         * Version 1, Common BFS, time: O(N), space: O(N). (A little simplified from
+         * the previous version)
          * Traverse the whole tree with the BFS method. The hardest part is to record
          * the level of a node.
          * Option 1: build a level queue along with the node queue. It works, but space
@@ -121,16 +122,11 @@ public class BinaryTreeLevelOrderTraversal_102 {
         queue.add(root);
 
         while(!queue.isEmpty()) {
-            int queueLen = queue.size();
+            int levelLen = queue.size();
             List<Integer> nodesInALevel = new ArrayList<>();
-            for(int i = 0; i < queueLen; i++) {
+            for(int i = 0; i < levelLen; i++) {
                 TreeNode curNode = queue.poll();
                 nodesInALevel.add(curNode.val);
-                queue.add(curNode);
-            }
-            result.add(nodesInALevel);
-            for(int i = 0; i < queueLen; i++) {
-                TreeNode curNode = queue.poll();
                 if(curNode.left != null) {
                     queue.add(curNode.left);
                 }
@@ -138,6 +134,7 @@ public class BinaryTreeLevelOrderTraversal_102 {
                     queue.add(curNode.right);
                 }
             }
+            result.add(nodesInALevel);
         }
         return result;
     }
