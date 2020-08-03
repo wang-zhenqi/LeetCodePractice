@@ -62,20 +62,6 @@ public class MaximumDepthOfBinaryTree_104 {
         return root;
     }
 
-    private void dfs(TreeNode root, int level) {
-        if(root.left != null) {
-            dfs(root.left, level + 1);
-        }
-
-        if(root.right != null) {
-            dfs(root.right, level + 1);
-        }
-
-        if(root.left == null && root.right == null) {
-            maxD = Math.max(maxD, level);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
@@ -92,11 +78,31 @@ public class MaximumDepthOfBinaryTree_104 {
 
     public int maxDepth(TreeNode root) {
         /*
-         * Version 1, DFS, recursively.
+         * Version 2, BFS.
          */
-        maxD = 0;
-        if(root != null) {
-            dfs(root, 1);
+        if(root == null) {
+            return 0;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int maxD = 1, curLevel = 1;
+        while(!queue.isEmpty()) {
+            int levelSize = queue.size();
+            for(int i = 0; i < levelSize; i++) {
+                TreeNode curNode = queue.poll();
+                if(curNode.left == null && curNode.right == null) {
+                    maxD = Math.max(maxD, curLevel);
+                } else {
+                    if(curNode.left != null) {
+                        queue.add(curNode.left);
+                    }
+                    if(curNode.right != null) {
+                        queue.add(curNode.right);
+                    }
+                }
+            }
+            curLevel++;
         }
         return maxD;
     }
@@ -108,6 +114,4 @@ public class MaximumDepthOfBinaryTree_104 {
         TreeNode right;
         TreeNode(int x) { val = x; }
     }
-
-    private int maxD;
 }
