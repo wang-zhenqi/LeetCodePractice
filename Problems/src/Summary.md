@@ -29,7 +29,7 @@ while cur != null:
     # null <- 1, 2 -> 3 -> null
 ````
 
-### [141. Linked List Cycle](https://github.com/wang-zhenqi/LeetCodePractice/blob/Java/Problems/src/LinkedListCycle_141.java)
+#### [141. Linked List Cycle](https://github.com/wang-zhenqi/LeetCodePractice/blob/Java/Problems/src/LinkedListCycle_141.java)
 There are at least two ways to solve it:
 1. Traverse from the beginning of the list, memorizing each node when pass it. When it encounters a node that's been past, the start of the cycle is found.
 
@@ -59,7 +59,7 @@ There are at least two ways to solve it:
     return false
     ````
 
-### [142. Linked List Cycle II](https://github.com/wang-zhenqi/LeetCodePractice/blob/Java/Problems/src/LinkedListCycleII_142.java)
+#### [142. Linked List Cycle II](https://github.com/wang-zhenqi/LeetCodePractice/blob/Java/Problems/src/LinkedListCycleII_142.java)
 This problem is a little more complicated than the problem 141. Because it requires to find the start of the cycle (if it exists).
 
 The method using a hash set is a good way, actually, it can solve both problems.
