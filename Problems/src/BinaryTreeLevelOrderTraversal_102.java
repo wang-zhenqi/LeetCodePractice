@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Given a binary tree, return the level order traversal of its nodes' values.
@@ -103,39 +100,45 @@ public class BinaryTreeLevelOrderTraversal_102 {
 
     public List<List<Integer>> levelOrder(TreeNode root) {
         /*
-         * Version 1, Common BFS, time: O(N), space: O(N). (A little simplified from
-         * the previous version)
-         * Traverse the whole tree with the BFS method. The hardest part is to record
-         * the level of a node.
-         * Option 1: build a level queue along with the node queue. It works, but space
-         * wasting.
-         * Option 2: deal with one level at one loop. When finish traversing the whole
-         * level, take the next level into consideration.
-         * This code chooses option 2.
+         * Version 2, DFS, iteratively.
          */
-        if(root == null) {
-            return new ArrayList<>();
-        }
-
         List<List<Integer>> result = new ArrayList<>();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
 
-        while(!queue.isEmpty()) {
-            int levelLen = queue.size();
-            List<Integer> nodesInALevel = new ArrayList<>();
-            for(int i = 0; i < levelLen; i++) {
-                TreeNode curNode = queue.poll();
-                nodesInALevel.add(curNode.val);
-                if(curNode.left != null) {
-                    queue.add(curNode.left);
-                }
-                if(curNode.right != null) {
-                    queue.add(curNode.right);
-                }
-            }
-            result.add(nodesInALevel);
+        if(root == null) {
+            return result;
         }
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        int level = 0;
+
+        HashSet<TreeNode> pastNode = new HashSet<>();
+
+        while(!stack.empty()) {
+            TreeNode curNode = stack.peek();
+            if(!pastNode.contains(curNode)) {
+                if(result.size() - 1 >= level) {
+                    result.get(level).add(curNode.val);
+                } else {
+                    List<Integer> entry = new ArrayList<>();
+                    entry.add(curNode.val);
+                    result.add(entry);
+                }
+                pastNode.add(curNode);
+            }
+
+            if(curNode.left != null && !pastNode.contains(curNode.left)) {
+                stack.push(curNode.left);
+                level++;
+            } else if(curNode.right != null && !pastNode.contains(curNode.right)) {
+                stack.push(curNode.right);
+                level++;
+            } else {
+                stack.pop();
+                level--;
+            }
+        }
+
         return result;
     }
 
