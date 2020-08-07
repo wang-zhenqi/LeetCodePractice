@@ -33,23 +33,17 @@ public class SquareRootX_69 {
 
     public int mySqrt(int x) {
         /*
-         * Version 1, binary search.
-         * In this solution, I made it much practical than the problem description says.
-         * It can actually have the precision of 1e-9, and this value should be
-         * changeable. In order to solve it, I just return its integer part.
+         * Version 2, Newton's method. Because of the type of the return value, this
+         * problem became very ugly. There are some trick test cases, I tried many times.
          */
-        double left = 0.0, right = (double)x;
-        double mid = 0.0;
-        while(right - left > 1e-9) {
-            mid = left + (right - left) / 2;
-            if(mid * mid - x > 1e-9) {
-                right = mid;
-            } else if(mid * mid - x < -1e-9) {
-                left = mid;
-            } else {
-                break;
-            }
+        if(x == 0 || x == 1) {
+            return x;
         }
-        return (int)(mid + 1e-9);
+
+        double xn = (double)x;
+        while(xn - x / xn > 1e-5) {
+            xn = xn / 2 + x / xn / 2;
+        }
+        return (int)xn;
     }
 }
