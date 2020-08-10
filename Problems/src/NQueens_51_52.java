@@ -20,13 +20,10 @@ import java.util.Set;
  */
 public class NQueens_51_52 {
     private List<List<String>> result;
-    private Set<Integer> colSet;
-    private Set<Integer> slashSet;
-    private Set<Integer> backSlashSet;
     private int n;
     private int solutions;
 
-    public static void main(String[] arge) {
+    public static void main(String[] args) {
         List<List<String>> result = new NQueens_51_52().solveNQueens(8);
 
         for(List<String> solution : result) {
@@ -37,51 +34,42 @@ public class NQueens_51_52 {
         }
     }
 
-    private void dfs(int row, List<String> lines) {
-        for(int col = 0; col < n; col++) {
-            if(!colSet.contains(col) &&
-                    !slashSet.contains(row + col) &&
-                    !backSlashSet.contains(row - col)) {
-                colSet.add(col);
-                slashSet.add(row + col);
-                backSlashSet.add(row - col);
-                StringBuilder line = new StringBuilder();
-                for(int i = 0; i < n; i++) {
-                    if(i != col) {
-                        line.append(".");
-                    } else {
-                        line.append("Q");
-                    }
-                }
-                lines.add(line.toString());
-                if(row < n - 1) {
-                    dfs(row + 1, lines);
+    private void dfs(int row, List<String> lines, int col, int slash, int backSlash) {
+        if(row >= n) {
+            solutions++;
+            result.add(new ArrayList<>(lines));
+            return;
+        }
+
+        int pos = (~(col | slash | backSlash)) & ((1 << n) - 1);
+        while(pos != 0) {
+            int p = pos & (-pos);
+            StringBuilder line = new StringBuilder();
+            for(int i = n - 1; i >= 0; i--) {
+                if((p & (1 << i)) == 0) {
+                    line.append('.');
                 } else {
-                    List<String> solution = new ArrayList<>(lines);
-                    result.add(solution);
-                    solutions++;
+                    line.append('Q');
                 }
-                colSet.remove(col);
-                slashSet.remove(row + col);
-                backSlashSet.remove(row - col);
-                lines.remove(lines.size() - 1);
             }
+            lines.add(line.toString());
+            dfs(row + 1, lines, col | p, (slash | p) << 1, (backSlash | p) >> 1);
+            pos &= (pos - 1);
+            lines.remove(lines.size() - 1);
         }
     }
 
     public List<List<String>> solveNQueens(int n) {
         /*
-         * Version 1, DFS pruning.
+         * Version 2, DFS + bit operation.
          */
         result = new ArrayList<>();
-        colSet = new HashSet<>();
-        slashSet = new HashSet<>();
-        backSlashSet = new HashSet<>();
+
         this.n = n;
         solutions = 0;
 
         List<String> lines = new ArrayList<>();
-        dfs(0, lines);
+        dfs(0, lines, 0, 0, 0);
 
         System.out.println("Total solutions: " + solutions);
         return result;
