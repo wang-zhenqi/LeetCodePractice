@@ -19,30 +19,6 @@ import java.io.InputStreamReader;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class UniquePaths_62 {
-    private long gcd(long a, long b) {
-        return b == 0 ? a : gcd(b, a % b);
-    }
-
-    private long combination(long bottom, long top) {
-        if(bottom < top) {
-            return 0;
-        }
-
-        long numerator = 1, denominator = 1;
-        /*
-         * Divide the gcd in each iteration in case of overflow.
-         */
-        while(top > 0) {
-            numerator *= bottom--;
-            denominator *= top--;
-            long divisor = gcd(numerator, denominator);
-            numerator /= divisor;
-            denominator /= divisor;
-        }
-
-        return numerator / denominator;
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
@@ -61,8 +37,26 @@ public class UniquePaths_62 {
 
     public int uniquePaths(int m, int n) {
         /*
-         * Version 1, mathematical. Using the combination number to solve it.
+         * Version 2, DP.
          */
-        return (int) combination(m + n - 2, m - 1);
+        if(m == 1 || n == 1) {
+            return 1;
+        }
+
+        int[][] paths = new int[n][m];
+        for(int i = n - 1; i >= 0; i--) {
+            paths[i][m - 1] = 1;
+        }
+
+        for(int j = m - 2; j >= 0; j--) {
+            paths[n - 1][j] = 1;
+        }
+
+        for(int i = n - 2; i >= 0; i--) {
+            for(int j = m - 2; j >= 0; j--) {
+                paths[i][j] = paths[i + 1][j] + paths[i][j + 1];
+            }
+        }
+        return paths[0][0];
     }
 }
