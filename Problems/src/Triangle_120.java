@@ -44,25 +44,24 @@ public class Triangle_120 {
 
     public int minimumTotal(List<List<Integer>> triangle) {
         /*
-         * Version 1, DP.
-         * dp[i][j] represents the minimum sum from bottom to triangle[i][j].
-         * dp[i][j] = min(dp[i+1][j], dp[i+1][j+1]) + triangle[i][j].
-         * dp[0][0] is the answer.
+         * Version 2, spatial optimized DP.
+         * dp[0] ~ dp[i] represents the minimum sum from bottom to
+         * triangle[i][0] ~ triangle[i][i] respectively.
+         * dp[j] = min(dp[j], dp[j+1]) + triangle[i][j].
+         * dp[0] is the answer.
          */
         int rowNum = triangle.size();
-        int[][] dp = new int[rowNum][];
+        int[] dp = new int[rowNum];
 
-        dp[rowNum - 1] = new int[rowNum];
         for(int j = 0 ; j < rowNum; j++) {
-            dp[rowNum - 1][j] = triangle.get(rowNum - 1).get(j);
+            dp[j] = triangle.get(rowNum - 1).get(j);
         }
 
         for(int i = rowNum - 2; i >= 0; i--) {
-            dp[i] = new int[i + 1];
             for(int j = 0 ; j < i + 1; j++) {
-                dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle.get(i).get(j);
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
             }
         }
-        return dp[0][0];
+        return dp[0];
     }
 }
