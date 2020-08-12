@@ -43,24 +43,24 @@ public class MaximumProductSubarray_152 {
 
     public int maxProduct(int[] nums) {
         /*
-         * DP. In each iteration, dp[i][0] means the maximum product,
-         * dp[i][1] means the minimum product. After the whole process, return the
-         * maximum dp[i][0].
+         * DP. In each iteration, dp[0] means the maximum product, dp[1] means the
+         * minimum product, and ans records the maximum product so far.
+         * After the whole process, return ans.
          */
 
-        int[][] dp = new int[nums.length][2];
-        dp[0][0] = nums[0];
-        dp[0][1] = nums[0];
+        int[] dp = new int[2];
+        int ans = nums[0];
+        dp[0] = nums[0];
+        dp[1] = nums[0];
 
+        int tmp;
         for(int i = 1; i < nums.length; i++) {
-            dp[i][0] = Math.max(nums[i], Math.max(dp[i - 1][0] * nums[i], dp[i - 1][1] * nums[i]));
-            dp[i][1] = Math.min(nums[i], Math.min(dp[i - 1][0] * nums[i], dp[i - 1][1] * nums[i]));
+            tmp = dp[0];
+            dp[0] = Math.max(nums[i], Math.max(dp[0] * nums[i], dp[1] * nums[i]));
+            dp[1] = Math.min(nums[i], Math.min(tmp * nums[i], dp[1] * nums[i]));
+            ans = Math.max(dp[0], ans);
         }
 
-        int max = Integer.MIN_VALUE;
-        for(int i = 0; i < nums.length; i++) {
-            max = Math.max(max, dp[i][0]);
-        }
-        return max;
+        return ans;
     }
 }
