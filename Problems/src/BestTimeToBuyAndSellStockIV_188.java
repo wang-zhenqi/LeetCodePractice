@@ -1,19 +1,18 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  * Say you have an array for which the i-th element is the price of a given stock
  * on day i.
- *
+ * <p>
  * Design an algorithm to find the maximum profit. You may complete at most k
  * transactions.
- *
+ * <p>
  * Note:
  * You may not engage in multiple transactions at the same time (ie, you must
  * sell the stock before you buy again).
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -22,7 +21,7 @@ public class BestTimeToBuyAndSellStockIV_188 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -38,7 +37,7 @@ public class BestTimeToBuyAndSellStockIV_188 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int k = Integer.parseInt(line);
             line = in.readLine();
             int[] prices = stringToIntegerArray(line);

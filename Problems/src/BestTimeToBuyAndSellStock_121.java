@@ -5,13 +5,13 @@ import java.io.InputStreamReader;
 /**
  * Say you have an array for which the ith element is the price of a given stock
  * on day i.
- *
+ * <p>
  * If you were only permitted to complete at most one transaction
  * (i.e., buy one and sell one share of the stock), design an algorithm to
  * find the maximum profit.
- *
+ * <p>
  * Note that you cannot sell a stock before you buy one.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

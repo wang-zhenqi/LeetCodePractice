@@ -1,16 +1,19 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Write a program to solve a Sudoku puzzle by filling the empty cells.
- *
+ * <p>
  * A sudoku solution must satisfy all of the following rules:
- *
+ * <p>
  * Each of the digits 1-9 must occur exactly once in each row.
  * Each of the digits 1-9 must occur exactly once in each column.
  * Each of the the digits 1-9 must occur exactly once in each of the 9
  * 3x3 sub-boxes of the grid.
  * Empty cells are indicated by the character '.'.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/sudoku-solver
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -21,6 +24,21 @@ public class SudokuSolver_37 {
     private int[][] blocks;
     private Candidates[] candidates;
     private char[][] board;
+
+    public static void main(String[] arg) {
+        char[][] board1 = {
+                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        new SudokuSolver_37().solveSudoku(board1);
+    }
 
     private boolean dfs(int candIdx) {
         if(candIdx >= 81) {
@@ -55,21 +73,6 @@ public class SudokuSolver_37 {
         return false;
     }
 
-    public static void main(String[] arg) {
-        char[][] board1 = {
-                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-        };
-        new SudokuSolver_37().solveSudoku(board1);
-    }
-
     public void solveSudoku(char[][] board) {
         rows = new int[9][9];
         cols = new int[9][9];
@@ -101,8 +104,8 @@ public class SudokuSolver_37 {
                         int[] block = blocks[i / 3 * 3 + j / 3];
 
                         if((rows[i][k - 1] == 0) &&
-                            (cols[j][k - 1] == 0) &&
-                            (block[k - 1] == 0)) {
+                                (cols[j][k - 1] == 0) &&
+                                (block[k - 1] == 0)) {
                             candidates[i * 9 + j].cand.add(k);
                         }
                     }

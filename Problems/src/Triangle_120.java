@@ -4,15 +4,15 @@ import java.util.List;
 /**
  * Given a triangle, find the minimum path sum from top to bottom.
  * Each step you may move to adjacent numbers on the row below.
- *
+ * <p>
  * The adjacent number means the same index as the upper row, or the index + 1 of
  * the upper row.
- *
+ * <p>
  * Note:
- *
+ * <p>
  * Bonus point if you are able to do this using only O(n) extra space,
  * where n is the total number of rows in the triangle.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/triangle
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -53,12 +53,12 @@ public class Triangle_120 {
         int rowNum = triangle.size();
         int[] dp = new int[rowNum];
 
-        for(int j = 0 ; j < rowNum; j++) {
+        for(int j = 0; j < rowNum; j++) {
             dp[j] = triangle.get(rowNum - 1).get(j);
         }
 
         for(int i = rowNum - 2; i >= 0; i--) {
-            for(int j = 0 ; j < i + 1; j++) {
+            for(int j = 0; j < i + 1; j++) {
                 dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
             }
         }

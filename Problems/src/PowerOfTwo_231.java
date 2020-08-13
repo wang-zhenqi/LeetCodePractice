@@ -13,7 +13,7 @@ public class PowerOfTwo_231 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int n = Integer.parseInt(line);
 
             boolean ret = new PowerOfTwo_231().isPowerOfTwo(n);

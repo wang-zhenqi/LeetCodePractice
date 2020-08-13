@@ -1,21 +1,19 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The n-queens puzzle is the problem of placing n queens on an
  * n×n chessboard such that no two queens attack each other.
- *
+ * <p>
  * Given an integer n, return all distinct solutions to the n-queens puzzle.
- *
+ * <p>
  * Each solution contains a distinct board configuration of the n-queens' placement,
  * where 'Q' and '.' both indicate a queen and an empty space respectively.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/n-queens
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
- *
+ * <p>
  * P.S. This problem is very similar to the problem 52. So I combined them together.
  */
 public class NQueens_51_52 {

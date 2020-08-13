@@ -2,18 +2,18 @@ import java.util.HashSet;
 
 /**
  * Given a 2D board and a word, find if the word exists in the grid.
- *
+ * <p>
  * The word can be constructed from letters of sequentially adjacent cell,
  * where "adjacent" cells are those horizontally or vertically neighboring.
  * The same letter cell may not be used more than once.
- *
+ * <p>
  * Constraints:
- *
+ * <p>
  * board and word consists only of lowercase and uppercase English letters.
  * 1 <= board.length <= 200
  * 1 <= board[i].length <= 200
  * 1 <= word.length <= 10^3
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/word-search
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -24,6 +24,16 @@ public class WordSearch_79 {
     private char[] word;
     private int rows;
     private int cols;
+
+    public static void main(String[] args) {
+        char[][] board = {
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+
+        System.out.println(new WordSearch_79().exist(board, "ABCD"));
+    }
 
     private boolean found(int i, int j, int curIdx) {
         if(curIdx > word.length - 1) {
@@ -71,16 +81,6 @@ public class WordSearch_79 {
         }
 
         return false;
-    }
-
-    public static void main(String[] args) {
-        char[][] board = {
-                {'A','B','C','E'},
-                {'S','F','C','S'},
-                {'A','D','E','E'}
-        };
-
-        System.out.println(new WordSearch_79().exist(board, "ABCD"));
     }
 
     public boolean exist(char[][] board, String word) {

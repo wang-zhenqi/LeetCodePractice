@@ -2,12 +2,12 @@ import java.util.Stack;
 
 /**
  * Implement the following operations of a queue using stacks.
- *
+ * <p>
  * push(x) -- Push element x to the back of queue.
  * pop() -- Removes the element from in front of queue.
  * peek() -- Get the front element.
  * empty() -- Return whether the queue is empty.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/implement-queue-using-stacks
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 /**
  * Given an integer array nums, find the contiguous subarray within an array
  * (containing at least one number) which has the largest product.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/maximum-product-subarray
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -14,7 +14,7 @@ public class MaximumProductSubarray_152 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -30,7 +30,7 @@ public class MaximumProductSubarray_152 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             int ret = new MaximumProductSubarray_152().maxProduct(nums);

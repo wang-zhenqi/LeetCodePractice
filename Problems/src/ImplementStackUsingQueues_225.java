@@ -3,12 +3,12 @@ import java.util.LinkedList;
 
 /**
  * Implement the following operations of a stack using queues.
- *
+ * <p>
  * push(x) -- Push element x onto stack.
  * pop() -- Removes the element on top of the stack.
  * top() -- Get the top element.
  * empty() -- Return whether the stack is empty.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/implement-stack-using-queues
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

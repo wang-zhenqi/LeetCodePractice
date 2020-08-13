@@ -6,12 +6,12 @@ import java.util.Set;
 
 /**
  * Given a linked list, determine if it has a cycle in it.
- *
+ * <p>
  * To represent a cycle in the given linked list,
  * we use an integer pos which represents the position (0-indexed)
  * in the linked list where tail connects to.
  * If pos is -1, then there is no cycle in the linked list.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/linked-list-cycle
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

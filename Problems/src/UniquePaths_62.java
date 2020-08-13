@@ -4,16 +4,16 @@ import java.io.InputStreamReader;
 
 /**
  * A robot is located at the top-left corner of a m x n grid.
- *
+ * <p>
  * The robot can only move either down or right at any point in time.
  * The robot is trying to reach the bottom-right corner of the grid.
- *
+ * <p>
  * How many possible unique paths are there?
- *
+ * <p>
  * Constraints:
  * 1 <= m, n <= 100
  * It's guaranteed that the answer will be less than or equal to 2 * 10 ^ 9.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/unique-paths
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -22,7 +22,7 @@ public class UniquePaths_62 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int m = Integer.parseInt(line);
             line = in.readLine();
             int n = Integer.parseInt(line);

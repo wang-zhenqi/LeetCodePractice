@@ -45,7 +45,7 @@ public class WordSearchII_212 {
                 {'a', 'b'},
                 {'a', 'a'}
         };
-        String[] words = {"aba","baa","bab","aaab","aaa","aaaa","aaba"};
+        String[] words = {"aba", "baa", "bab", "aaab", "aaa", "aaaa", "aaba"};
         List<String> result = new WordSearchII_212().findWords(board, words);
 
         for(String s : result) {

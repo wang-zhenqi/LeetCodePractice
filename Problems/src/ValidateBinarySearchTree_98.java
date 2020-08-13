@@ -6,13 +6,13 @@ import java.util.Queue;
 
 /**
  * Given a binary tree, determine if it is a valid binary search tree (BST).
- *
+ * <p>
  * Assume a BST is defined as follows:
- *
+ * <p>
  * The left subtree of a node contains only nodes with keys less than the node's key.
  * The right subtree of a node contains only nodes with keys greater than the node's key.
  * Both the left and right subtrees must also be binary search trees.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/validate-binary-search-tree
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

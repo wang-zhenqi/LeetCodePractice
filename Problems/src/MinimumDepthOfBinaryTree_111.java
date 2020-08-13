@@ -6,12 +6,12 @@ import java.util.Queue;
 
 /**
  * Given a binary tree, find its minimum depth.
- *
+ * <p>
  * The minimum depth is the number of nodes along the shortest path from
  * the root node down to the nearest leaf node.
- *
+ * <p>
  * Note: A leaf is a node with no children.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/minimum-depth-of-binary-tree
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -20,7 +20,7 @@ public class MinimumDepthOfBinaryTree_111 {
     private static TreeNode stringToTreeNode(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return null;
         }
 
@@ -34,25 +34,25 @@ public class MinimumDepthOfBinaryTree_111 {
         while(!nodeQueue.isEmpty()) {
             TreeNode node = nodeQueue.remove();
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int leftNumber = Integer.parseInt(item);
                 node.left = new TreeNode(leftNumber);
                 nodeQueue.add(node.left);
             }
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int rightNumber = Integer.parseInt(item);
                 node.right = new TreeNode(rightNumber);
                 nodeQueue.add(node.right);
@@ -64,7 +64,7 @@ public class MinimumDepthOfBinaryTree_111 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             TreeNode root = stringToTreeNode(line);
 
             int ret = new MinimumDepthOfBinaryTree_111().minDepth(root);
@@ -111,6 +111,9 @@ public class MinimumDepthOfBinaryTree_111 {
         int val;
         TreeNode left;
         TreeNode right;
-        TreeNode(int x) { val = x; }
+
+        TreeNode(int x) {
+            val = x;
+        }
     }
 }

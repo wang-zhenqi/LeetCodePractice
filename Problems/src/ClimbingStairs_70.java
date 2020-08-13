@@ -4,13 +4,13 @@ import java.io.InputStreamReader;
 
 /**
  * You are climbing a stair case. It takes n steps to reach to the top.
- *
+ * <p>
  * Each time you can either climb 1 or 2 steps. In how many distinct ways
  * can you climb to the top?
- *
+ * <p>
  * Constraints:
  * 1 <= n <= 45
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/climbing-stairs
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -19,7 +19,7 @@ public class ClimbingStairs_70 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int n = Integer.parseInt(line);
 
             int ret = new ClimbingStairs_70().climbStairs(n);

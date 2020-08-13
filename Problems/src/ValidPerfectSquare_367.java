@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 /**
  * Given a positive integer num, write a function which returns True if num
  * is a perfect square else False.
- *
+ * <p>
  * Follow up: Do not use any built-in library function such as sqrt.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/valid-perfect-square
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -20,7 +20,7 @@ public class ValidPerfectSquare_367 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int num = Integer.parseInt(line);
 
             boolean ret = new ValidPerfectSquare_367().isPerfectSquare(num);
