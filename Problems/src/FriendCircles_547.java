@@ -51,7 +51,7 @@ public class FriendCircles_547 {
                 {0,1,1,1},
                 {1,0,1,1}
         };
-        int res = new FriendCircles_547().findCircleNum(M6);
+        int res = new FriendCircles_547().findCircleNum(M1);
         System.out.println(res);
     }
 
@@ -112,7 +112,7 @@ public class FriendCircles_547 {
         /*
          * Version 2, BFS.
          */
-        int res = 0;
+        /*int res = 0;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j <= i; j++) {
                 if(M[i][j] == 1) {
@@ -122,6 +122,51 @@ public class FriendCircles_547 {
                 }
             }
         }
-        return res;
+        return res;*/
+
+        /*
+         * Version 3, Union find.
+         */
+        UnionFind unionFind = new UnionFind(N);
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j <= i; j++) {
+                if(M[i][j] == 1) {
+                    unionFind.Union(i, j);
+                }
+            }
+        }
+        return unionFind.numOfRoots;
+    }
+
+    private class UnionFind {
+        int[] roots;
+        int numOfRoots;
+
+        UnionFind(int n) {
+            roots = new int[n];
+            for(int i = 0; i < n; i++) {
+                roots[i] = i;
+            }
+            numOfRoots = n;
+        }
+
+        public int findRoot(int x) {
+            while(roots[x] != x) {
+                x = roots[x];
+            }
+            return x;
+        }
+
+        public void Union(int x, int y) {
+            int rootx = findRoot(x);
+            int rooty = findRoot(y);
+            if(rootx > rooty) {
+                roots[rootx] = rooty;
+                numOfRoots--;
+            } else if(rootx < rooty) {
+                roots[rooty] = rootx;
+                numOfRoots--;
+            }
+        }
     }
 }
