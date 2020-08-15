@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * There are N students in a class. Some of them are friends, while some are not.
  * Their friendship is transitive in nature. For example, if A is a direct friend
@@ -48,7 +51,7 @@ public class FriendCircles_547 {
                 {0,1,1,1},
                 {1,0,1,1}
         };
-        int res = new FriendCircles_547().findCircleNum(M2);
+        int res = new FriendCircles_547().findCircleNum(M6);
         System.out.println(res);
     }
 
@@ -61,6 +64,20 @@ public class FriendCircles_547 {
         }
     }
 
+    private void bfs(int[][] M, int person) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(person);
+        while(!queue.isEmpty()) {
+            int p = queue.poll();
+            for(int i = 0; i < M.length; i++) {
+                if(M[p][i] == 1) {
+                    queue.add(i);
+                    M[p][i] = M[i][p] = 0;
+                }
+            }
+        }
+    }
+
     /**
      * This problem is almost the same as problem 200 - number of islands.
      * It can be solved by DFS, BFS, and Union find.
@@ -68,9 +85,6 @@ public class FriendCircles_547 {
      * @return number of friend circles.
      */
     public int findCircleNum(int[][] M) {
-        /*
-         * Version 1, DFS.
-         */
         if(M == null) {
             return 0;
         }
@@ -80,13 +94,31 @@ public class FriendCircles_547 {
             return 0;
         }
 
-        int res = 0;
+        /*
+         * Version 1, DFS.
+         */
+        /*int res = 0;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
                 if(M[i][j] == 1) {
                     res++;
                     M[i][j] = M[j][i] = 0;
                     dfs(M, i);
+                }
+            }
+        }
+        return res;*/
+
+        /*
+         * Version 2, BFS.
+         */
+        int res = 0;
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j <= i; j++) {
+                if(M[i][j] == 1) {
+                    res++;
+                    M[i][j] = M[j][i] = 0;
+                    bfs(M, i);
                 }
             }
         }
