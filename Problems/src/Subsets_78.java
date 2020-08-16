@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Given a set of distinct integers, nums, return all possible subsets (the power
@@ -100,21 +102,24 @@ public class Subsets_78 {
 
     public List<List<Integer>> subsets(int[] nums) {
         /*
-         * Version 1, DFS, recursively.
-         * For each element in the set, it can be chosen or not. So when all the
-         * possibilities are visited, the result is found.
+         * Version 2, bit manipulation.
+         * For each element in the set, there are only two options, so it can use
+         * a bit to represent whether an element should be chosen.
          */
         result = new ArrayList<>();
-        List<Integer> set = new ArrayList<>();
-        dfs(nums, 0, true, set);
-        if(set.size() > 0) {
-            set.remove(set.size() - 1);
+
+        int n = 1 << nums.length;
+        for(int i = 0; i < n; i++) {
+            List<Integer> set = new ArrayList<>();
+            int flag, j;
+            for(flag = 1, j = 0; flag < n; flag <<= 1, j++) {
+                if((i & flag) != 0) {
+                    set.add(nums[j]);
+                }
+            }
+            result.add(set);
         }
 
-        dfs(nums, 0, false, set);
-        if(set.size() > 0) {
-            set.remove(set.size() - 1);
-        }
         return result;
     }
 }
