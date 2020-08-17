@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次
@@ -18,8 +20,8 @@ import java.io.InputStreamReader;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class MovingAreaOfARobot_13 {
-    private final int[] dr = {-1, 1, 0, 0};
-    private final int[] dc = {0, 0, -1, 1};
+    private final int[] dr = {1, 0};
+    private final int[] dc = {0, 1};
     private int[][] area;
     private int rows;
     private int cols;
@@ -41,18 +43,6 @@ public class MovingAreaOfARobot_13 {
             String out = String.valueOf(ret);
 
             System.out.println(out);
-        }
-    }
-
-    private void dfs(int r, int c) {
-        if(!validPos(r, c)) {
-            return;
-        }
-
-        area[r][c] = 1;
-        count++;
-        for(int i = 0; i < 4; i++) {
-            dfs(r + dr[i], c + dc[i]);
         }
     }
 
@@ -78,14 +68,33 @@ public class MovingAreaOfARobot_13 {
 
     public int movingCount(int m, int n, int k) {
         /*
-         * Version 1, DFS.
+         * Version 2, BFS.
          */
         area = new int[m][n];
         rows = m;
         cols = n;
         bound = k;
 
-        dfs(0, 0);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        area[0][0] = 1;
+        count++;
+        while(!queue.isEmpty()) {
+            int element = queue.poll();
+            int tmpR = element / cols, tmpC = element % cols;
+
+            if(validPos(tmpR + 1, tmpC)) {
+                queue.add((tmpR + 1) * cols + tmpC);
+                area[tmpR + 1][tmpC] = 1;
+                count++;
+            }
+
+            if(validPos(tmpR, tmpC + 1)) {
+                queue.add(tmpR * cols + tmpC + 1);
+                area[tmpR][tmpC + 1] = 1;
+                count++;
+            }
+        }
         return count;
     }
 }
