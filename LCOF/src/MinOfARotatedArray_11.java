@@ -42,15 +42,17 @@ public class MinOfARotatedArray_11 {
     }
 
     public int minArray(int[] numbers) {
-        if(numbers.length == 1) {
-            return numbers[0];
-        }
-
-        for(int i = 0; i < numbers.length - 1; i++) {
-            if(numbers[i] > numbers[i + 1]) {
-                return numbers[i + 1];
+        int left = 0, right = numbers.length - 1;
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if(numbers[mid] < numbers[right]) {
+                right = mid;
+            } else if(numbers[mid] > numbers[right]) {
+                left = mid + 1;
+            } else {
+                right--;
             }
         }
-        return numbers[0];
+        return numbers[left];
     }
 }
