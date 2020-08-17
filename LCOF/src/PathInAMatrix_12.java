@@ -25,7 +25,6 @@ import java.util.HashSet;
 public class PathInAMatrix_12 {
     private int rows;
     private int cols;
-    private HashSet<Integer> visited;
     private final int[] dr = {-1, 1, 0, 0};
     private final int[] dc = {0, 0, -1, 1};
     private char[] word;
@@ -45,7 +44,7 @@ public class PathInAMatrix_12 {
                 {'S', 'F', 'E', 'S'},
                 {'A', 'D', 'E', 'E'}
         };*/
-        System.out.println(new PathInAMatrix_12().exist(board, "ABFDF"));
+        System.out.println(new PathInAMatrix_12().exist(board, "ABFDECCES"));
     }
 
     public boolean exist(char[][] board, String word) {
@@ -62,15 +61,12 @@ public class PathInAMatrix_12 {
         this.word = word.toCharArray();
         this.board = board;
 
-        visited = new HashSet<>();
-
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
                 if(board[i][j] == word.charAt(0)) {
                     if(dfs(i, j, 0)) {
                         return true;
                     }
-                    visited.clear();
                 }
             }
         }
@@ -79,7 +75,7 @@ public class PathInAMatrix_12 {
 
     private boolean dfs(int r, int c, int index) {
         if(r < 0 || r > rows - 1 || c < 0 || c > cols - 1 ||
-                visited.contains(r * cols + c) || board[r][c] != word[index]) {
+                board[r][c] != word[index]) {
             return false;
         }
 
@@ -87,14 +83,15 @@ public class PathInAMatrix_12 {
             return true;
         }
 
-        visited.add(r * cols + c);
+        char tmp = board[r][c];
+        board[r][c] = '.';
 
         for(int i = 0; i < 4; i++) {
             if(dfs(r + dr[i], c + dc[i], index + 1)) {
                 return true;
             }
         }
-        visited.remove(r * cols + c);
+        board[r][c] = tmp;
 
         return false;
     }
