@@ -7,10 +7,10 @@ import java.io.InputStreamReader;
  * Write a function to compute the fewest number of coins that you need to make up
  * that amount. If that amount of money cannot be made up by any combination of the
  * coins, return -1.
- *
+ * <p>
  * Note:
  * You may assume that you have an infinite number of each kind of coin.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/coin-change
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -19,7 +19,7 @@ public class CoinChange_322 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -35,7 +35,7 @@ public class CoinChange_322 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] coins = stringToIntegerArray(line);
             line = in.readLine();
             int amount = Integer.parseInt(line);

@@ -6,12 +6,12 @@ import java.util.Queue;
  * Their friendship is transitive in nature. For example, if A is a direct friend
  * of B, and B is a direct friend of C, then A is an indirect friend of C. And we
  * defined a friend circle is a group of students who are direct or indirect friends.
- *
+ * <p>
  * Given a N*N matrix M representing the friend relationship between students in
  * the class. If M[i][j] = 1, then the ith and jth students are direct friends with
  * each other, otherwise not. And you have to output the total number of friend
  * circles among all the students.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/friend-circles
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -19,15 +19,15 @@ import java.util.Queue;
 public class FriendCircles_547 {
     public static void main(String[] args) {
         int[][] M1 = {      // res = 2
-                {1,1,0},
-                {1,1,0},
-                {0,0,1}
+                {1, 1, 0},
+                {1, 1, 0},
+                {0, 0, 1}
         };
 
         int[][] M2 = {      // res = 1
-                {1,1,0},
-                {1,1,1},
-                {0,1,1}
+                {1, 1, 0},
+                {1, 1, 1},
+                {0, 1, 1}
         };
 
         int[][] M3 = {      // res = 1
@@ -46,10 +46,10 @@ public class FriendCircles_547 {
         };
 
         int[][] M6 = {      // res = 1
-                {1,0,0,1},
-                {0,1,1,0},
-                {0,1,1,1},
-                {1,0,1,1}
+                {1, 0, 0, 1},
+                {0, 1, 1, 0},
+                {0, 1, 1, 1},
+                {1, 0, 1, 1}
         };
         int res = new FriendCircles_547().findCircleNum(M1);
         System.out.println(res);
@@ -81,6 +81,7 @@ public class FriendCircles_547 {
     /**
      * This problem is almost the same as problem 200 - number of islands.
      * It can be solved by DFS, BFS, and Union find.
+     *
      * @param M the friend circle relations.
      * @return number of friend circles.
      */

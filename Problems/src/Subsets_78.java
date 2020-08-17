@@ -2,14 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Given a set of distinct integers, nums, return all possible subsets (the power
  * set).
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/subsets
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -20,7 +18,7 @@ public class Subsets_78 {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -34,14 +32,14 @@ public class Subsets_78 {
     }
 
     public static String integerArrayListToString(List<Integer> nums, int length) {
-        if (length == 0) {
+        if(length == 0) {
             return "[]";
         }
 
         String result = "";
         for(int index = 0; index < length; index++) {
             Integer number = nums.get(index);
-            result += Integer.toString(number) + ", ";
+            result += number + ", ";
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
@@ -52,7 +50,7 @@ public class Subsets_78 {
 
     public static String int2dListToString(List<List<Integer>> nums) {
         StringBuilder sb = new StringBuilder("[");
-        for (List<Integer> list: nums) {
+        for(List<Integer> list : nums) {
             sb.append(integerArrayListToString(list));
             sb.append(",");
         }
@@ -64,7 +62,7 @@ public class Subsets_78 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             List<List<Integer>> ret = new Subsets_78().subsets(nums);

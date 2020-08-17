@@ -1,13 +1,13 @@
 /**
  * Given two words word1 and word2, find the minimum number of operations
  * required to convert word1 to word2.
- *
+ * <p>
  * You have the following 3 operations permitted on a word:
- *
+ * <p>
  * Insert a character
  * Delete a character
  * Replace a character
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/edit-distance
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -61,8 +61,8 @@ public class EditDistance_72 {
                     miniDis[i][j] = miniDis[i - 1][j - 1];
                 } else {
                     miniDis[i][j] = 1 + Math.min(miniDis[i - 1][j], // word1.insert
-                                        Math.min(miniDis[i][j - 1], // word1.delete
-                                            miniDis[i - 1][j - 1]));// word1.replace
+                            Math.min(miniDis[i][j - 1], // word1.delete
+                                    miniDis[i - 1][j - 1]));// word1.replace
                 }
             }
         }
