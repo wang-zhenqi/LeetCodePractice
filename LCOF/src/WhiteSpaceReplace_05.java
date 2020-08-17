@@ -8,6 +8,12 @@
  */
 
 class WhiteSpaceReplace_05 {
+    public static void main(String[] args) {
+        String input = "We are the champions";
+
+        String ret = new WhiteSpaceReplace_05().replaceSpace(input);
+        System.out.print(ret);
+    }
 
     /*
      * This problem is quite simple. When traversing the original string,
@@ -21,20 +27,10 @@ class WhiteSpaceReplace_05 {
         for(int i = 0; i < s.length(); i++) {
             if(s.charAt(i) == ' ') {
                 result.append("%20");
-            }
-            else {
+            } else {
                 result.append(s.charAt(i));
             }
         }
         return result.toString();
-    }
-}
-
-class TestClass_05 {
-    public static void main(String[] args) {
-        String input = "We are the champions";
-
-        String ret = new WhiteSpaceReplace_05().replaceSpace(input);
-        System.out.print(ret);
     }
 }

@@ -11,44 +11,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-    }
-}
-
 class ReversePrintLinkList_06 {
-
-    /*
-     * This is quite easy, traverse the link list twice.
-     * First time to get the length of the link list, then build an array
-     * with this length.
-     * Second time to assign every value of the node to the array from back
-     * to front.
-     */
-    public int[] reversePrint(ListNode head) {
-        int count = 0;
-        for(ListNode node = head; node != null; node = node.next) {
-            count++;
-        }
-        int[] ans = new int[count];
-        int i = count - 1;
-        for(ListNode node = head; node != null; node = node.next) {
-            ans[i] = node.val;
-            i--;
-        }
-        return ans;
-    }
-
-}
-
-class TestClass_06 {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -76,14 +43,14 @@ class TestClass_06 {
     }
 
     public static String integerArrayToString(int[] nums, int length) {
-        if (length == 0) {
+        if(length == 0) {
             return "[]";
         }
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for(int index = 0; index < length; index++) {
             int number = nums[index];
-            result += Integer.toString(number) + ", ";
+            result.append(number).append(", ");
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
@@ -95,7 +62,7 @@ class TestClass_06 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
 
             int[] ret = new ReversePrintLinkList_06().reversePrint(head);
@@ -103,6 +70,36 @@ class TestClass_06 {
             String out = integerArrayToString(ret);
 
             System.out.print(out);
+        }
+    }
+
+    /*
+     * This is quite easy, traverse the link list twice.
+     * First time to get the length of the link list, then build an array
+     * with this length.
+     * Second time to assign every value of the node to the array from back
+     * to front.
+     */
+    public int[] reversePrint(ListNode head) {
+        int count = 0;
+        for(ListNode node = head; node != null; node = node.next) {
+            count++;
+        }
+        int[] ans = new int[count];
+        int i = count - 1;
+        for(ListNode node = head; node != null; node = node.next) {
+            ans[i] = node.val;
+            i--;
+        }
+        return ans;
+    }
+
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
         }
     }
 }

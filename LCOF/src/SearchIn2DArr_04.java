@@ -17,11 +17,21 @@
  * 0 <= m <= 1000
  */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 class SearchIn2DArr_04 {
+    public static String booleanToString(boolean input) {
+        return input ? "True" : "False";
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {{-5}};
+        int target = -5;
+
+        boolean ret = new SearchIn2DArr_04().findNumberIn2DArray(matrix, target);
+
+        String out = booleanToString(ret);
+
+        System.out.println(out);
+    }
 
     /*
      * Version 2
@@ -51,27 +61,8 @@ class SearchIn2DArr_04 {
             }
             if(target > matrix[rowIndex][columnIndex]) {
                 rowIndex++;
-                continue;
             }
         }
         return false;
-    }
-}
-
-class TestClass_04 {
-    public static String booleanToString(boolean input) {
-        return input ? "True" : "False";
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int[][] matrix = {{-5}};
-        int target = -5;
-
-        boolean ret = new SearchIn2DArr_04().findNumberIn2DArray(matrix, target);
-
-        String out = booleanToString(ret);
-
-        System.out.println(out);
     }
 }

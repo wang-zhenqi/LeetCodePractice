@@ -15,29 +15,10 @@ import java.io.InputStreamReader;
 import java.util.HashSet;
 
 class RepeatingNumInArr_03 {
-
-    /*
-     * Version 2
-     * Using the hash function, it won't need to preoccupy the n-element space
-     * at the beginning.
-     * However, in practice, it's a little bit slower than version 1.
-     */
-    public int findRepeatNumber(int[] nums) {
-        HashSet<Integer> hashSet = new HashSet<>();
-        for(int num : nums) {
-            if(!hashSet.add(num)) {
-                return num;
-            }
-        }
-        return 0;
-    }
-}
-
-class TestClass_03 {
-    public static int[] stringToIntegerArray(String input) {
+    private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -53,7 +34,7 @@ class TestClass_03 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             int ret = new RepeatingNumInArr_03().findRepeatNumber(nums);
@@ -62,5 +43,21 @@ class TestClass_03 {
 
             System.out.println(out);
         }
+    }
+
+    /*
+     * Version 2
+     * Using the hash function, it won't need to preoccupy the n-element space
+     * at the beginning.
+     * However, in practice, it's a little bit slower than version 1.
+     */
+    public int findRepeatNumber(int[] nums) {
+        HashSet<Integer> hashSet = new HashSet<>();
+        for(int num : nums) {
+            if(!hashSet.add(num)) {
+                return num;
+            }
+        }
+        return 0;
     }
 }
