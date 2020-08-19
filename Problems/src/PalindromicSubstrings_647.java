@@ -14,7 +14,7 @@
 public class PalindromicSubstrings_647 {
     public static void main(String[] args) {
         //String s = "aaabaa"; // a, aa, aaa, a, aa, aabaa, a, aba, b, a, aa, a - 12
-        String s = "abcbabccaccb";
+        String s = "aaabaa";
 
         int ret = new PalindromicSubstrings_647().countSubstrings(s);
 
@@ -25,25 +25,28 @@ public class PalindromicSubstrings_647 {
 
     public int countSubstrings(String s) {
         /*
-         * Version 2, pruning. Treat each letter as the middle one, compare the
-         * letters in front of and behind it.
+         * Version 3, dp, O(N^2)
+         *
+         * dp[i][j] represents whether the substring from position i to j is a
+         * palindrome.
+         *
+         * if j == i && s[j] == s[i], then dp[i][j] == 1
+         * else if j - i == 1 && s[i] == s[i], then dp[i][j] == 1
+         * else if dp[i+1][j-1] == 1, dp[i][j] == 1.
+         *
+         * No initial values.
          */
         int length = s.length();
-        int count = length;
+        int count = 0;
 
-        for(int i = 0; i < length; i++) {
-            byte flag = 3;
-            for(int step = 1; (flag & 3) > 0 && i - step >= 0 && i + step <= length; step++) {
-                if((flag & 1) == 1 && i + step < length &&
-                        s.charAt(i - step) == s.charAt(i + step)) {
+        int[][] dp = new int[length][length];
+
+        for(int i = length - 1; i >= 0; i--) {
+            for(int j = i; j < length; j++) {
+                if((j - i <= 1 || dp[i + 1][j - 1] == 1) &&
+                        s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = 1;
                     count++;
-                } else {
-                    flag &= -2;
-                }
-                if((flag & 2) == 2 && s.charAt(i - step) == s.charAt(i + step - 1)) {
-                    count++;
-                } else {
-                    flag &= -3;
                 }
             }
         }
