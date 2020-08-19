@@ -14,7 +14,7 @@
 public class PalindromicSubstrings_647 {
     public static void main(String[] args) {
         //String s = "aaabaa"; // a, aa, aaa, a, aa, aabaa, a, aba, b, a, aa, a - 12
-        String s = "";
+        String s = "abcbabccaccb";
 
         int ret = new PalindromicSubstrings_647().countSubstrings(s);
 
@@ -25,27 +25,26 @@ public class PalindromicSubstrings_647 {
 
     public int countSubstrings(String s) {
         /*
-         * Version 1, brutal force. O(N^2).
+         * Version 2, pruning. Treat each letter as the middle one, compare the
+         * letters in front of and behind it.
          */
-        char[] chars = s.toCharArray();
-        int count = chars.length;
-        for(int i = 0; i < chars.length; i++) {
-            double mid = i + 0.5;
-            int right = (int)(i + (mid - i) * 2);
-            while(right < chars.length) {
-                boolean flag = true;
-                for(int j = i; j < mid; j++) {
-                    int pair = (int)(j + (mid - j) * 2);
-                    if(chars[j] != chars[pair]) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if(flag) {
+        int length = s.length();
+        int count = length;
+
+        for(int i = 0; i < length; i++) {
+            byte flag = 3;
+            for(int step = 1; (flag & 3) > 0 && i - step >= 0 && i + step <= length; step++) {
+                if((flag & 1) == 1 && i + step < length &&
+                        s.charAt(i - step) == s.charAt(i + step)) {
                     count++;
+                } else {
+                    flag &= -2;
                 }
-                mid += 0.5;
-                right = (int)(i + (mid - i) * 2);
+                if((flag & 2) == 2 && s.charAt(i - step) == s.charAt(i + step - 1)) {
+                    count++;
+                } else {
+                    flag &= -3;
+                }
             }
         }
         return count;
