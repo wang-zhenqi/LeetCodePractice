@@ -17,6 +17,8 @@ import java.util.Queue;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class MinimumDepthOfBinaryTree_111 {
+    private int minDepth;
+
     private static TreeNode stringToTreeNode(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
@@ -77,33 +79,31 @@ public class MinimumDepthOfBinaryTree_111 {
 
     public int minDepth(TreeNode root) {
         /*
-         * Version 1, BFS.
+         * Version 2, DFS.
          */
         if(root == null) {
             return 0;
         }
 
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        int curLevel = 1;
-        while(!queue.isEmpty()) {
-            int levelSize = queue.size();
-            for(int i = 0; i < levelSize; i++) {
-                TreeNode curNode = queue.poll();
-                if(curNode.left == null && curNode.right == null) {
-                    return curLevel;
-                } else {
-                    if(curNode.left != null) {
-                        queue.add(curNode.left);
-                    }
-                    if(curNode.right != null) {
-                        queue.add(curNode.right);
-                    }
-                }
-            }
-            curLevel++;
+        minDepth = Integer.MAX_VALUE;
+        dfs(root, 0);
+
+        return minDepth;
+    }
+
+    private void dfs(TreeNode root, int curDepth) {
+        if(root == null) {
+            return;
         }
-        return 0;
+        curDepth++;
+
+        if(root.left == null && root.right == null) {
+            minDepth = Math.min(minDepth, curDepth);
+            return;
+        }
+
+        dfs(root.left, curDepth);
+        dfs(root.right, curDepth);
     }
 
     //Definition for a binary tree node.
