@@ -9,36 +9,18 @@ import java.io.*;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class StringThatRepresentsNumber_20 {
-    private final int NUMBER_OF_STATES = 10;
-    private final int NUMBER_OF_SYMBOLS = 6;
-    private final int[][] STATES_TRANS = new int[NUMBER_OF_STATES][NUMBER_OF_SYMBOLS];
-
-    StringThatRepresentsNumber_20() {
-        for(int i = 0; i < NUMBER_OF_STATES; i++) {
-            for(int j = 0; j < NUMBER_OF_SYMBOLS; j++) {
-                STATES_TRANS[i][j] = -1;
-            }
-        }
-        STATES_TRANS[0][0] = 1;
-        STATES_TRANS[0][1] = 2;
-        STATES_TRANS[0][2] = 8;
-        STATES_TRANS[1][0] = 1;
-        STATES_TRANS[1][2] = 3;
-        STATES_TRANS[1][3] = 4;
-        STATES_TRANS[2][0] = 1;
-        STATES_TRANS[2][2] = 8;
-        STATES_TRANS[3][0] = 5;
-        STATES_TRANS[3][3] = 4;
-        STATES_TRANS[4][1] = 6;
-        STATES_TRANS[4][0] = 7;
-        STATES_TRANS[5][0] = 5;
-        STATES_TRANS[5][3] = 4;
-        STATES_TRANS[6][0] = 7;
-        STATES_TRANS[7][0] = 7;
-        STATES_TRANS[7][4] = 9;
-        STATES_TRANS[8][0] = 5;
-        STATES_TRANS[9][4] = 9;
-    }
+    private final int[][] STATES_TRANS = {
+            {1, 2, 8, -1, 0, -1},
+            {1, -1, 3, 4, 9, -1},
+            {1, -1, 8, -1, -1, -1},
+            {5, -1, -1, 4, 9, -1},
+            {7, 6, -1, -1, -1, -1},
+            {5, -1, -1, 4, 9, -1},
+            {7, -1, -1, -1, -1, -1},
+            {7, -1, -1, -1, 9, -1},
+            {5, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, 9, -1}
+    };
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
