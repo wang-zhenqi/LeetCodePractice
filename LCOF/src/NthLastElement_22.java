@@ -3,17 +3,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
- * 返回删除后的链表的头节点。
- * <p>
- * 说明：
- * 题目保证链表中节点的值互不相同
+ * 输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数
+ * 第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点
+ * 是值为4的节点。
  * <p>
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof
+ * 链接：https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class DeleteNodeInLinkedList_18 {
+public class NthLastElement_22 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
@@ -49,9 +47,9 @@ public class DeleteNodeInLinkedList_18 {
             return "[]";
         }
 
-        StringBuilder result = new StringBuilder();
+        String result = "";
         while(node != null) {
-            result.append(node.val).append(", ");
+            result += node.val + ", ";
             node = node.next;
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
@@ -63,9 +61,9 @@ public class DeleteNodeInLinkedList_18 {
         while((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
             line = in.readLine();
-            int val = Integer.parseInt(line);
+            int k = Integer.parseInt(line);
 
-            ListNode ret = new DeleteNodeInLinkedList_18().deleteNode(head, val);
+            ListNode ret = new NthLastElement_22().getKthFromEnd(head, k);
 
             String out = listNodeToString(ret);
 
@@ -73,18 +71,18 @@ public class DeleteNodeInLinkedList_18 {
         }
     }
 
-    public ListNode deleteNode(ListNode head, int val) {
-        ListNode dummyHead = new ListNode(0);
-        dummyHead.next = head;
-        ListNode p = dummyHead;
-        while(p.next != null) {
-            if(p.next.val == val) {
-                p.next = p.next.next;
-                break;
-            }
-            p = p.next;
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode slow = head;
+        ListNode fast = head;
+        for(int i = 0; i < k; i++) {
+            fast = fast.next;
         }
-        return dummyHead.next;
+
+        while(fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
     }
 
     //Definition for singly-linked list.
