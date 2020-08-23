@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 /**
  * Merge two sorted linked lists and return it as a new sorted list. The new list
  * should be made by splicing together the nodes of the first two lists.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/merge-two-sorted-lists
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -14,7 +14,7 @@ public class MergeTwoSortedLists_21 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -42,13 +42,13 @@ public class MergeTwoSortedLists_21 {
     }
 
     private static String listNodeToString(ListNode node) {
-        if (node == null) {
+        if(node == null) {
             return "[]";
         }
 
         StringBuilder result = new StringBuilder();
-        while (node != null) {
-            result.append(Integer.toString(node.val)).append(", ");
+        while(node != null) {
+            result.append(node.val).append(", ");
             node = node.next;
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
@@ -57,7 +57,7 @@ public class MergeTwoSortedLists_21 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode l1 = stringToListNode(line);
             line = in.readLine();
             ListNode l2 = stringToListNode(line);
@@ -96,6 +96,7 @@ public class MergeTwoSortedLists_21 {
     public static class ListNode {
         int val;
         ListNode next;
+
         ListNode(int x) {
             val = x;
         }

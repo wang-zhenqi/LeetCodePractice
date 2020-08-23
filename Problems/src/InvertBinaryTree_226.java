@@ -5,17 +5,35 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * 输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+ * Invert a binary tree.
  * <p>
- * B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+ * Example:
  * <p>
- * 限制：0 <= 节点个数 <= 10000
+ * Input:
+ * <p>
+ * 4
+ * /   \
+ * 2     7
+ * / \   / \
+ * 1   3 6   9
+ * Output:
+ * <p>
+ * 4
+ * /   \
+ * 7     2
+ * / \   / \
+ * 9   6 3   1
+ * Trivia:
+ * This problem was inspired by this original tweet by Max Howell:
+ * <p>
+ * Google: 90% of our engineers use the software you wrote (Homebrew), but you
+ * can’t invert a binary tree on a whiteboard so f*** off.
  * <p>
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof
+ * 链接：https://leetcode-cn.com/problems/invert-binary-tree
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class SubstructureOfATree_26 {
+public class InvertBinaryTree_226 {
     private static TreeNode stringToTreeNode(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
@@ -60,48 +78,52 @@ public class SubstructureOfATree_26 {
         return root;
     }
 
-    private static String booleanToString(boolean input) {
-        return input ? "True" : "False";
+    private static String treeNodeToString(TreeNode root) {
+        if(root == null) {
+            return "[]";
+        }
+
+        StringBuilder output = new StringBuilder();
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.add(root);
+        while(!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.remove();
+
+            if(node == null) {
+                output.append("null, ");
+                continue;
+            }
+
+            output.append(node.val).append(", ");
+            nodeQueue.add(node.left);
+            nodeQueue.add(node.right);
+        }
+        return "[" + output.substring(0, output.length() - 2) + "]";
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while((line = in.readLine()) != null) {
-            TreeNode A = stringToTreeNode(line);
-            line = in.readLine();
-            TreeNode B = stringToTreeNode(line);
+            TreeNode root = stringToTreeNode(line);
 
-            boolean ret = new SubstructureOfATree_26().isSubStructure(A, B);
+            TreeNode ret = new InvertBinaryTree_226().invertTree(root);
 
-            String out = booleanToString(ret);
+            String out = treeNodeToString(ret);
 
             System.out.print(out);
         }
     }
 
-    public boolean isSubStructure(TreeNode A, TreeNode B) {
-        /*
-         * Version 2, recursion. Faster than version 1. Because it doesn't need to
-         * maintain the stacks and the hashset.
-         */
-        if(A == null || B == null) {
-            return false;
+    public TreeNode invertTree(TreeNode root) {
+        if(root != null) {
+            invertTree(root.left);
+            invertTree(root.right);
+            TreeNode tmp = root.left;
+            root.left = root.right;
+            root.right = tmp;
         }
-        if(findSubStructure(A, B)) {
-            return true;
-        }
-        return isSubStructure(A.left, B) || isSubStructure(A.right, B);
-    }
-
-    private boolean findSubStructure(TreeNode A, TreeNode B) {
-        if(B == null) {
-            return true;
-        }
-        if(A == null || A.val != B.val) {
-            return false;
-        }
-        return findSubStructure(A.left, B.left) && findSubStructure(A.right, B.right);
+        return root;
     }
 
     //Definition for a binary tree node.

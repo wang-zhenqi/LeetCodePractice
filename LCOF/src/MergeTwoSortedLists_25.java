@@ -4,11 +4,11 @@ import java.io.InputStreamReader;
 
 /**
  * 输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
- *
+ * <p>
  * 限制：0 <= 链表长度 <= 1000
- *
+ * <p>
  * 注意：本题与主站 21 题相同：https://leetcode-cn.com/problems/merge-two-sorted-lists/
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -17,7 +17,7 @@ public class MergeTwoSortedLists_25 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -45,13 +45,13 @@ public class MergeTwoSortedLists_25 {
     }
 
     private static String listNodeToString(ListNode node) {
-        if (node == null) {
+        if(node == null) {
             return "[]";
         }
 
         String result = "";
-        while (node != null) {
-            result += Integer.toString(node.val) + ", ";
+        while(node != null) {
+            result += node.val + ", ";
             node = node.next;
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
@@ -60,7 +60,7 @@ public class MergeTwoSortedLists_25 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             ListNode l1 = stringToListNode(line);
             line = in.readLine();
             ListNode l2 = stringToListNode(line);
@@ -107,6 +107,7 @@ public class MergeTwoSortedLists_25 {
     public static class ListNode {
         int val;
         ListNode next;
+
         ListNode(int x) {
             val = x;
         }
