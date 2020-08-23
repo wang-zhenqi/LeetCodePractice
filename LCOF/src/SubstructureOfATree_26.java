@@ -83,59 +83,27 @@ public class SubstructureOfATree_26 {
     }
 
     public boolean isSubStructure(TreeNode A, TreeNode B) {
-        if(A == null && B == null) {
-            return true;
-        }
+        /*
+         * Version 2, recursion. Faster than version 1. Because it doesn't need to
+         * maintain the stacks and the hashset.
+         */
         if(A == null || B == null) {
             return false;
         }
-        return traverse(A, B);
-    }
-
-    private boolean traverse(TreeNode A, TreeNode B) {
-        if(A == null) {
-            return false;
+        if(findSubStructure(A, B)) {
+            return true;
         }
-
-        if(A.val == B.val) {
-            if(findSubStructure(A, B)) {
-                return true;
-            }
-        }
-        return traverse(A.left, B) || traverse(A.right, B);
+        return isSubStructure(A.left, B) || isSubStructure(A.right, B);
     }
 
     private boolean findSubStructure(TreeNode A, TreeNode B) {
-        Stack<TreeNode> stackA = new Stack<>();
-        Stack<TreeNode> stackB = new Stack<>();
-        HashSet<TreeNode> visited = new HashSet<>();
-        stackA.add(A);
-        stackB.add(B);
-        visited.add(B);
-        while(!stackB.isEmpty()) {
-            TreeNode tmp = stackB.peek();
-            TreeNode pA = stackA.peek();
-
-            if(tmp.left != null && !visited.contains(tmp.left)) {
-                if(pA.left == null || tmp.left.val != pA.left.val) {
-                    return false;
-                }
-                stackB.add(tmp.left);
-                visited.add(tmp.left);
-                stackA.add(pA.left);
-            } else if(tmp.right != null && !visited.contains(tmp.right)){
-                if(pA.right == null || tmp.right.val != pA.right.val) {
-                    return false;
-                }
-                stackB.add(tmp.right);
-                visited.add(tmp.right);
-                stackA.add(pA.right);
-            } else {
-                stackA.pop();
-                stackB.pop();
-            }
+        if(B == null) {
+            return true;
         }
-        return true;
+        if(A == null || A.val != B.val) {
+            return false;
+        }
+        return findSubStructure(A.left, B.left) && findSubStructure(A.right, B.right);
     }
 
     //Definition for a binary tree node.
