@@ -38,25 +38,14 @@ public class BitwiseANDofNumbersRange_201 {
 
     public int rangeBitwiseAnd(int m, int n) {
         /*
-         * If m and n has different number of bits, then the answer will always be 0.
-         * Otherwise, pick the MSB, do the same to the rest bits.
-         * This method is slow, in the worst case, the time complexity can be O(N^2).
+         * Version 2, optimization from version 1.
+         * You'll find that version 1 is actually finding the longest common prefix
+         * of m and n if you take a close look at the solution. And doing so is not
+         * hard. The time complexity is O(logN).
          */
-        int ml = 0, nl = 0;
-        for(int i = 1; i < 32; i++) {
-            if(ml == 0 && (m & (Integer.MIN_VALUE >>> i)) != 0) {
-                ml = 32 - i;
-            }
-            if(nl == 0 && (n & (Integer.MIN_VALUE >>> i)) != 0) {
-                nl = 32 - i;
-            }
-            if(ml != 0 && nl != 0) {
-                break;
-            }
+        while(m < n) {
+            n &= (n - 1);
         }
-        if(ml != nl || ml == 0) {
-            return 0;
-        }
-        return (1 << (ml - 1)) ^ rangeBitwiseAnd(m & ((1 << (ml - 1)) - 1), n & ((1 << (nl - 1)) - 1));
+        return n;
     }
 }
