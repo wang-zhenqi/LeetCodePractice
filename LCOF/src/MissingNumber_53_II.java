@@ -16,10 +16,19 @@ public class MissingNumber_53_II {
     }
 
     public int missingNumber(int[] nums) {
-        int i;
-        for(i = 0; i < nums.length; i++) {
-            if(nums[i] != i) {
-                break;
+        /*
+         * Version 2, binary search.
+         * When looking for some element at a sorted array, the first solution that
+         * occurs should be the binary search.
+         * Watch out for the boundaries.
+         */
+        int i = 0, j = nums.length - 1;
+        while(i <= j) {
+            int mid = i + (j - i) / 2;
+            if(nums[mid] == mid) {
+                i = mid + 1;
+            } else {
+                j = mid - 1;
             }
         }
         return i;
