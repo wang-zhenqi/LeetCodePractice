@@ -1,20 +1,22 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Given an integer array, your task is to find all the different possible
  * increasing subsequences of the given array, and the length of an increasing
  * subsequence should be at least 2.
- *
+ * <p>
  * Constraints:
- *
+ * <p>
  * The length of the given array will not exceed 15.
  * The range of integer in the given array is [-100,100].
  * The given array may contain duplicates, and two equal integers should also be
  * considered as a special case of increasing sequence.
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/increasing-subsequences
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -23,7 +25,7 @@ public class IncreasingSubsequences_491 {
     private static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return new int[0];
         }
 
@@ -37,7 +39,7 @@ public class IncreasingSubsequences_491 {
     }
 
     private static String integerArrayListToString(List<Integer> nums, int length) {
-        if (length == 0) {
+        if(length == 0) {
             return "[]";
         }
 
@@ -55,7 +57,7 @@ public class IncreasingSubsequences_491 {
 
     private static String int2dListToString(List<List<Integer>> nums) {
         StringBuilder sb = new StringBuilder("[");
-        for (List<Integer> list: nums) {
+        for(List<Integer> list : nums) {
             sb.append(integerArrayListToString(list));
             sb.append(",");
         }
@@ -67,7 +69,7 @@ public class IncreasingSubsequences_491 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
 
             List<List<Integer>> ret = new IncreasingSubsequences_491().findSubsequences(nums);
