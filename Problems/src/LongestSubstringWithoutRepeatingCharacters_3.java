@@ -2,25 +2,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.TreeSet;
 
 /**
- * 请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。
- *
- * 提示：
- * s.length <= 40000
- * 注意：本题与主站 3 题相同：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
+ * Given a string, find the length of the longest substring without
+ * repeating characters.
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof
+ * 链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class NonRepeatingSubString_48 {
+public class LongestSubstringWithoutRepeatingCharacters_3 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            int ret = new NonRepeatingSubString_48().lengthOfLongestSubstring(line);
+            int ret = new LongestSubstringWithoutRepeatingCharacters_3().lengthOfLongestSubstring(line);
             System.out.print(ret);
         }
     }
