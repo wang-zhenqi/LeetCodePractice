@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.PriorityQueue;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -20,15 +20,15 @@ import java.util.Queue;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class MaximumOfAQueue_59_II {
-    //Version 1, use a heap to maintain the largest number. But it's a bit slow.
+    //Version 2, much faster.
     //There is an O(1) method, see https://github.com/wang-zhenqi/LeetCodePractice/blob/Java/Problems/src/SlidingWindowMaximum_239.java
 
     private final Queue<Integer> queue;
-    private final PriorityQueue<Integer> heap;
+    private final Deque<Integer> maxValueQueue;
 
     public MaximumOfAQueue_59_II() {
-        queue = new ArrayDeque<>();
-        heap = new PriorityQueue<>();
+        queue = new LinkedList<>();
+        maxValueQueue = new LinkedList<>();
     }
 
     public static void main(String[] args) throws IOException {
@@ -109,21 +109,27 @@ public class MaximumOfAQueue_59_II {
     }
 
     public int max_value() {
-        if(!heap.isEmpty()) {
-            return -heap.peek();
+        if(!maxValueQueue.isEmpty()) {
+            return maxValueQueue.peek();
         }
         return -1;
     }
 
     public void push_back(int value) {
         queue.add(value);
-        heap.add(-value);
+        while(!maxValueQueue.isEmpty() && value >= maxValueQueue.getLast()) {
+            maxValueQueue.pollLast();
+        }
+        maxValueQueue.addLast(value);
     }
 
     public int pop_front() {
-        if(!queue.isEmpty() && !heap.isEmpty()) {
-            heap.remove(-queue.peek());
-            return queue.remove();
+        if(!queue.isEmpty()) {
+            int elem = queue.poll();
+            if(!maxValueQueue.isEmpty() && elem == maxValueQueue.peek()) {
+                maxValueQueue.pollFirst();
+            }
+            return elem;
         }
         return -1;
     }
