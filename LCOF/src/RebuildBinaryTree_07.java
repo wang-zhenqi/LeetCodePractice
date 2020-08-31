@@ -126,7 +126,7 @@ class RebuildBinaryTree_07 {
         return recursivelyBuildTree(0, inorder.length - 1);
     }
 
-    static class TreeNode {
+    private static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
