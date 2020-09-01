@@ -59,23 +59,19 @@ public class PredictTheWinner_486 {
     }
 
     public boolean PredictTheWinner(int[] nums) {
-        return pick(nums, 0, nums.length - 1, 0) >= 0;
-    }
-
-    private int pick(int[] nums, int leftBound, int rightBound, int player) {
-        if(leftBound == rightBound) {
-            return player == 0 ? nums[leftBound] : -nums[leftBound];
+        int length = nums.length;
+        if((length & 1) == 0) {
+            return true;
         }
-
-        int score1, score2;
-        if(player == 0) {
-            score1 = nums[leftBound] + pick(nums, leftBound + 1, rightBound,1);
-            score2 = nums[rightBound] + pick(nums, leftBound, rightBound - 1, 1);
-            return Math.max(score1, score2);
-        } else {
-            score1 = -nums[leftBound] + pick(nums, leftBound + 1, rightBound, 0);
-            score2 = -nums[rightBound] + pick(nums, leftBound, rightBound - 1, 0);
-            return -Math.max(-score1, -score2);
+        int[][] dp = new int[length][length];
+        for(int i = 0; i < length; i++) {
+            dp[i][i] = nums[i];
         }
+        for(int i = length - 2; i >= 0; i--) {
+            for(int j = i + 1; j < length; j++) {
+                dp[i][j] = Math.max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+            }
+        }
+        return dp[0][length - 1] >= 0;
     }
 }
