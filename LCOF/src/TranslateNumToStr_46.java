@@ -14,8 +14,6 @@ import java.io.InputStreamReader;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class TranslateNumToStr_46 {
-    private int count = 0;
-
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
@@ -26,21 +24,30 @@ public class TranslateNumToStr_46 {
     }
 
     public int translateNum(int num) {
+        /*
+         * Version 2, DP.
+         * Define counts[i] as the numbers of different translations starting from
+         * position i in numStr.
+         *
+         * To make it easier, add an extra element: counts[numStr.length()] = 1.
+         * By doing this, I don't need to consider the out of boundary situation.
+         *
+         * count[i] = count[i + 1] + (if applicable)count[i + 2]
+         * As to what condition is 'applicable', see the codes below.
+         *
+         * The answer is count[0].
+         */
         String numStr = String.valueOf(num);
-        dfs(numStr, 0);
-        return count;
-    }
-
-    private void dfs(String numStr, int index) {
-        if(index == numStr.length()) {
-            count++;
-            return;
+        int[] counts = new int[numStr.length() + 1];
+        counts[numStr.length()] = 1;
+        for(int i = numStr.length() - 1; i >= 0; i--) {
+            counts[i] += counts[i + 1];
+            if(i < numStr.length() - 1 &&
+                    (numStr.charAt(i) == '1' ||
+                            (numStr.charAt(i) == '2' && numStr.charAt(i + 1) < '6'))) {
+                counts[i] += counts[i + 2];
+            }
         }
-        dfs(numStr, index + 1);
-        if(index < numStr.length() - 1 &&
-                (numStr.charAt(index) == '1' ||
-                        (numStr.charAt(index) == '2' && numStr.charAt(index + 1) < '6'))) {
-            dfs(numStr, index + 2);
-        }
+        return counts[0];
     }
 }
