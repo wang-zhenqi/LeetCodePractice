@@ -4,14 +4,14 @@ import java.io.InputStreamReader;
 
 /**
  * 输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。
- *
+ * <p>
  * 例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
- *
+ * <p>
  * 限制：
- *
+ * <p>
  * 1 <= n < 2^31
  * 注意：本题与主站 233 题相同：https://leetcode-cn.com/problems/number-of-digit-one/
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -45,7 +45,7 @@ public class NumberOfDigitOne_43 {
              * ten's place: |10 ~ 109|110 ~ 209|210 ~ 310|..., each place has 10 ones.
              * ...
              */
-            int t = (int)((n - digitPos) / digitPos / 10);
+            int t = (int) ((n - digitPos) / digitPos / 10);
             count += digitPos * t;
             //add the tails.
             count += Math.min(n - (digitPos * 10 * t + digitPos - 1), digitPos);

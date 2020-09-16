@@ -8,19 +8,19 @@ import java.util.Queue;
 
 /**
  * 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
- *
+ * <p>
  * 提示：
  * 节点总数 <= 1000
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class PrintBinaryTree_32_I {
-    public static TreeNode stringToTreeNode(String input) {
+    private static TreeNode stringToTreeNode(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
+        if(input.length() == 0) {
             return null;
         }
 
@@ -34,25 +34,25 @@ public class PrintBinaryTree_32_I {
         while(!nodeQueue.isEmpty()) {
             TreeNode node = nodeQueue.remove();
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int leftNumber = Integer.parseInt(item);
                 node.left = new TreeNode(leftNumber);
                 nodeQueue.add(node.left);
             }
 
-            if (index == parts.length) {
+            if(index == parts.length) {
                 break;
             }
 
             item = parts[index++];
             item = item.trim();
-            if (!item.equals("null")) {
+            if(!item.equals("null")) {
                 int rightNumber = Integer.parseInt(item);
                 node.right = new TreeNode(rightNumber);
                 nodeQueue.add(node.right);
@@ -61,8 +61,8 @@ public class PrintBinaryTree_32_I {
         return root;
     }
 
-    public static String integerArrayToString(int[] nums, int length) {
-        if (length == 0) {
+    private static String integerArrayToString(int[] nums, int length) {
+        if(length == 0) {
             return "[]";
         }
 
@@ -74,14 +74,14 @@ public class PrintBinaryTree_32_I {
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
 
-    public static String integerArrayToString(int[] nums) {
+    private static String integerArrayToString(int[] nums) {
         return integerArrayToString(nums, nums.length);
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
-        while ((line = in.readLine()) != null) {
+        while((line = in.readLine()) != null) {
             TreeNode root = stringToTreeNode(line);
 
             int[] ret = new PrintBinaryTree_32_I().levelOrder(root);
@@ -129,6 +129,7 @@ public class PrintBinaryTree_32_I {
         int val;
         TreeNode left;
         TreeNode right;
+
         TreeNode(int x) {
             val = x;
         }
