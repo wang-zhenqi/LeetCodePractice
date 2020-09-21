@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * 在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个
@@ -40,43 +39,56 @@ public class ReversePair_51 {
 
             String out = String.valueOf(ret);
 
-            System.out.print(out);
+            System.out.println(out);
         }
     }
 
     public int reversePairs(int[] nums) {
         /*
-         * Version 1, brutal force, but too time consuming, OT.
+         * Version 2, Divide and Conquer, Merge sort, time complexity: O(NlogN).
+         * It should be noticed that for an element nums[i], no matter how the
+         * right-hand side elements are arranged, the number of reverse pairs
+         * (nums[i], nums[j]) (0 <= i < j < nums.length) is always determined.
+         * So this problem can be changed to a merge sort problem.
          */
-        int totalNum = nums.length;
-        int[] counts = new int[totalNum];
-        ArrayList<Integer> greaterThan = new ArrayList<>();
-        for(int current = 0; current < totalNum - 1; current++) {
-            if(counts[current] > 0) {
-                continue;
-            }
-            for(int compare = current + 1; compare < totalNum; compare++) {
-                if(nums[compare] < nums[current]) {
-                    counts[current]++;
-                } else {
-                    greaterThan.add(compare);
-                    counts[compare] = -counts[current];
-                    for(int numIdx : greaterThan) {
-                        if(nums[compare] < nums[numIdx]) {
-                            counts[numIdx]++;
-                        }
-                    }
-                }
-            }
-            for(int numIdx : greaterThan) {
-                counts[numIdx] += counts[current];
-            }
-            greaterThan.clear();
+        int len = nums.length;
+        if(len <= 1) {
+            return 0;
         }
+        return reversePairs(nums, 0, len);
+    }
+
+    private int reversePairs(int[] nums, int left, int right) {
+        if(left == right - 1) {
+            return 0;
+        }
+
+        int[] sorted = new int[right - left];
         int result = 0;
-        for(int i = 0; i < totalNum - 1; i++) {
-            result += counts[i];
+        int t = 0;
+        int l = left;
+        int m = left + (right - left) / 2;
+        int r = m;
+
+        result += reversePairs(nums, left, m);
+        result += reversePairs(nums, m, right);
+
+        while(l < m && r < right) {
+            if(nums[l] > nums[r]) {
+                result += (m - l);
+                sorted[t++] = nums[r++];
+            } else {
+                sorted[t++] = nums[l++];
+            }
         }
+        while(l < m) {
+            sorted[t++] = nums[l++];
+        }
+        while(r < right) {
+            sorted[t++] = nums[r++];
+        }
+        System.arraycopy(sorted, 0, nums, left, right - left);
+
         return result;
     }
 }
