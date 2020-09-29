@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Given the root of a binary tree, return the postorder traversal of its nodes'
@@ -100,15 +97,29 @@ public class PostorderTraversal_145 {
     }
 
     /*
-     * Version 1, recursion.
+     * Version 2, iteration.
      */
     public List<Integer> postorderTraversal(TreeNode root) {
         if(root == null) {
             return result;
         }
-        postorderTraversal(root.left);
-        postorderTraversal(root.right);
-        result.add(root.val);
+        Stack<TreeNode> stack = new Stack<>();
+        HashSet<TreeNode> visited = new HashSet<>();
+        stack.push(root);
+        while(!stack.isEmpty()) {
+            TreeNode curNode = stack.peek();
+            if(curNode.left != null && !visited.contains(curNode.left)) {
+                stack.push(curNode.left);
+                continue;
+            }
+            if(curNode.right != null && !visited.contains(curNode.right)) {
+                stack.push(curNode.right);
+                continue;
+            }
+            result.add(curNode.val);
+            visited.add(curNode);
+            stack.pop();
+        }
         return result;
     }
 
