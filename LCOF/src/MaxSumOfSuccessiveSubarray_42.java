@@ -45,22 +45,26 @@ public class MaxSumOfSuccessiveSubarray_42 {
     }
 
     /*
-     * Version 1, DP.
+     * Version 2, simplified DP.
+     * Basic idea is the same:
      * Assume that dp[i] represents the maximum sum of the subarray that is ended up
      * with the element nums[i].
      * dp[0] = nums[0]
      * dp[i] = max(dp[i - 1] + nums[i], nums[i]) (i > 0 && i < nums.length)
      * result = max(dp[0], dp[1], ..., dp[n - 1])
+     *
+     * However, it doesn't need an array to store the dp state. Only a variable will
+     * do, because every state only relies on its previous one. So the storage can be
+     * reused.
      */
     public int maxSubArray(int[] nums) {
         int result = Integer.MIN_VALUE;
         if(nums != null && nums.length != 0) {
-            int[] dp = new int[nums.length];
-            result = dp[0] = nums[0];
-            for(int i = 1; i < dp.length; i++) {
-                dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
-                if(dp[i] > result) {
-                    result = dp[i];
+            int dp = result = nums[0];
+            for(int i = 1; i < nums.length; i++) {
+                dp = Math.max(dp + nums[i], nums[i]);
+                if(dp > result) {
+                    result = dp;
                 }
             }
         }
