@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 请实现一个函数用来匹配包含'. '和'*'的正则表达式。模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符
  * 可以出现任意次（含0次）。在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和
@@ -16,95 +13,56 @@ import java.util.List;
  */
 public class RegularExpressionMatch_19 {
     public static void main(String[] args) {
-        System.out.println(new RegularExpressionMatch_19()
-                .isMatch("aaa", "a*a"));
+        String[] strings = {
+                "aaa",
+                "adeswwfsbcytfgbc",
+                "a"
+        };
+        String[] patterns = {
+                "a*a",
+                ".*bc",
+                "ab*"
+        };
+        RegularExpressionMatch_19 obj = new RegularExpressionMatch_19();
+
+        for(int i = 0; i < patterns.length; i++) {
+            boolean r = obj.isMatch(strings[i], patterns[i]);
+            System.out.println(r);
+        }
     }
 
     public boolean isMatch(String s, String p) {
-        FSM fsm = new FSM();
-        fsm.parsePattern(p);
-        return fsm.matchPattern(s);
-    }
-
-    private static class FSM {
-        List<States> states;
-
-        FSM() {
-            states = new ArrayList<>();
-        }
-
-        void parsePattern(String p) {
-            int length = p.length();
-            int curStateNum = 0;
-            int maxStateNum = 0;
-            List<Integer> stateBeforeStar = new ArrayList<>();
-            for(int i = 0; i < length; i++) {
-                int nextState = ++maxStateNum;
-                states.add(new States(curStateNum, p.charAt(i), nextState));
-                for(Integer stateBefore : stateBeforeStar) {
-                    states.add(new States(stateBefore, p.charAt(i), nextState));
-                }
-                if(i + 1 < length && p.charAt(i + 1) == '*') {
-                    stateBeforeStar.add(curStateNum);
-                    states.add(new States(nextState, p.charAt(i), nextState));
-                    i++;
-                } else {
-                    stateBeforeStar.clear();
-                }
-                curStateNum = nextState;
-            }
-            states.add(new States(curStateNum, null, -1));
-            if(!stateBeforeStar.isEmpty()) {
-                for(Integer stateBefore : stateBeforeStar) {
-                    states.add(new States(stateBefore, null, -1));
-                }
-            }
-        }
-
-        List<Integer> getNextState(int start, Character trig) {
-            List<Integer> possibleStates = new ArrayList<>();
-            for(States state : states) {
-                if(state.startState == start && (state.trigger == trig ||
-                        (state.trigger != null && state.trigger == '.' && trig != null))) {
-                    possibleStates.add(state.endState);
-                }
-            }
-            if(possibleStates.isEmpty()) {
-                possibleStates.add(-2);
-            }
-            return possibleStates;
-        }
-
-        private boolean validateState(int start, String s, int index) {
-            List<Integer> candidates = getNextState(start, index == s.length() ? null : s.charAt(index));
-            for(int state : candidates) {
-                if(state == -1) {
-                    return true;
-                }
-                if(state == -2) {
-                    return false;
-                }
-                if(validateState(state, s, index + 1)) {
-                    return true;
-                }
-            }
+        if(s == null || p == null) {
             return false;
         }
+        int pIdx = 0, sIdx = 0;
+        char[] sChars = s.toCharArray();
+        char[] pChars = p.toCharArray();
 
-        public boolean matchPattern(String s) {
-            return validateState(0, s, 0);
+        return scanned(sChars, pIdx, pChars, sIdx);
+    }
+
+    private boolean scanned(char[] string, int sIdx, char[] pattern, int pIdx) {
+        if(sIdx == string.length && pIdx == pattern.length) {
+            return true;
         }
-
-        private static class States {
-            int startState;
-            Character trigger;
-            int endState;
-
-            States(int start, Character trig, int end) {
-                startState = start;
-                trigger = trig;
-                endState = end;
+        if(sIdx < string.length && pIdx == pattern.length) {
+            return false;
+        }
+        if(pIdx < pattern.length - 1 && pattern[pIdx + 1] == '*') {
+            if((sIdx < string.length && string[sIdx] == pattern[pIdx]) ||
+                    (pattern[pIdx] == '.' && sIdx < string.length)) {
+                return scanned(string, sIdx + 1, pattern, pIdx) ||
+                        scanned(string, sIdx + 1, pattern, pIdx + 2) ||
+                        scanned(string, sIdx, pattern, pIdx + 2);
+            } else {
+                return scanned(string, sIdx, pattern, pIdx + 2);
             }
         }
+        if((sIdx < string.length && string[sIdx] == pattern[pIdx]) ||
+                (pattern[pIdx] == '.' && sIdx < string.length)) {
+            return scanned(string, sIdx + 1, pattern, pIdx + 1);
+        }
+        return false;
     }
 }
