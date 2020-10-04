@@ -87,7 +87,7 @@ public class DepthOfBinaryTree_55_I {
     }
 
     private int maxD;
-    
+
     public int maxDepth(TreeNode root) {
         maxD = 0;
         dfs(root, 1);
