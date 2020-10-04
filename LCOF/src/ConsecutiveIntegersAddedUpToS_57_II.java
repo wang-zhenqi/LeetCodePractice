@@ -68,31 +68,33 @@ public class ConsecutiveIntegersAddedUpToS_57_II {
     }
 
     /*
-     * Version 1, sliding window.
+     * Version 2, assume that the target has a average numbers A = target / n.
+     * The first number of the sequence is N.
+     * Then A is the average number of the sum of N, N + 1, N + 2, ..., N + n - 1.
      */
     public int[][] findContinuousSequence(int target) {
-        int s = 1, e = 2;
         List<List<Integer>> resList = new ArrayList<>();
-        while(s <= target / 2) {
-            int sum = (e + s) * (e - s + 1) / 2;
-            if(sum == target) {
+
+        int cut = 1;
+        int n = 2;
+        while(target > cut) {
+            if((target - cut) % n == 0) {
+                int s = (target - cut) / n;
                 List<Integer> entry = new ArrayList<>();
-                for(int i = s; i <= e; i++) {
+                for(int i = s; i <= s + n - 1; i++) {
                     entry.add(i);
                 }
                 resList.add(entry);
-                s++;
-                e = s + 1;
-            } else if(sum < target) {
-                e++;
-            } else {
-                s++;
-                e = s + 1;
+
             }
+            target -= cut;
+            cut++;
+            n++;
         }
+
         int[][] result = new int[resList.size()][];
-        for(int i = 0; i < result.length; i++) {
-            List<Integer> entry = resList.get(i);
+        for(int i = result.length - 1; i >= 0; i--) {
+            List<Integer> entry = resList.get(result.length - 1 - i);
             result[i] = new int[entry.size()];
             for(int j = 0; j < result[i].length; j++) {
                 result[i][j] = entry.get(j);
