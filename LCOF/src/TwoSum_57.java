@@ -75,23 +75,24 @@ public class TwoSum_57 {
     }
 
     /*
-     * Version 1, Hashset or array set.
-     * if a number is not recorded, record its complementary.
-     * else return the pair.
+     * Version 2, double pointer.
+     * place two pointers at each end, then make them proceed towards each other.
      */
     public int[] twoSum(int[] nums, int target) {
-        int[] theOthers = new int[target];
-        for(int num : nums) {
-            if(num > target) {
+        int p1 = 0, p2 = nums.length - 1;
+        while(p1 < p2) {
+            if(nums[p1] == target - nums[p2]) {
+                int[] result = new int[2];
+                result[0] = nums[p1];
+                result[1] = nums[p2];
+                return result;
+            }
+            if(nums[p1] < target - nums[p2]) {
+                p1++;
                 continue;
             }
-            if(theOthers[num] == 0) {
-                theOthers[target - num] = 1;
-            } else {
-                int[] result = new int[2];
-                result[0] = num;
-                result[1] = target - num;
-                return result;
+            if(nums[p1] > target - nums[p2]) {
+                p2--;
             }
         }
         return new int[0];
