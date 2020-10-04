@@ -68,9 +68,13 @@ public class ConsecutiveIntegersAddedUpToS_57_II {
     }
 
     /*
-     * Version 2, assume that the target has a average numbers A = target / n.
-     * The first number of the sequence is N.
-     * Then A is the average number of the sum of N, N + 1, N + 2, ..., N + n - 1.
+     * Version 2.
+     * Assume that the sequence has N consecutive numbers, the smallest one is A.
+     * Then we have target = A + (A + 1) + (A + 2) + ... + (A + N - 1) =
+     * A * N + (1 + 2 + ... + N - 1).
+     * So the iteration can be formed:
+     * A = (target - 1 - 2 - ... - (N - 1)) / N, N = 2, 3, 4, ..., where
+     * (target - 1 - 2 - ... - (N - 1)) can be divided by N and is larger than 0.
      */
     public int[][] findContinuousSequence(int target) {
         List<List<Integer>> resList = new ArrayList<>();
