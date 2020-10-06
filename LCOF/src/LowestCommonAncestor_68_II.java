@@ -109,48 +109,23 @@ public class LowestCommonAncestor_68_II {
     }
 
     /*
-     * Version 1, iteration.
+     * Version 2, recursion.
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || (root.left == null && root.right == null)) {
-            return null;
+        if(root == null || root.val == p.val || root.val == q.val) {
+            return root;
         }
 
-        int pVal = p.val, qVal = q.val;
-        boolean pFound = false, qFound = false;
-        Stack<TreeNode> stack = new Stack<>();
-        Stack<TreeNode> possible = new Stack<>();
-        HashSet<TreeNode> visited = new HashSet<>();
-        stack.push(root);
-        while(!stack.isEmpty()) {
-            TreeNode curNode = stack.peek();
-            if(!pFound && !qFound && !visited.contains(curNode)) {
-                possible.push(curNode);
-            }
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
 
-            if(curNode.val == pVal) {
-                pFound = true;
-            }
-            if(curNode.val == qVal) {
-                qFound = true;
-            }
-            visited.add(curNode);
-            if(pFound && qFound) {
-                return possible.pop();
-            }
-
-            if(curNode.left != null && !visited.contains(curNode.left)) {
-                stack.push(curNode.left);
-            } else if(curNode.right != null && !visited.contains(curNode.right)) {
-                stack.push(curNode.right);
-            } else {
-                stack.pop();
-                if(curNode == possible.peek()) {
-                    possible.pop();
-                }
-            }
+        if(left != null && right != null) {
+            return root;
+        } else if(left == null && right != null) {
+            return right;
+        } else {
+            return left;
         }
-        return null;
     }
 
     // Definition for a binary tree node.
