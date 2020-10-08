@@ -4,19 +4,30 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 
 /**
- * 如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。
- * 如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+ * Median is the middle value in an ordered integer list. If the size of the list
+ * is even, there is no middle value. So the median is the mean of the two middle
+ * value.
  *
- * 限制：
- * 最多会对 addNum、findMedian 进行 50000 次调用。
+ * For example,
+ * [2,3,4], the median is 3
+ * [2,3], the median is (2 + 3) / 2 = 2.5
  *
- * 注意：本题与主站 295 题相同：https://leetcode-cn.com/problems/find-median-from-data-stream/
+ * Design a data structure that supports the following two operations:
+ * void addNum(int num) - Add a integer number from the data stream to the data
+ * structure.
+ * double findMedian() - Return the median of all elements so far.
+ *
+ * Follow up:
+ * If all integer numbers from the stream are between 0 and 100, how would you
+ * optimize it?
+ * If 99% of all integer numbers from the stream are between 0 and 100, how would
+ * you optimize it?
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof
+ * 链接：https://leetcode-cn.com/problems/find-median-from-data-stream
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class MedianFinder_41 {
+public class FindMedianFromDataStream_295 {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
@@ -68,11 +79,6 @@ public class MedianFinder_41 {
     }
 }
 
-/**
- * Version 2, Priority Queue.
- * Assign a maximum heap to store the first half, and a minimum heap to store the second
- * half. To find the median is to get the top elements of these heaps.
- */
 class MedianFinder {
     PriorityQueue<Integer> maxHeap;
     PriorityQueue<Integer> minHeap;
