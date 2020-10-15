@@ -43,9 +43,10 @@ public class ArrangementOfAString_38 {
         result = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         dfs(chars, sb);
-        String[] ans = new String[result.size()];
-        result.toArray(ans);
-        return ans;
+        /*String[] ans = new String[result.size()];
+        result.toArray(ans);*/
+        //return ans;
+        return result.toArray(new String[0]);
     }
 
     private void dfs(char[] chars, StringBuilder sb) {
