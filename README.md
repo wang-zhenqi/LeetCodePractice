@@ -4,3 +4,6 @@ The codes created by myself when practising, different language uses different b
 ## Branches
 ### Java
 This branch contains the codes written in Java.
+
+### cpp
+This branch contains the codes written in c++.
