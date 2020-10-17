@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 
 using namespace std;
 
@@ -8,22 +7,21 @@ class Solution
 {
 public:
     /*
-     * Version 1. Declare an STL hashmap to store the appeared numbers. if a number can't be put
-     * into the map any longer, return it.
+     * Version 2, use an array to simulate hashmap, it can be more efficient. It is because the
+     * range of numbers is [0, n - 1], otherwise I would prefer hashmap.
      */
     int findRepeatNumber(vector<int>& nums)
     {
-        unordered_map<int, int> m;
-        int r = 0xFFFFFFFF;
+        int* map = new int[nums.size()]();
         for(int n : nums)
         {
-            if(!m.emplace(n, 1).second)
+            if(map[n])
             {
-                r = n;
-                break;
+                return n;
             }
+            map[n]++;
         }
-        return r;
+        return -1;
     }
 };
 
