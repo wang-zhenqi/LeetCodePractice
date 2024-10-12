@@ -7,7 +7,8 @@ Alice 和 Bob 打算给花园里的 n 株植物浇水。植物排成一行，从
 无论需要多少水，为每株植物浇水所需的时间都是相同的。
 如果 Alice/Bob 水罐中的水足以 完全 灌溉植物，他们 必须 给植物浇水。否则，他们 首先（立即）重新装满罐子，然后给植物浇水。
 如果 Alice 和 Bob 到达同一株植物，那么当前水罐中水 更多 的人会给这株植物浇水。如果他俩水量相同，那么 Alice 会给这株植物浇水。
-给你一个下标从 0 开始的整数数组 plants ，数组由 n 个整数组成。其中，plants[i] 为第 i 株植物需要的水量。另有两个整数 capacityA 和 capacityB 分别表示 Alice 和 Bob 水罐的容量。返回两人浇灌所有植物过程中重新灌满水罐的 次数 。
+给你一个下标从 0 开始的整数数组 plants ，数组由 n 个整数组成。其中，plants[i] 为第 i 株植物需要的水量。另有两个整数 capacityA 和 \
+capacityB 分别表示 Alice 和 Bob 水罐的容量。返回两人浇灌所有植物过程中重新灌满水罐的 次数 。
 
 
 
@@ -68,7 +69,6 @@ class Who:
 
 
 class Solution(object):
-
     def minimumRefill(self, plants, capacityA, capacityB):
         """
         :type plants: List[int]
@@ -78,17 +78,9 @@ class Solution(object):
         """
         filled_times = 0
 
-        alice = Who(
-            index=0,
-            capacity=capacityA,
-            direction=1
-        )
+        alice = Who(index=0, capacity=capacityA, direction=1)
 
-        bob = Who(
-            index=len(plants) - 1,
-            capacity=capacityB,
-            direction=-1
-        )
+        bob = Who(index=len(plants) - 1, capacity=capacityB, direction=-1)
 
         while alice.index < bob.index:
             filled_times += alice.water_plant(plants[alice.index])
@@ -101,19 +93,9 @@ class Solution(object):
         return filled_times
 
 
-if __name__ == '__main__':
-    tests = [
-        [[2, 2, 3, 3], 5, 5],
-        [[2, 2, 3, 3], 3, 4],
-        [[5], 10, 8],
-        [[2, 1, 1], 2, 2]
-    ]
-    answers = [
-        1,
-        2,
-        0,
-        0
-    ]
+if __name__ == "__main__":
+    tests = [[[2, 2, 3, 3], 5, 5], [[2, 2, 3, 3], 3, 4], [[5], 10, 8], [[2, 1, 1], 2, 2]]
+    answers = [1, 2, 0, 0]
 
     s = Solution()
     for i, test in enumerate(tests):

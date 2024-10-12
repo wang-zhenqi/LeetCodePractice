@@ -34,11 +34,11 @@ There are at least two ways to solve it:
 1. Traverse from the beginning of the list, memorizing each node when pass it. When it encounters a node that's been past, the start of the cycle is found.
 
     To accomplish this, a hash set will make it quicker: if the node is already in the set, then it won't be added in again.
-    
+
     The time complexity for traversing is O(N), for searching and adding node is O(1), so the overall time complexity is O(N).
-    
+
     The space complexity is O(N).
-    
+
     ````
     foreach node in list:
         if add node to set succeed:
