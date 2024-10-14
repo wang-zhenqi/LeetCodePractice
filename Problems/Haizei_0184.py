@@ -31,8 +31,6 @@
 时间限制：1 s
 内存限制：64 M
 """
-import sys
-
 import loguru
 
 from utils import running_time
@@ -83,10 +81,6 @@ def main():
 
 
 if __name__ == "__main__":
-    loguru.logger.remove()
-    loguru.logger.add(sys.stdout, level="DEBUG")
-    loguru.logger.level("DEBUG")
-
     test_main()
 
     main()
