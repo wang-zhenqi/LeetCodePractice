@@ -52,24 +52,24 @@ f(k) = 1 + f(k + a[k])
 """
 
 
-def bounce_count(x, a):
-    return 0 if x >= len(a) else 1 + bounce_count(x + a[x], a)
+def bounce_count(k, a, n):
+    return 0 if k >= n else 1 + bounce_count(k + a[k], a, n)
 
 
 @running_time
-def bounce(a):
-    return bounce_count(0, a)
+def bounce(a, n):
+    return bounce_count(0, a, n)
 
 
 def test_main():
     test_cases = [
-        ((5, "2 2 3 1 2"), 2),
-        ((5, "1 2 3 1 2"), 4),
+        (("5", "2 2 3 1 2"), 2),
+        (("5", "1 2 3 1 2"), 4),
     ]
 
     for test_case in test_cases:
         expected = test_case[1]
-        actual = bounce([int(i) for i in test_case[0][1].split(" ")])
+        actual = bounce([int(i) for i in test_case[0][1].split(" ")], int(test_case[0][0]))
 
         if actual == expected:
             loguru.logger.success("PASS")
@@ -78,13 +78,11 @@ def test_main():
 
 
 def main():
-    input()
+    n = int(input())
     a = [int(i) for i in input().split(" ")]
 
-    loguru.logger.info(bounce(a))
+    loguru.logger.info(bounce(a), n)
 
 
 if __name__ == "__main__":
     test_main()
-
-    main()
