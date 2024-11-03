@@ -16,3 +16,12 @@ The source codes contain the solving code blocks, the testing main function, and
 If a problem has several solutions, they are committed one at a time, such that the history view will show them all.
 
 I may conclude the solutions unregularly, write a summary of how to think and how to solve.
+
+## Notes
+
+Using pipreqs to export pip requirements:
+
+```shell
+# On Windows, only find the packages that the project code uses
+pipreqs ./ --force --encoding=iso-8859-1 --ignore=.venv
+```
