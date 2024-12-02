@@ -44,6 +44,8 @@ T 次询问，每次输入等级 N，两个编号 S、D，求 S 与 D 之间的�
 
 import pytest
 
+from utils.utils import running_time
+
 
 def join_parts(
     top_left: list[list[int]],
@@ -199,22 +201,37 @@ def test_construct_city_of_level_n_should_return_a_valid_matrix_with_houses_id(l
     assert construct_city(level) == expected
 
 
+@pytest.mark.parametrize(
+    "D, N, S, expected",
+    [
+        (1, 1, 2, 10),
+        (2, 16, 1, 30),
+        (3, 4, 33, 50),
+    ],
+)
+def test_run(D, N, S, expected):
+    assert expected == run(D, N, S)
+
+
+@running_time
+def run(N: int, S: int, D: int) -> int:
+    city = construct_city(N)
+    n = len(city)
+    x1, x2, y1, y2 = 0, 0, 0, 0
+    for i in range(n):
+        for j in range(n):
+            if city[i][j] == S:
+                x1, y1 = i, j
+            if city[i][j] == D:
+                x2, y2 = i, j
+    return round(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 * 10)
+
+
 def main():
     T = int(input())
     for _ in range(T):
         N, S, D = map(int, input().split())
-        city = construct_city(N)
-        n = len(city)
-
-        x1, x2, y1, y2 = 0, 0, 0, 0
-
-        for i in range(n):
-            for j in range(n):
-                if city[i][j] == S:
-                    x1, y1 = i, j
-                if city[i][j] == D:
-                    x2, y2 = i, j
-        print(round(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 * 10))
+        print(run(N, S, D))
 
 
 if __name__ == "__main__":
