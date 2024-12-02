@@ -201,37 +201,70 @@ def test_construct_city_of_level_n_should_return_a_valid_matrix_with_houses_id(l
     assert construct_city(level) == expected
 
 
+def get_coordination_of_house(level: int, s: int) -> tuple[int, int]:
+    if level == 1:
+        if s == 1:
+            return 0, 0
+        elif s == 2:
+            return 0, 1
+        elif s == 3:
+            return 1, 1
+        else:
+            return 1, 0
+    else:
+        n = 2 ** (level - 1)
+        block = 2 ** (2 * (level - 1))
+        if s <= block:
+            x, y = get_coordination_of_house(level - 1, s)
+            return y, x
+        elif s <= 2 * block:
+            x, y = get_coordination_of_house(level - 1, s - block)
+            return x, y + n
+        elif s <= 3 * block:
+            x, y = get_coordination_of_house(level - 1, s - 2 * block)
+            return x + n, y + n
+        else:
+            x, y = get_coordination_of_house(level - 1, s - 3 * block)
+            return 2 * n - y - 1, n - x - 1
+
+
 @pytest.mark.parametrize(
-    "D, N, S, expected",
+    "level, s, expected",
+    [
+        (1, 1, (0, 0)),
+        (2, 8, (1, 2)),
+        (3, 33, (4, 4)),
+        (3, 4, (1, 0)),
+    ],
+)
+def test_get_coordination_of_house_should_return_the_x_and_y_when_given_the_house_number(level, s, expected):
+    assert get_coordination_of_house(level, s) == expected
+
+
+@running_time
+def run(n: int, s: int, d: int) -> int:
+    x1, y1 = get_coordination_of_house(n, s)
+    x2, y2 = get_coordination_of_house(n, d)
+    return round(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 * 10)
+
+
+@pytest.mark.parametrize(
+    "d, n, s, expected",
     [
         (1, 1, 2, 10),
         (2, 16, 1, 30),
         (3, 4, 33, 50),
     ],
 )
-def test_run(D, N, S, expected):
-    assert expected == run(D, N, S)
-
-
-@running_time
-def run(N: int, S: int, D: int) -> int:
-    city = construct_city(N)
-    n = len(city)
-    x1, x2, y1, y2 = 0, 0, 0, 0
-    for i in range(n):
-        for j in range(n):
-            if city[i][j] == S:
-                x1, y1 = i, j
-            if city[i][j] == D:
-                x2, y2 = i, j
-    return round(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 * 10)
+def test_run(d, n, s, expected):
+    assert expected == run(d, n, s)
 
 
 def main():
-    T = int(input())
-    for _ in range(T):
-        N, S, D = map(int, input().split())
-        print(run(N, S, D))
+    t = int(input())
+    for _ in range(t):
+        n, s, d = map(int, input().split())
+        print(run(n, s, d))
 
 
 if __name__ == "__main__":
