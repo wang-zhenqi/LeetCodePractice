@@ -32,3 +32,13 @@ int insert(SeqList* p, int pos, int val) {
     p->length++;
     return 1;
 }
+
+int erase(SeqList* p, int pos) {
+  	if(pos < 0 || pos >= p->length || p->length == 0)
+        return 0;
+    for(int cur_pos = pos; cur_pos < p->length - 1; cur_pos++)
+      	p->data[cur_pos] = p->data[cur_pos + 1];
+    p->data[p->length - 1] = 0;
+    p->length--;
+    return 1;
+}

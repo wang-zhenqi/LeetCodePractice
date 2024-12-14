@@ -76,6 +76,46 @@ START_TEST(test_insert_should_return_0_when_seqlist_is_full) {
     ck_assert_int_eq(result, 0);
 }
 
+START_TEST(test_erase_should_return_1_when_seqlist_is_not_empty_and_pos_is_legal) {
+  SeqList *p = initSeqList(5);
+  insert(p, 0, 10);
+  insert(p, 0, 20);
+  insert(p, 2, 30);
+  int result = erase(p, 0);
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(p->length, 2);
+  ck_assert_int_eq(p->data[0], 10);
+  ck_assert_int_eq(p->data[1], 30);
+
+  result = erase(p, 1);
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(p->length, 1);
+  ck_assert_int_eq(p->data[0], 10);
+
+  result = erase(p, 0);
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(p->length, 0);
+  ck_assert_int_eq(p->data[0], 0);
+}
+
+START_TEST(test_erase_should_return_0_when_seqlist_is_empty_or_pos_is_illegal) {
+  SeqList *p = initSeqList(5);
+  insert(p, 0, 10);
+  insert(p, 0, 20);
+  int result = erase(p, 2);
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(p->length, 2);
+  ck_assert_int_eq(p->data[0], 20);
+  ck_assert_int_eq(p->data[1], 10);
+
+  erase(p, 1);
+  erase(p, 0);
+  result = erase(p, 0);
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(p->length, 0);
+  ck_assert_int_eq(p->data[0], 0);
+}
+
 Suite *sequence_list_suite(void)
 {
   Suite *s = suite_create("SequenceList");
@@ -88,6 +128,7 @@ Suite *sequence_list_suite(void)
   tcase_add_test(tc_core, test_insert_should_return_1_when_seqlist_has_space_left);
   tcase_add_test(tc_core, test_insert_should_return_0_when_seqlist_is_full);
   tcase_add_test(tc_core, test_insert_should_return_0_when_pos_is_out_of_bound);
+  tcase_add_test(tc_core, test_erase_should_return_1_when_seqlist_is_not_empty_and_pos_is_legal);
   suite_add_tcase(s, tc_core);
 
   return s;
