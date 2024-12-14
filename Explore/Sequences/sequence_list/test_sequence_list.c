@@ -4,13 +4,16 @@
 #include "/opt/homebrew/Cellar/check/0.15.2/include/check.h"
 #include "sequence_list.h"
 
-START_TEST(test_initSeqList)
-{
-  const SeqList *actual = initSeqList(5);
-  ck_assert_int_eq(actual->capacity, 5);
-  ck_assert_int_eq(actual->length, 0);
-  ck_assert_int_eq(sizeof(actual->data), sizeof(int *));
+START_TEST(test_initSeqList) {
+  SeqList *p = initSeqList(5);
+  ck_assert_int_eq(p->capacity, 5);
+  ck_assert_int_eq(p->length, 0);
+  ck_assert_int_eq(sizeof(p->data), sizeof(int *));
+
+  clear(p);
+  p = NULL;
 }
+
 END_TEST
 
 START_TEST(test_clear_should_free_all_variables) {
@@ -19,6 +22,7 @@ START_TEST(test_clear_should_free_all_variables) {
   ck_assert_int_eq(p->capacity, 0);
   ck_assert_int_eq(p->length, 0);
   ck_assert_ptr_null(p->data);
+  p = NULL;
 }
 
 START_TEST(test_insert_should_return_1_when_seqlist_has_space_left) {
@@ -57,23 +61,32 @@ START_TEST(test_insert_should_return_1_when_seqlist_has_space_left) {
   ck_assert_int_eq(p->data[2], 10);
   ck_assert_int_eq(p->data[3], 30);
   ck_assert_int_eq(p->data[4], 50);
+
+  clear(p);
+  p = NULL;
 }
 
 START_TEST(test_insert_should_return_0_when_pos_is_out_of_bound) {
-    SeqList *p = initSeqList(5);
-    const int result = insert(p, 6, 10);
-    ck_assert_int_eq(result, 0);
+  SeqList *p = initSeqList(5);
+  const int result = insert(p, 6, 10);
+  ck_assert_int_eq(result, 0);
+
+  clear(p);
+  p = NULL;
 }
 
 START_TEST(test_insert_should_return_0_when_seqlist_is_full) {
-    SeqList *p = initSeqList(5);
-    insert(p, 0, 10);
-    insert(p, 0, 20);
-    insert(p, 2, 30);
-    insert(p, 1, 40);
-    insert(p, 4, 50);
-    const int result = insert(p, 0, 60);
-    ck_assert_int_eq(result, 0);
+  SeqList *p = initSeqList(5);
+  insert(p, 0, 10);
+  insert(p, 0, 20);
+  insert(p, 2, 30);
+  insert(p, 1, 40);
+  insert(p, 4, 50);
+  const int result = insert(p, 0, 60);
+  ck_assert_int_eq(result, 0);
+
+  clear(p);
+  p = NULL;
 }
 
 START_TEST(test_erase_should_return_1_when_seqlist_is_not_empty_and_pos_is_legal) {
@@ -96,6 +109,9 @@ START_TEST(test_erase_should_return_1_when_seqlist_is_not_empty_and_pos_is_legal
   ck_assert_int_eq(result, 1);
   ck_assert_int_eq(p->length, 0);
   ck_assert_int_eq(p->data[0], 0);
+
+  clear(p);
+  p = NULL;
 }
 
 START_TEST(test_erase_should_return_0_when_seqlist_is_empty_or_pos_is_illegal) {
@@ -114,10 +130,12 @@ START_TEST(test_erase_should_return_0_when_seqlist_is_empty_or_pos_is_illegal) {
   ck_assert_int_eq(result, 0);
   ck_assert_int_eq(p->length, 0);
   ck_assert_int_eq(p->data[0], 0);
+
+  clear(p);
+  p = NULL;
 }
 
-Suite *sequence_list_suite(void)
-{
+Suite *sequence_list_suite(void) {
   Suite *s = suite_create("SequenceList");
 
   /* Core test case */
@@ -134,8 +152,7 @@ Suite *sequence_list_suite(void)
   return s;
 }
 
-int main(void)
-{
+int main(void) {
   Suite *s = sequence_list_suite();
   SRunner *sr = srunner_create(s);
 

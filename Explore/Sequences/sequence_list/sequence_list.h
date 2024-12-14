@@ -8,8 +8,11 @@ typedef struct {
 } SeqList;
 
 SeqList *initSeqList(int capacity);
-void clear(SeqList* p);
-int insert(SeqList* p, int pos, int val);
-int erase(SeqList* p, int pos);
+
+void clear(SeqList *p);
+
+int insert(SeqList *p, int pos, int val);
+
+int erase(SeqList *p, int pos);
 
 #endif
