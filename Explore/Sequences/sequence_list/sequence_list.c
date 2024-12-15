@@ -46,7 +46,10 @@ int erase(SeqList* p, int pos) {
 int expand(SeqList *p) {
   	if(p == NULL)
         return 0;
-    p->data = (int *) realloc(p->data, sizeof(int) * 2 * p->capacity);
+    int* new_loc = (int *) realloc(p->data, sizeof(int) * 2 * p->capacity);
+    if(new_loc == NULL)
+      	return 0;
+    p->data = new_loc;
     p->capacity *= 2;
     return 1;
 }
