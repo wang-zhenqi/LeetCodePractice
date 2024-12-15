@@ -22,8 +22,8 @@ void clear(SeqList* p) {
 }
 
 int insert(SeqList* p, int pos, int val) {
-    if(pos < 0 || pos > p->length || p->length >= p->capacity)
-      	return 0;
+    if((pos < 0 || pos > p->length) || (p->length == p->capacity && !expand(p)))
+        return 0;
 
     for(int cur_pos = p->length; cur_pos > pos; cur_pos--)
         p->data[cur_pos] = p->data[cur_pos - 1];
@@ -34,11 +34,19 @@ int insert(SeqList* p, int pos, int val) {
 }
 
 int erase(SeqList* p, int pos) {
-  	if(pos < 0 || pos >= p->length || p->length == 0)
+    if(pos < 0 || pos >= p->length || p->length == 0)
         return 0;
     for(int cur_pos = pos; cur_pos < p->length - 1; cur_pos++)
-      	p->data[cur_pos] = p->data[cur_pos + 1];
+        p->data[cur_pos] = p->data[cur_pos + 1];
     p->data[p->length - 1] = 0;
     p->length--;
+    return 1;
+}
+
+int expand(SeqList *p) {
+  	if(p == NULL)
+        return 0;
+    p->data = (int *) realloc(p->data, sizeof(int) * 2 * p->capacity);
+    p->capacity *= 2;
     return 1;
 }
