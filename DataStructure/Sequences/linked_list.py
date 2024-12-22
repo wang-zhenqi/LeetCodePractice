@@ -9,6 +9,7 @@ class LinkedList:
             self.next: Optional["LinkedList.Node"] = None
 
     class Types(Enum):
+        NONE_TYPE = 0
         HEADER = 1
         NON_HEADER = 2
         CIRCULAR = 3
@@ -18,6 +19,7 @@ class LinkedList:
 
     def __init__(self):
         self.length = 0
+        self.type = LinkedList.Types.NONE_TYPE
 
     def __getitem__(self, position: int) -> Optional[int]:
         raise NotImplementedError()
@@ -26,6 +28,9 @@ class LinkedList:
         raise NotImplementedError()
 
     def __str__(self):
+        raise NotImplementedError()
+
+    def to_list(self) -> list[int]:
         raise NotImplementedError()
 
     @classmethod
@@ -69,6 +74,7 @@ class NonHeaderLinkedList(LinkedList):
     def __init__(self):
         super().__init__()
         self.head = None
+        self.type = LinkedList.Types.NON_HEADER
 
     def insert(self, position: int, data: int):
         if not (0 <= position <= self.length):
@@ -129,6 +135,14 @@ class NonHeaderLinkedList(LinkedList):
             + str(self)
         )
 
+    def to_list(self) -> list[int]:
+        current = self.head
+        result = []
+        while current is not None:
+            result.append(current.data)
+            current = current.next
+        return result
+
     def append(self, data: int):
         self.insert(self.length, data)
 
@@ -150,6 +164,7 @@ class HeaderLinkedList(LinkedList):
     def __init__(self):
         super().__init__()
         self.head = LinkedList.Node(0)
+        self.type = LinkedList.Types.HEADER
 
     def insert(self, position: int, data: int):
         if not 0 <= position < self.length and position != self.length:
@@ -191,7 +206,7 @@ class HeaderLinkedList(LinkedList):
         while current is not None:
             result.append(str(current.data))
             current = current.next
-        return " -> ".join(result)
+        return " -> ".join(list(map(lambda x: str(x).rjust(2), result)))
 
     def __repr__(self):
         # "         0     1     2     3     4"
@@ -199,6 +214,14 @@ class HeaderLinkedList(LinkedList):
         return (
             " " * len("head ") + " ".join([str(i).rjust(5) for i in range(self.length)]) + "\n" + "head -> " + str(self)
         )
+
+    def to_list(self) -> list[int]:
+        current = self.head.next
+        result = []
+        while current is not None:
+            result.append(current.data)
+            current = current.next
+        return result
 
     def append(self, data: int):
         self.insert(self.length, data)
