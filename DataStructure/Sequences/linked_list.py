@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 
@@ -6,6 +7,12 @@ class LinkedList:
         def __init__(self, data: int):
             self.data: int = data
             self.next: Optional["LinkedList.Node"] = None
+
+    class Types(Enum):
+        HEADER = 1
+        NON_HEADER = 2
+        CIRCULAR = 3
+        BI_DIRECTIONAL = 4
 
     head: Optional[Node]
 
@@ -21,23 +28,22 @@ class LinkedList:
     def __str__(self):
         raise NotImplementedError()
 
-    @staticmethod
-    def _locate_element_from_node(current: Node, data: int) -> Optional[int]:
-        position = 0
-        while current is not None:
-            if current.data == data:
-                return position
-            current = current.next
-            position += 1
-        return None
+    @classmethod
+    def instantiate(cls, list_type: Types) -> "LinkedList":
+        if list_type == LinkedList.Types.HEADER:
+            return HeaderLinkedList()
+        elif list_type == LinkedList.Types.NON_HEADER:
+            return NonHeaderLinkedList()
+        elif list_type == LinkedList.Types.CIRCULAR:
+            raise NotImplementedError()
+        elif list_type == LinkedList.Types.BI_DIRECTIONAL:
+            raise NotImplementedError()
+        else:
+            raise ValueError("Invalid list type")
 
     @classmethod
-    def instantiate(cls, with_head: bool = False) -> "LinkedList":
-        return LinkedListWithHead() if with_head else LinkedListWithoutHead()
-
-    @classmethod
-    def from_list(cls, data: list[int], with_head: bool = False) -> "LinkedList":
-        linked_list = cls.instantiate(with_head)
+    def from_list(cls, data: list[int], list_type: Types) -> "LinkedList":
+        linked_list = cls.instantiate(list_type)
         for item in data:
             linked_list.insert(linked_list.length, item)
         return linked_list
@@ -55,14 +61,17 @@ class LinkedList:
         self.head = None
         self.length = 0
 
+    def is_empty(self):
+        return self.length == 0
 
-class LinkedListWithoutHead(LinkedList):
+
+class NonHeaderLinkedList(LinkedList):
     def __init__(self):
         super().__init__()
         self.head = None
 
     def insert(self, position: int, data: int):
-        if not 0 <= position < self.length and position != self.length:
+        if not (0 <= position <= self.length):
             raise ValueError("Invalid position")
 
         new_node = LinkedList.Node(data)
@@ -92,7 +101,7 @@ class LinkedListWithoutHead(LinkedList):
 
     def find(self, data: int) -> Optional[int]:
         current = self.head
-        return LinkedList._locate_element_from_node(current, data)
+        return self._locate_element_from_node(current, data)
 
     def __getitem__(self, position: int) -> Optional[int]:
         if not 0 <= position < self.length:
@@ -126,8 +135,18 @@ class LinkedListWithoutHead(LinkedList):
     def pop(self):
         self.delete(self.length - 1)
 
+    @staticmethod
+    def _locate_element_from_node(current: LinkedList.Node, data: int) -> Optional[int]:
+        position = 0
+        while current is not None:
+            if current.data == data:
+                return position
+            current = current.next
+            position += 1
+        return None
 
-class LinkedListWithHead(LinkedList):
+
+class HeaderLinkedList(LinkedList):
     def __init__(self):
         super().__init__()
         self.head = LinkedList.Node(0)
@@ -156,7 +175,7 @@ class LinkedListWithHead(LinkedList):
 
     def find(self, data: int) -> Optional[int]:
         current = self.head.next
-        return LinkedList._locate_element_from_node(current, data)
+        return self._locate_element_from_node(current, data)
 
     def __getitem__(self, index: int) -> Optional[int]:
         if not 0 <= index < self.length:
@@ -186,3 +205,13 @@ class LinkedListWithHead(LinkedList):
 
     def pop(self):
         self.delete(self.length - 1)
+
+    @staticmethod
+    def _locate_element_from_node(current: LinkedList.Node, data: int) -> Optional[int]:
+        position = 0
+        while current is not None:
+            if current.data == data:
+                return position
+            current = current.next
+            position += 1
+        return None
