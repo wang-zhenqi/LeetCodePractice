@@ -21,7 +21,7 @@ class LinkedList:
         self.length = 0
         self.type = LinkedList.Types.NONE_TYPE
 
-    def __getitem__(self, position: int) -> Optional[int]:
+    def __getitem__(self, position: int) -> Optional[Node]:
         raise NotImplementedError()
 
     def __repr__(self):
@@ -109,13 +109,13 @@ class NonHeaderLinkedList(LinkedList):
         current = self.head
         return self._locate_element_from_node(current, data)
 
-    def __getitem__(self, position: int) -> Optional[int]:
+    def __getitem__(self, position: int) -> Optional[LinkedList.Node]:
         if not 0 <= position < self.length:
             raise ValueError("Invalid position")
         current = self.head
         for _ in range(position):
             current = current.next
-        return current.data
+        return current
 
     def __str__(self):
         current = self.head
@@ -192,13 +192,13 @@ class HeaderLinkedList(LinkedList):
         current = self.head.next
         return self._locate_element_from_node(current, data)
 
-    def __getitem__(self, index: int) -> Optional[int]:
+    def __getitem__(self, index: int) -> Optional[LinkedList.Node]:
         if not 0 <= index < self.length:
             raise ValueError("Invalid position")
         current = self.head.next
         for _ in range(index):
             current = current.next
-        return current.data
+        return current
 
     def __str__(self):
         current = self.head.next
@@ -238,3 +238,7 @@ class HeaderLinkedList(LinkedList):
             current = current.next
             position += 1
         return None
+
+
+class CircularLinkedList(LinkedList):
+    pass

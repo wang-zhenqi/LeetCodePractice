@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from DataStructure import LinkedList
+from DataStructure import HeaderLinkedList, LinkedList, NonHeaderLinkedList
 
 
 class TestLinkedList:
@@ -100,18 +100,21 @@ class TestLinkedList:
 
     def test_pop_should_delete_the_last_node_from_linked_list(self):
         linked_list_with_head = LinkedList.from_list([10, 20], LinkedList.Types.HEADER)
+        assert isinstance(linked_list_with_head, HeaderLinkedList)
         linked_list_with_head.pop()
         assert linked_list_with_head.head.data == 0
         assert linked_list_with_head.head.next.data == 10
         assert linked_list_with_head.length == 1
 
         linked_list_without_head = LinkedList.from_list([10, 20], LinkedList.Types.NON_HEADER)
+        assert isinstance(linked_list_without_head, NonHeaderLinkedList)
         linked_list_without_head.pop()
         assert linked_list_without_head.head.data == 10
         assert linked_list_without_head.length == 1
 
     def test_append_should_insert_a_node_to_linked_list_at_last(self):
         linked_list_with_head = LinkedList.from_list([10], LinkedList.Types.HEADER)
+        assert isinstance(linked_list_with_head, HeaderLinkedList)
         linked_list_with_head.append(20)
         assert linked_list_with_head.head.data == 0
         assert linked_list_with_head.head.next.data == 10
@@ -119,6 +122,7 @@ class TestLinkedList:
         assert linked_list_with_head.length == 2
 
         linked_list_without_head = LinkedList.from_list([10], LinkedList.Types.NON_HEADER)
+        assert isinstance(linked_list_without_head, NonHeaderLinkedList)
         linked_list_without_head.append(20)
         assert linked_list_without_head.head.data == 10
         assert linked_list_without_head.head.next.data == 20
@@ -140,12 +144,12 @@ class TestLinkedList:
         assert linked_list_without_head.find(30) == 2
         assert linked_list_without_head.find(200) is None
 
-    def test_getitem_should_return_data_at_position(self):
+    def test_getitem_should_return_node_at_position(self):
         linked_list_with_head = LinkedList.from_list([10, 20, 30], LinkedList.Types.HEADER)
-        assert linked_list_with_head[1] == 20
+        assert linked_list_with_head[1].data == 20
 
         linked_list_without_head = LinkedList.from_list([10, 20, 30], LinkedList.Types.NON_HEADER)
-        assert linked_list_without_head[2] == 30
+        assert linked_list_without_head[2].data == 30
 
     def test_getitem_should_raise_exception_when_position_is_invalid(self):
         linked_list_with_head = LinkedList.from_list([10, 20], LinkedList.Types.HEADER)
