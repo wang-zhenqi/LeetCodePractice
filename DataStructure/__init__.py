@@ -1,3 +1,8 @@
-from .Sequences import HeaderLinkedList, LinkedList, NonHeaderLinkedList
+from .Sequences import (
+    CircularLinkedList,
+    HeaderLinkedList,
+    LinkedList,
+    NonHeaderLinkedList,
+)
 
-all([LinkedList, HeaderLinkedList, NonHeaderLinkedList])
+all([LinkedList, HeaderLinkedList, NonHeaderLinkedList, CircularLinkedList])

@@ -15,9 +15,8 @@ class LinkedList:
         CIRCULAR = 3
         BI_DIRECTIONAL = 4
 
-    head: Optional[Node]
-
     def __init__(self):
+        self.head: Optional[LinkedList.Node] = None
         self.length = 0
         self.type = LinkedList.Types.NONE_TYPE
 
@@ -34,21 +33,21 @@ class LinkedList:
         raise NotImplementedError()
 
     @classmethod
-    def instantiate(cls, list_type: Types) -> "LinkedList":
+    def instantiate(cls, list_type: Types, **kwargs) -> "LinkedList":
         if list_type == LinkedList.Types.HEADER:
             return HeaderLinkedList()
         elif list_type == LinkedList.Types.NON_HEADER:
             return NonHeaderLinkedList()
         elif list_type == LinkedList.Types.CIRCULAR:
-            raise NotImplementedError()
+            return CircularLinkedList(**kwargs)
         elif list_type == LinkedList.Types.BI_DIRECTIONAL:
             raise NotImplementedError()
         else:
             raise ValueError("Invalid list type")
 
     @classmethod
-    def from_list(cls, data: list[int], list_type: Types) -> "LinkedList":
-        linked_list = cls.instantiate(list_type)
+    def from_list(cls, data: list[int], list_type: Types, **kwargs) -> "LinkedList":
+        linked_list = cls.instantiate(list_type, **kwargs)
         for item in data:
             linked_list.insert(linked_list.length, item)
         return linked_list
@@ -241,4 +240,58 @@ class HeaderLinkedList(LinkedList):
 
 
 class CircularLinkedList(LinkedList):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.type = LinkedList.Types.CIRCULAR
+        self.circular_position = kwargs["circular_position"]
+
+    def insert(self, position: int, data: int):
+        if not 0 <= position <= self.length:
+            raise ValueError("Invalid position")
+
+        new_node = LinkedList.Node(data)
+        if position == 0:
+            new_node.next = self.head
+            self.head = new_node
+        else:
+            current = self.head
+            for _ in range(position - 1):
+                current = current.next
+            new_node.next = current.next
+            current.next = new_node
+        self.length += 1
+
+        if self.length - 1 >= self.circular_position:
+            current = self.head
+            circular_node = None
+            for i in range(self.length - 1):
+                if i == self.circular_position:
+                    circular_node = current
+                current = current.next
+            if not circular_node:
+                circular_node = current
+            current.next = circular_node
+
+    def __getitem__(self, index: int) -> Optional[LinkedList.Node]:
+        if not 0 <= index < self.length:
+            raise ValueError("Invalid position")
+        current = self.head
+        for _ in range(index):
+            current = current.next
+        return current
+
+    def __str__(self):
+        current = self.head
+        result = []
+        start = 0
+        end = 0
+        for i in range(self.length):
+            if i == self.circular_position:
+                start = len(" -> ".join(result)) + len(" -> ")
+            if i == self.length - 1:
+                end = len(" -> ".join(result)) + len(" -> ")
+            result.append(str(current.data))
+            current = current.next
+        line1 = "\n" + " -> ".join(result) + "\n"
+        line2 = " " * start + "^" + "_" * (end - start - 1) + "|" + "\n"
+        return line1 + line2

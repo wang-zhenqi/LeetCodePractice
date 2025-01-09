@@ -1,3 +1,8 @@
-from .linked_list import HeaderLinkedList, LinkedList, NonHeaderLinkedList
+from .linked_list import (
+    CircularLinkedList,
+    HeaderLinkedList,
+    LinkedList,
+    NonHeaderLinkedList,
+)
 
-all([LinkedList, HeaderLinkedList, NonHeaderLinkedList])
+all([LinkedList, HeaderLinkedList, NonHeaderLinkedList, CircularLinkedList])

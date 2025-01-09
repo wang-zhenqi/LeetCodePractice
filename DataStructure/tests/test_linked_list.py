@@ -2,7 +2,12 @@ import logging
 
 import pytest
 
-from DataStructure import HeaderLinkedList, LinkedList, NonHeaderLinkedList
+from DataStructure import (
+    CircularLinkedList,
+    HeaderLinkedList,
+    LinkedList,
+    NonHeaderLinkedList,
+)
 
 
 class TestLinkedList:
@@ -167,3 +172,48 @@ class TestLinkedList:
         logging.info(linked_list_with_head.__repr__())
         linked_list_without_head = LinkedList.from_list([10, 20, 30], LinkedList.Types.NON_HEADER)
         logging.info(linked_list_without_head.__repr__())
+
+
+class TestCircularLinkedList:
+    def test_create_circular_linked_list_should_generate_a_circular_linked_list(self):
+        circular_ll = CircularLinkedList(circular_position=0)
+        assert circular_ll.head is None
+        assert circular_ll.length == 0
+
+    def test_insert_should_insert_a_node_to_circular_linked_list_at_position_0(self):
+        circular_ll = CircularLinkedList(circular_position=0)
+        circular_ll.insert(0, 10)
+        assert circular_ll.head.data == 10
+        assert circular_ll.head.next.data == 10
+        assert circular_ll.length == 1
+
+    def test_insert_should_insert_a_node_at_pos_1_when_cir_pos_is_larger_than_len(self):
+        circular_ll = LinkedList.from_list([10], list_type=LinkedList.Types.CIRCULAR, circular_position=3)
+        circular_ll.insert(1, 20)
+
+        assert circular_ll.head.data == 10
+        assert circular_ll.head.next.data == 20
+        assert circular_ll.length == 2
+        assert circular_ll.head.next.next is None
+
+    def test_insert_should_insert_a_node_at_pos_len(self):
+        circular_ll = LinkedList.from_list([10, 20, 30], list_type=LinkedList.Types.CIRCULAR, circular_position=3)
+        circular_ll.insert(1, 40)
+
+        assert circular_ll.length == 4
+        assert circular_ll.head.data == 10
+        assert circular_ll.head.next.data == 40
+        assert circular_ll.head.next.next.data == 20
+        assert circular_ll.head.next.next.next.data == 30
+        assert circular_ll.head.next.next.next.next.data == 30
+
+    def test_insert_should_insert_a_node_after_cir_pos(self):
+        circular_ll = LinkedList.from_list([10, 20, 30], list_type=LinkedList.Types.CIRCULAR, circular_position=1)
+        circular_ll.insert(3, 40)
+
+        assert circular_ll.length == 4
+        assert circular_ll.head.data == 10
+        assert circular_ll.head.next.data == 20
+        assert circular_ll.head.next.next.data == 30
+        assert circular_ll.head.next.next.next.data == 40
+        assert circular_ll.head.next.next.next.next.data == 20
