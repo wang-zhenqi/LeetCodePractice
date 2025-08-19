@@ -36,26 +36,25 @@ class ListNode:
 class Solution:
     @running_time
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        pt1 = head
-        pt2 = head.next
+        # 考虑到倒数最后一个节点（正数第一个），使用一个虚拟头节点会让情况变得统一
+        dummy_head = ListNode(val=-1, next=head)
+        ptr1 = ptr2 = dummy_head
 
-        length = 1
-        while pt2:
-            pt1 = pt1.next
-            pt2 = pt2.next
-            length += 1
+        # 让 ptr2 先走 n + 1 步，这样 ptr1 和 ptr2 的距离就是 n + 1。
+        while n >= 0:
+            ptr2 = ptr2.next
+            n -= 1
 
-        if length == n:
-            head = head.next
-            return head
+        # 然后再让 ptr1 和 ptr2 同步向后走，当 ptr2 到达末尾（None）时，ptr1 正好在倒数第 n+1 个节点处
+        while ptr2:
+            ptr1 = ptr1.next
+            ptr2 = ptr2.next
 
-        pt1 = head
-        while length > n + 1:
-            pt1 = pt1.next
-            length -= 1
+        # 跨过 ptr1 的下一位，就相当于删除了倒数第 n 个节点
+        ptr1.next = ptr1.next.next
 
-        pt1.next = pt1.next.next
-        return head
+        # 虚拟头节点的下一个节点才是真正的头节点
+        return dummy_head.next
 
 
 @pytest.mark.parametrize(
