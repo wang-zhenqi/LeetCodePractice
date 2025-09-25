@@ -55,53 +55,19 @@ def list_values(head: Optional[ListNode]) -> list[int]:
     return result
 
 
-def _reverse(head: ListNode, tail: ListNode):
-    if not head.next:
-        print(list_values(head))
-        return head, head
-
-    t = head
-    new_head, new_tail = _reverse(head.next, tail)
-    new_tail.next = t
-    t.next = None
-
-    print(list_values(new_head))
-    return new_head, t
-
-
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        if left == right:
-            return head
-
-        dummy_head = ListNode(-1, head)
-
-        node_before = dummy_head
-        partial_head = partial_tail = dummy_head
-
-        step = right - left
-        while step:
-            partial_tail = partial_tail.next
-            step -= 1
-
-        partial_head = partial_head.next
-        partial_tail = partial_tail.next
-        left -= 1
-        while left:
-            node_before = node_before.next
-            partial_head = partial_head.next
-            partial_tail = partial_tail.next
-            left -= 1
-
-        node_after = partial_tail.next
-        partial_tail.next = None
-
-        new_partial_head, new_partial_tail = _reverse(partial_head, partial_tail)
-
-        node_before.next = new_partial_head
-        new_partial_tail.next = node_after
-
-        return dummy_head.next
+        if left == right == 1:
+            new_head = head
+        elif left == 1:
+            tail = head.next
+            new_head = self.reverseBetween(head.next, left, right - 1)
+            head.next = tail.next
+            tail.next = head
+        else:
+            head.next = self.reverseBetween(head.next, left - 1, right - 1)
+            new_head = head
+        return new_head
 
 
 def test_create_linked_list_should_return_the_head_when_given_list_of_values():
