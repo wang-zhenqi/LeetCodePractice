@@ -8,11 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 
-[tool.poetry.dev-dependencies]
+[poetry.group.dev.dependencies]
 pytest = "^7.0"
 loguru = "^0.7.2"
 
-[tool.poetry.group.pre-commit.dependencies]
+[poetry.group.pre-commit.dependencies]
 pre-commit = "^3.8.0"
 black = "^24.8.0"
 flake8 = "^7.1"
