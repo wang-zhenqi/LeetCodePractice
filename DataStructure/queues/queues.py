@@ -1,22 +1,20 @@
-# queues.py
-from typing import List, Literal
+from pydantic import BaseModel
 
-from pydantic import BaseModel, Field, computed_field
+from DataStructure.queues import Container, ContainerConfig
+from DataStructure.queues.factory import create_container
 
 
 class Queue(BaseModel):
-    max_size: int | None = Field(default=None, ge=1)
-    implementation: Literal["sequential", "linked", "deque"] = "sequential"
-    variation: Literal["circular", "deque"] | None = None
+    config: ContainerConfig
 
-    _items: List[int] = []
+    @property
+    def container(self) -> Container:
+        return create_container(self.config)
 
-    @computed_field
     @property
     def size(self) -> int:
-        return len(self._items)
+        return self.container.size
 
-    @computed_field
     @property
     def is_empty(self) -> bool:
-        return self.size == 0
+        return self.container.is_empty

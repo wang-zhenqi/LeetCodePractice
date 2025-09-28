@@ -1,72 +1,44 @@
 import pytest
 
-from DataStructure.queues import Queue
+from DataStructure.queues import ContainerConfig, Queue
 
 
 @pytest.fixture(
     params=[
-        pytest.param(
-            lambda: Queue(
-                max_size=5,
-                implementation="sequential",
-            ),
-            id="Bounded_Queue_by_Sequential",
-        ),
-        pytest.param(
-            lambda: Queue(
-                max_size=5,
-                implementation="linked",
-            ),
-            id="Bounded_Queue_by_LinkedList",
-        ),
-        pytest.param(
-            lambda: Queue(
-                max_size=5,
-                implementation="deque",
-            ),
-            id="Bounded_Queue_by_Deque",
-        ),
-        pytest.param(
-            lambda: Queue(
-                implementation="sequential",
-            ),
-            id="Unbounded_Queue_by_Sequential",
-        ),
-        pytest.param(
-            lambda: Queue(
-                implementation="linked",
-            ),
-            id="Unbounded_Queue_by_LinkedList",
-        ),
-        pytest.param(
-            lambda: Queue(
-                implementation="deque",
-            ),
-            id="Unbounded_Queue_by_Deque",
-        ),
-        pytest.param(
-            lambda: Queue(max_size=5, implementation="sequential", variation="circular"),
-            id="CircularQueue_by_Sequential",
-        ),
-        pytest.param(
-            lambda: Queue(max_size=5, implementation="linked", variation="circular"), id="CircularQueue_by_LinkedList"
-        ),
-        pytest.param(
-            lambda: Queue(max_size=5, implementation="deque", variation="circular"), id="CircularQueue_by_Deque"
-        ),
-        pytest.param(
-            lambda: Queue(max_size=5, implementation="sequential", variation="deque"), id="Bounded_Deque_by_Sequential"
-        ),
-        pytest.param(
-            lambda: Queue(max_size=5, implementation="linked", variation="deque"), id="Bounded_Deque_by_LinkedList"
-        ),
-        pytest.param(lambda: Queue(max_size=5, implementation="deque", variation="deque"), id="Bounded_Deque_by_Deque"),
-        pytest.param(lambda: Queue(implementation="sequential", variation="deque"), id="Unbounded_Deque_by_Sequential"),
-        pytest.param(lambda: Queue(implementation="linked", variation="deque"), id="Unbounded_Deque_by_LinkedList"),
-        pytest.param(lambda: Queue(implementation="deque", variation="deque"), id="Unbounded_Deque_by_Deque"),
+        lambda: Queue(config=ContainerConfig()),
+        lambda: Queue(config=ContainerConfig(max_size=10)),
+        lambda: Queue(config=ContainerConfig(max_size=9, variation="circular")),
+        lambda: Queue(config=ContainerConfig(variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(max_size=8, variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(implementation="linked")),
+        lambda: Queue(config=ContainerConfig(max_size=7, implementation="linked")),
+        lambda: Queue(config=ContainerConfig(max_size=6, implementation="linked", variation="circular")),
+        lambda: Queue(config=ContainerConfig(implementation="linked", variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(max_size=5, implementation="linked", variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(implementation="deque")),
+        lambda: Queue(config=ContainerConfig(max_size=4, implementation="deque")),
+        lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="circular")),
+        lambda: Queue(config=ContainerConfig(implementation="deque", variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(max_size=10, implementation="deque", variation="double_ended")),
     ],
-    scope="package",
+    ids=[
+        "DynamicArray",
+        "FixedArray",
+        "CircularBuffer",
+        "DoubleEndedDynamicArray",
+        "DoubleEndedFixedArray",
+        "LinkedList",
+        "BoundedLinkedList",
+        "CircularLinkedList",
+        "DoubleEndedLinkedList",
+        "BoundedDoubleEndedLinkedList",
+        "Deque",
+        "BoundedDeque",
+        "CircularDeque",
+        "DoubleEndedDeque",
+        "BoundedDoubleEndedDeque",
+    ],
+    scope="module",
 )
 def queue_(request):
-    factory = request.param
-    return factory()
+    return request.param()

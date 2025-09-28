@@ -4,7 +4,7 @@ The test module for the Queue class.
 Queue is a data structure that follows the First In First Out (FIFO) principle.
 
 Here are some considerations for implementing the Queue class:
-- Use composition over inheritance for different storage backends (e.g., DequeStorage, ListStorage, CircularArray).
+- Use composition over inheritance for different container backends (e.g., ListContainer, CircularListContainer).
 - The Queue class should be configurable via parameters in __init__ rather than requiring subclassing for common
 variants.
 - Support for bounded queues via max_size parameter.
@@ -45,7 +45,7 @@ Test strategy:
 implementations.
 - Each test function that accepts queue as a parameter will be run once per implementation.
 - This approach is clean, scalable, and leverages pytest's powerful parametrization and test reporting.
-- It supports testing both bounded and unbounded variants, different storage backends, and future extensions with
+- It supports testing both bounded and unbounded variants, different container backends, and future extensions with
 minimal code duplication.
 """
 
