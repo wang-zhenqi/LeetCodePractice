@@ -41,4 +41,4 @@ from DataStructure.queues import ContainerConfig, Queue
     scope="function",
 )
 def queue_(request):
-    return request.param
+    return request.param()
