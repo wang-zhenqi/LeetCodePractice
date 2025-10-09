@@ -49,8 +49,99 @@ implementations.
 minimal code duplication.
 """
 
+import pytest
 
-class TestQueue:
-    def test_queue_is_empty_on_initialization(self, queue_):
-        assert queue_.is_empty is True, "New queue should be empty"
-        assert queue_.size == 0, "New queue should have size 0"
+from DataStructure.queues.exceptions import (
+    QueueElementTypeError,
+    QueueEmptyError,
+    QueueOverflowError,
+)
+
+
+class TestGeneralQueue:
+    def test_queue_is_empty_on_initialization(self, general_queue):
+        assert general_queue.is_empty is True, "New queue should be empty"
+        assert general_queue.size == 0, "New queue should have size 0"
+
+    def test_queue_push_increases_size(self, general_queue):
+        general_queue.push(1)
+        general_queue.push(2)
+        assert general_queue.size == 2, "Queue size should increase after push"
+        assert general_queue.is_empty is False, "Queue should not be empty after push"
+        assert str(general_queue) == "1, 2", "Queue string representation should not be None"
+
+    def test_queue_pop_decreases_size(self, general_queue):
+        general_queue.push(1)
+        general_queue.push(2)
+        popped = general_queue.pop()
+        assert popped == 1, "Popped element should be the first pushed element"
+        assert general_queue.size == 1, "Queue size should decrease after pop"
+        assert str(general_queue) == "2", "Queue string representation should reflect the current state"
+
+    def test_queue_peek_does_not_change_size(self, general_queue):
+        general_queue.push(1)
+        general_queue.push(2)
+        peeked = general_queue.peek()
+        assert peeked == 1, "Peeked element should be the first pushed element"
+        assert general_queue.size == 2, "Queue size should not change after peek"
+        assert str(general_queue) == "1, 2", "Queue string representation should remain unchanged after peek"
+
+    def test_queue_pop_until_empty(self, general_queue):
+        general_queue.push(1)
+        general_queue.push(2)
+        general_queue.pop()
+        general_queue.pop()
+        assert general_queue.is_empty is True, "Queue should be empty after popping all elements"
+        assert general_queue.size == 0, "Queue size should be 0 after popping all elements"
+        assert str(general_queue) == "", "Queue string representation should be empty after popping all elements"
+
+    def test_queue_push_none_raises_exception(self, general_queue):
+        with pytest.raises(QueueElementTypeError):
+            general_queue.push(None)
+        assert general_queue.is_empty is True, "Queue should remain empty after attempting to push None"
+        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push None"
+
+    def test_queue_push_non_integer_raises_exception(self, general_queue):
+        with pytest.raises(QueueElementTypeError):
+            general_queue.push("string")
+        with pytest.raises(QueueElementTypeError):
+            general_queue.push(3.14)
+        with pytest.raises(QueueElementTypeError):
+            general_queue.push([1, 2, 3])
+        assert general_queue.is_empty is True, "Queue should remain empty after attempting to push non-integer"
+        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push non-integer"
+
+    def test_queue_pop_from_empty_raises_exception(self, general_queue):
+        with pytest.raises(QueueEmptyError):
+            general_queue.pop()
+        assert general_queue.is_empty is True, "Queue should remain empty after attempting to pop from empty"
+        assert general_queue.size == 0, "Queue size should remain 0 after attempting to pop from empty"
+
+    def test_queue_peek_from_empty_raises_exception(self, general_queue):
+        with pytest.raises(QueueEmptyError):
+            general_queue.peek()
+        assert general_queue.is_empty is True, "Queue should remain empty after attempting to peek from empty"
+        assert general_queue.size == 0, "Queue size should remain 0 after attempting to peek from empty"
+
+
+class TestBoundedQueue:
+    def test_bounded_queue_push_until_full(self, bounded_queue):
+        capacity = bounded_queue.container.capacity
+        for i in range(capacity):
+            bounded_queue.push(i)
+        assert bounded_queue.size == capacity, "Bounded queue should reach max size after pushing max_size elements"
+        with pytest.raises(QueueOverflowError):
+            bounded_queue.push(capacity)
+        assert (
+            bounded_queue.size == capacity
+        ), "Bounded queue size should remain at max size after attempting to push to full queue"
+
+    def test_bounded_queue_pop_all_elements(self, bounded_queue):
+        capacity = bounded_queue.container.capacity
+        for i in range(capacity):
+            bounded_queue.push(i)
+        for i in range(capacity):
+            popped = bounded_queue.pop()
+            assert popped == i, f"Popped element should be {i}"
+        assert bounded_queue.is_empty is True, "Bounded queue should be empty after popping all elements"
+        assert bounded_queue.size == 0, "Bounded queue size should be 0 after popping all elements"

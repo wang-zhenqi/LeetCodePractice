@@ -4,3 +4,11 @@ class QueueEmptyError(Exception):
 
 class QueueOverflowError(Exception):
     pass
+
+
+class QueueElementTypeError(Exception):
+    pass
+
+
+class OperationNotSupportedError(Exception):
+    pass
