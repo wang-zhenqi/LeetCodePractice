@@ -95,7 +95,9 @@ class DynamicArray(Container):
 
     def _insert(self, item: int, position: int):
         if position != -1:
-            raise AttributeError("Insertion at specific position other than the end is not supported for DynamicArray")
+            raise NotImplementedError(
+                "Insertion at specific position other than the end is not supported for DynamicArray"
+            )
         self._list.append(item)
 
     def _pop(self, position: int) -> int:

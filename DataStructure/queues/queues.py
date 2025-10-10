@@ -1,8 +1,8 @@
 from DataStructure.queues import ContainerConfig
 from DataStructure.queues.exceptions import (
-    OperationNotSupportedError,
     QueueElementTypeError,
     QueueEmptyError,
+    QueueOperationNotSupportedError,
     QueueOverflowError,
 )
 from DataStructure.queues.factory import create_container
@@ -49,4 +49,23 @@ class Queue:
         try:
             self.container.insert(item, 0)
         except NotImplementedError as e:
-            raise OperationNotSupportedError("`push_left` is not supported for this queue implementation") from e
+            raise QueueOperationNotSupportedError("`push_left` is not supported for this queue implementation") from e
+
+    def pop_right(self):
+        try:
+            return self.container.pop(-1)
+        except NotImplementedError as e:
+            raise QueueOperationNotSupportedError("`pop_right` is not supported for this queue implementation") from e
+        except IndexError as e:
+            raise QueueEmptyError("Queue is empty, cannot pop_right") from e
+
+    def peek_right(self):
+        try:
+            return self.container.peek(-1)
+        except NotImplementedError as e:
+            raise QueueOperationNotSupportedError("`peek_right` is not supported for this queue implementation") from e
+        except IndexError as e:
+            raise QueueEmptyError("Queue is empty, cannot peek_right") from e
+
+    def cleanup(self):
+        self.container.cleanup()

@@ -41,8 +41,6 @@ CONTAINER_MAP: Dict[Tuple[bool, ContainerT, VariationT], Type[Container]] = {
 
 
 def create_container(config: ContainerConfig) -> Container:
-    if config.max_size is not None and config.max_size < 1:
-        raise ValueError("max_size must be at least 1")
     bounded: bool = True if config.max_size is not None else False
 
     key = (bounded, config.implementation, config.variation)

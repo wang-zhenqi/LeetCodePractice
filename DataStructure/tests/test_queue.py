@@ -54,6 +54,7 @@ import pytest
 from DataStructure.queues.exceptions import (
     QueueElementTypeError,
     QueueEmptyError,
+    QueueOperationNotSupportedError,
     QueueOverflowError,
 )
 
@@ -145,3 +146,60 @@ class TestBoundedQueue:
             assert popped == i, f"Popped element should be {i}"
         assert bounded_queue.is_empty is True, "Bounded queue should be empty after popping all elements"
         assert bounded_queue.size == 0, "Bounded queue size should be 0 after popping all elements"
+
+
+class TestCircularQueue:
+    def test_circular_queue_push_wraps_around(self, circular_queue):
+        capacity = circular_queue.container.capacity
+        for i in range(capacity):
+            circular_queue.push(i)
+        assert circular_queue.size == capacity, "Circular queue should reach max size after pushing max_size elements"
+        with pytest.raises(QueueOverflowError):
+            circular_queue.push(capacity)
+        assert (
+            circular_queue.size == capacity
+        ), "Circular queue size should remain at max size after attempting to push to full queue"
+        for i in range(capacity):
+            popped = circular_queue.pop()
+            assert popped == i, f"Popped element should be {i}"
+        assert circular_queue.is_empty is True, "Circular queue should be empty after popping all elements"
+        assert circular_queue.size == 0, "Circular queue size should be 0 after popping all elements"
+
+
+class TestDoubleEndedQueue:
+    def test_double_ended_queue_push_left_and_right(self, double_ended_queue):
+        if double_ended_queue is None:
+            pytest.skip("No double-ended queue implementations available")
+        double_ended_queue.push(1)
+        double_ended_queue.push(2)
+        double_ended_queue.push_left(0)
+        assert double_ended_queue.size == 3, "Double-ended queue should have size 3 after three pushes"
+        assert str(double_ended_queue) == "0, 1, 2", "Double-ended queue string representation should reflect pushes"
+        popped = double_ended_queue.pop()
+        assert popped == 0, "Popped element should be the first pushed element (from left)"
+        assert double_ended_queue.size == 2, "Double-ended queue size should decrease after pop"
+        assert (
+            str(double_ended_queue) == "1, 2"
+        ), "Double-ended queue string representation should reflect current state"
+        double_ended_queue.push_left(-1)
+        assert double_ended_queue.size == 3, "Double-ended queue should have size 3 after pushing left"
+        assert str(double_ended_queue) == "-1, 1, 2", "Double-ended queue string representation should reflect pushes"
+
+    def test_double_ended_queue_push_left_on_non_double_ended_raises_exception(self, general_queue):
+        with pytest.raises(QueueOperationNotSupportedError):
+            general_queue.push_left(0)
+        assert general_queue.is_empty is True, "Queue should remain empty after attempting to push_left on non-deque"
+        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push_left on non-deque"
+
+    def test_double_ended_queue_pop_left_and_right(self, double_ended_queue):
+        if double_ended_queue is None:
+            pytest.skip("No double-ended queue implementations available")
+        double_ended_queue.push(1)
+        double_ended_queue.push(2)
+        double_ended_queue.push_left(0)
+        popped_left = double_ended_queue.pop()
+        assert popped_left == 0, "Popped element should be the first pushed element (from left)"
+        popped_right = double_ended_queue.pop()
+        assert popped_right == 1, "Popped element should be the next pushed element"
+        assert double_ended_queue.size == 1, "Double-ended queue size should decrease after pops"
+        assert str(double_ended_queue) == "2", "Double-ended queue string representation should reflect current state"

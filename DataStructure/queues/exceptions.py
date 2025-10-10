@@ -10,5 +10,5 @@ class QueueElementTypeError(Exception):
     pass
 
 
-class OperationNotSupportedError(Exception):
+class QueueOperationNotSupportedError(Exception):
     pass

@@ -46,6 +46,38 @@ unbounded_queues = (
     ],
 )
 
+circular_queues = (
+    [
+        lambda: Queue(config=ContainerConfig(max_size=5, variation="circular")),
+        # lambda: Queue(config=ContainerConfig(max_size=4, implementation="linked", variation="circular")),
+        # lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="circular")),
+    ],
+    [
+        "CircularBuffer",
+        # "CircularLinkedList",
+        # "CircularDeque",
+    ],
+)
+
+double_ended_queues = (
+    [
+        # lambda: Queue(config=ContainerConfig(max_size=5, variation="double_ended")),
+        # lambda: Queue(config=ContainerConfig(max_size=4, implementation="linked", variation="double_ended")),
+        # lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="double_ended")),
+        # lambda: Queue(config=ContainerConfig(variation="double_ended")),
+        # lambda: Queue(config=ContainerConfig(implementation="linked", variation="double_ended")),
+        # lambda: Queue(config=ContainerConfig(implementation="deque", variation="double_ended")),
+    ],
+    [
+        # "DoubleEndedFixedArray",
+        # "BoundedDoubleEndedLinkedList",
+        # "BoundedDoubleEndedDeque",
+        # "DoubleEndedDynamicArray",
+        # "DoubleEndedLinkedList",
+        # "DoubleEndedDeque",
+    ],
+)
+
 
 @pytest.fixture(
     params=bounded_queues[0] + unbounded_queues[0],
@@ -63,4 +95,14 @@ def bounded_queue(request):
 
 @pytest.fixture(params=unbounded_queues[0], ids=unbounded_queues[1], scope="function")
 def unbounded_queue(request):
+    return request.param()
+
+
+@pytest.fixture(params=circular_queues[0], ids=circular_queues[1], scope="function")
+def circular_queue(request):
+    return request.param()
+
+
+@pytest.fixture(params=double_ended_queues[0], ids=double_ended_queues[1], scope="function")
+def double_ended_queue(request):
     return request.param()
