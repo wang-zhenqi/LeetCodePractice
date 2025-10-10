@@ -1,4 +1,3 @@
-from DataStructure.queues.configs import ContainerConfig
 from DataStructure.queues.containers import (
     BoundedDeque,
     BoundedDoubleEndedDeque,
@@ -17,6 +16,7 @@ from DataStructure.queues.containers import (
     FixedArray,
     LinkedList,
 )
+from DataStructure.queues.factory import ContainerConfig
 from DataStructure.queues.queues import Queue
 
 __all__ = [

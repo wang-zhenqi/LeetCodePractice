@@ -1,4 +1,6 @@
-from typing import Dict, Tuple, Type
+from typing import Dict, Literal, Tuple, Type, TypeAlias
+
+from pydantic import BaseModel, Field, model_validator
 
 from DataStructure.queues import (
     BoundedDeque,
@@ -9,7 +11,6 @@ from DataStructure.queues import (
     CircularDeque,
     CircularLinkedList,
     Container,
-    ContainerConfig,
     Deque,
     DoubleEndedDeque,
     DoubleEndedDynamicArray,
@@ -19,7 +20,28 @@ from DataStructure.queues import (
     FixedArray,
     LinkedList,
 )
-from DataStructure.queues.configs import ContainerT, VariationT
+
+ContainerT: TypeAlias = Literal["sequential", "linked", "deque"]
+VariationT: TypeAlias = Literal["circular", "double_ended"] | None
+
+
+class ContainerConfig(BaseModel):
+    max_size: int | None = Field(default=None, ge=1)
+    implementation: ContainerT = "sequential"
+    variation: VariationT = None
+
+    @model_validator(mode="after")
+    def validate_circular_requires_max_size(self):
+        if self.variation == "circular" and self.max_size is None:
+            raise ValueError("circular container must have max_size set")
+        return self
+
+    @model_validator(mode="after")
+    def validate_max_size_positive(self):
+        if self.max_size is not None and self.max_size < 1:
+            raise ValueError("max_size must be at least 1")
+        return self
+
 
 CONTAINER_MAP: Dict[Tuple[bool, ContainerT, VariationT], Type[Container]] = {
     (False, "sequential", None): DynamicArray,
