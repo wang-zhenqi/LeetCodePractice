@@ -62,12 +62,12 @@ from DataStructure.queues.exceptions import (
 class TestGeneralQueue:
     def test_queue_is_empty_on_initialization(self, general_queue):
         assert general_queue.is_empty is True, "New queue should be empty"
-        assert general_queue.size == 0, "New queue should have size 0"
+        assert general_queue.count == 0, "New queue should have size 0"
 
     def test_queue_push_increases_size(self, general_queue):
         general_queue.push(1)
         general_queue.push(2)
-        assert general_queue.size == 2, "Queue size should increase after push"
+        assert general_queue.count == 2, "Queue size should increase after push"
         assert general_queue.is_empty is False, "Queue should not be empty after push"
         assert str(general_queue) == "1, 2", "Queue string representation should not be None"
 
@@ -76,7 +76,7 @@ class TestGeneralQueue:
         general_queue.push(2)
         popped = general_queue.pop()
         assert popped == 1, "Popped element should be the first pushed element"
-        assert general_queue.size == 1, "Queue size should decrease after pop"
+        assert general_queue.count == 1, "Queue size should decrease after pop"
         assert str(general_queue) == "2", "Queue string representation should reflect the current state"
 
     def test_queue_peek_does_not_change_size(self, general_queue):
@@ -84,7 +84,7 @@ class TestGeneralQueue:
         general_queue.push(2)
         peeked = general_queue.peek()
         assert peeked == 1, "Peeked element should be the first pushed element"
-        assert general_queue.size == 2, "Queue size should not change after peek"
+        assert general_queue.count == 2, "Queue size should not change after peek"
         assert str(general_queue) == "1, 2", "Queue string representation should remain unchanged after peek"
 
     def test_queue_pop_until_empty(self, general_queue):
@@ -93,14 +93,14 @@ class TestGeneralQueue:
         general_queue.pop()
         general_queue.pop()
         assert general_queue.is_empty is True, "Queue should be empty after popping all elements"
-        assert general_queue.size == 0, "Queue size should be 0 after popping all elements"
+        assert general_queue.count == 0, "Queue size should be 0 after popping all elements"
         assert str(general_queue) == "", "Queue string representation should be empty after popping all elements"
 
     def test_queue_push_none_raises_exception(self, general_queue):
         with pytest.raises(QueueElementTypeError):
             general_queue.push(None)
         assert general_queue.is_empty is True, "Queue should remain empty after attempting to push None"
-        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push None"
+        assert general_queue.count == 0, "Queue size should remain 0 after attempting to push None"
 
     def test_queue_push_non_integer_raises_exception(self, general_queue):
         with pytest.raises(QueueElementTypeError):
@@ -110,31 +110,38 @@ class TestGeneralQueue:
         with pytest.raises(QueueElementTypeError):
             general_queue.push([1, 2, 3])
         assert general_queue.is_empty is True, "Queue should remain empty after attempting to push non-integer"
-        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push non-integer"
+        assert general_queue.count == 0, "Queue size should remain 0 after attempting to push non-integer"
 
     def test_queue_pop_from_empty_raises_exception(self, general_queue):
         with pytest.raises(QueueEmptyError):
             general_queue.pop()
         assert general_queue.is_empty is True, "Queue should remain empty after attempting to pop from empty"
-        assert general_queue.size == 0, "Queue size should remain 0 after attempting to pop from empty"
+        assert general_queue.count == 0, "Queue size should remain 0 after attempting to pop from empty"
 
     def test_queue_peek_from_empty_raises_exception(self, general_queue):
         with pytest.raises(QueueEmptyError):
             general_queue.peek()
         assert general_queue.is_empty is True, "Queue should remain empty after attempting to peek from empty"
-        assert general_queue.size == 0, "Queue size should remain 0 after attempting to peek from empty"
+        assert general_queue.count == 0, "Queue size should remain 0 after attempting to peek from empty"
 
 
 class TestBoundedQueue:
+    def test_bounded_queue_capacity_should_not_change_when_popped(self, bounded_queue):
+        capacity = bounded_queue.container.capacity
+        bounded_queue.push(1)
+        bounded_queue.pop()
+        assert bounded_queue.container.capacity == capacity
+        assert bounded_queue.count == 0
+
     def test_bounded_queue_push_until_full(self, bounded_queue):
         capacity = bounded_queue.container.capacity
         for i in range(capacity):
             bounded_queue.push(i)
-        assert bounded_queue.size == capacity, "Bounded queue should reach max size after pushing max_size elements"
+        assert bounded_queue.count == capacity, "Bounded queue should reach max size after pushing max_size elements"
         with pytest.raises(QueueOverflowError):
             bounded_queue.push(capacity)
         assert (
-            bounded_queue.size == capacity
+            bounded_queue.count == capacity
         ), "Bounded queue size should remain at max size after attempting to push to full queue"
 
     def test_bounded_queue_pop_all_elements(self, bounded_queue):
@@ -145,7 +152,7 @@ class TestBoundedQueue:
             popped = bounded_queue.pop()
             assert popped == i, f"Popped element should be {i}"
         assert bounded_queue.is_empty is True, "Bounded queue should be empty after popping all elements"
-        assert bounded_queue.size == 0, "Bounded queue size should be 0 after popping all elements"
+        assert bounded_queue.count == 0, "Bounded queue size should be 0 after popping all elements"
 
 
 class TestCircularQueue:
@@ -153,17 +160,17 @@ class TestCircularQueue:
         capacity = circular_queue.container.capacity
         for i in range(capacity):
             circular_queue.push(i)
-        assert circular_queue.size == capacity, "Circular queue should reach max size after pushing max_size elements"
+        assert circular_queue.count == capacity, "Circular queue should reach max size after pushing max_size elements"
         with pytest.raises(QueueOverflowError):
             circular_queue.push(capacity)
         assert (
-            circular_queue.size == capacity
+            circular_queue.count == capacity
         ), "Circular queue size should remain at max size after attempting to push to full queue"
         for i in range(capacity):
             popped = circular_queue.pop()
             assert popped == i, f"Popped element should be {i}"
         assert circular_queue.is_empty is True, "Circular queue should be empty after popping all elements"
-        assert circular_queue.size == 0, "Circular queue size should be 0 after popping all elements"
+        assert circular_queue.count == 0, "Circular queue size should be 0 after popping all elements"
 
 
 class TestDoubleEndedQueue:
@@ -173,16 +180,16 @@ class TestDoubleEndedQueue:
         double_ended_queue.push(1)
         double_ended_queue.push(2)
         double_ended_queue.push_left(0)
-        assert double_ended_queue.size == 3, "Double-ended queue should have size 3 after three pushes"
+        assert double_ended_queue.count == 3, "Double-ended queue should have size 3 after three pushes"
         assert str(double_ended_queue) == "0, 1, 2", "Double-ended queue string representation should reflect pushes"
         popped = double_ended_queue.pop()
         assert popped == 0, "Popped element should be the first pushed element (from left)"
-        assert double_ended_queue.size == 2, "Double-ended queue size should decrease after pop"
+        assert double_ended_queue.count == 2, "Double-ended queue size should decrease after pop"
         assert (
             str(double_ended_queue) == "1, 2"
         ), "Double-ended queue string representation should reflect current state"
         double_ended_queue.push_left(-1)
-        assert double_ended_queue.size == 3, "Double-ended queue should have size 3 after pushing left"
+        assert double_ended_queue.count == 3, "Double-ended queue should have size 3 after pushing left"
         assert str(double_ended_queue) == "-1, 1, 2", "Double-ended queue string representation should reflect pushes"
 
     def test_double_ended_queue_push_left_on_non_double_ended_raises_exception(self, single_ended_queue):
@@ -191,7 +198,7 @@ class TestDoubleEndedQueue:
         assert (
             single_ended_queue.is_empty is True
         ), "Queue should remain empty after attempting to push_left on non-deque"
-        assert single_ended_queue.size == 0, "Queue size should remain 0 after attempting to push_left on non-deque"
+        assert single_ended_queue.count == 0, "Queue size should remain 0 after attempting to push_left on non-deque"
 
     def test_double_ended_queue_pop_left_and_right(self, double_ended_queue):
         if double_ended_queue is None:
@@ -203,5 +210,5 @@ class TestDoubleEndedQueue:
         assert popped_left == 0, "Popped element should be the first pushed element (from left)"
         popped_right = double_ended_queue.pop()
         assert popped_right == 1, "Popped element should be the next pushed element"
-        assert double_ended_queue.size == 1, "Double-ended queue size should decrease after pops"
+        assert double_ended_queue.count == 1, "Double-ended queue size should decrease after pops"
         assert str(double_ended_queue) == "2", "Double-ended queue string representation should reflect current state"

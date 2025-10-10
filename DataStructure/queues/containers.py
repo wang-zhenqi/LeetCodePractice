@@ -23,7 +23,7 @@ class Container(ABC):
 
     @property
     @abstractmethod
-    def size(self) -> int: ...
+    def count(self) -> int: ...
 
     @property
     @abstractmethod
@@ -73,12 +73,12 @@ class DynamicArray(Container):
         return ", ".join(str(item) for item in self._list)
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         return len(self._list)
 
     @property
     def is_empty(self) -> bool:
-        return self.size == 0
+        return self.count == 0
 
     @property
     def is_full(self) -> bool:
@@ -106,25 +106,25 @@ class FixedArray(Container):
 
     def __init__(self, capacity: int):
         self.capacity: int = capacity
-        self._storage: List[int | None] = [None] * capacity
+        self._list: List[int] = []
 
     def __str__(self):
-        return ", ".join(str(item) for item in self._storage if item is not None)
+        return ", ".join(str(item) for item in self._list if item is not None)
 
     @property
-    def size(self) -> int:
-        return len([item for item in self._storage if item is not None])
+    def count(self) -> int:
+        return len(self._list)
 
     @property
     def is_empty(self) -> bool:
-        return self.size == 0
+        return self.count == 0
 
     @property
     def is_full(self) -> bool:
-        return self.size == self.capacity
+        return self.count == self.capacity
 
     def cleanup(self):
-        self._storage.clear()
+        self._list.clear()
 
     def _insert(self, item: int, position: int):
         if position != -1:
@@ -132,15 +132,13 @@ class FixedArray(Container):
                 f"Insertion at specific position ({position}) other than the end is not supported for "
                 f"{self.CONTAINER_TYPE}"
             )
-        if self.is_full:
-            raise IndexError(f"{self.CONTAINER_TYPE} is full, insertion not allowed")
-        self._storage[self.size] = item
+        self._list.append(item)
 
     def _pop(self, position) -> int:
-        return self._storage.pop(0)
+        return self._list.pop(0)
 
     def _peek(self, position) -> int:
-        return self._storage[0]
+        return self._list[0]
 
 
 class CircularBuffer(Container):
@@ -158,7 +156,7 @@ class CircularBuffer(Container):
             return ""
         items: List[str] = []
         index: int = self._head
-        for _ in range(self.size):
+        for _ in range(self.count):
             if self._storage[index] is None:
                 break
             items.append(str(self._storage[index]))
@@ -166,16 +164,16 @@ class CircularBuffer(Container):
         return ", ".join(items)
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         return self._count
 
     @property
     def is_empty(self) -> bool:
-        return self.size == 0
+        return self.count == 0
 
     @property
     def is_full(self) -> bool:
-        return self.size == self.capacity
+        return self.count == self.capacity
 
     def cleanup(self):
         self._storage = [None] * self.capacity
@@ -210,35 +208,31 @@ class DoubleEndedDynamicArray(Container):
     CONTAINER_TYPE = "DoubleEndedDynamicArray"
 
     def __init__(self):
-        self._storage: List[int] = []
-        self.head: int = 0
-        self.tail: int = -1
+        self._list: List[int] = []
 
     def __str__(self):
-        return ", ".join(str(item) for item in self._storage)
+        return ", ".join(str(item) for item in self._list)
 
     @property
-    def size(self) -> int:
-        return len(self._storage)
+    def count(self) -> int:
+        return len(self._list)
 
     @property
     def is_empty(self) -> bool:
-        return self.size == 0
+        return self.count == 0
 
     @property
     def is_full(self) -> bool:
         return False
 
     def cleanup(self):
-        self._storage.clear()
-        self.head = 0
-        self.tail = -1
+        self._list.clear()
 
     def _insert(self, item: int, position: int):
         if position == 0:
-            self._storage.insert(0, item)
+            self._list.insert(0, item)
         elif position == -1:
-            self._storage.insert(self.size, item)
+            self._list.insert(self.count, item)
         else:
             raise NotImplementedError(
                 f"Insertion at specific position ({position}) other than the both ends is not allowed."
@@ -246,9 +240,9 @@ class DoubleEndedDynamicArray(Container):
 
     def _pop(self, position) -> int:
         if position == 0:
-            return self._storage.pop(0)
+            return self._list.pop(0)
         elif position == -1:
-            return self._storage.pop(self.size - 1)
+            return self._list.pop(self.count - 1)
         else:
             raise NotImplementedError(
                 f"Popping from a specific position ({position}) other than the both ends is not allowed."
@@ -256,9 +250,9 @@ class DoubleEndedDynamicArray(Container):
 
     def _peek(self, position) -> int:
         if position == 0:
-            return self._storage[0]
+            return self._list[0]
         elif position == -1:
-            return self._storage[self.size - 1]
+            return self._list[self.count - 1]
         else:
             raise NotImplementedError(
                 f"Peeking from a specific position ({position}) other than the both ends is not allowed."
@@ -266,28 +260,59 @@ class DoubleEndedDynamicArray(Container):
 
 
 class DoubleEndedFixedArray(Container):
-    def __init__(self):
-        pass
+    CONTAINER_TYPE = "DoubleEndedFixedArray"
+
+    def __init__(self, capacity: int):
+        self.capacity: int = capacity
+        self._list: List[int] = []
+
+    def __str__(self):
+        return ", ".join(str(item) for item in self._list)
 
     @property
-    def size(self) -> int:
-        pass
+    def count(self) -> int:
+        return len(self._list)
 
     @property
     def is_empty(self) -> bool:
-        pass
+        return self.count == 0
+
+    @property
+    def is_full(self) -> bool:
+        return self.count == self.capacity
 
     def cleanup(self):
-        pass
+        self._list.clear()
 
-    def insert(self, element):
-        pass
+    def _insert(self, item: int, position: int):
+        if position == 0:
+            self._list.insert(0, item)
+        elif position == -1:
+            self._list.append(item)
+        else:
+            raise NotImplementedError(
+                f"Insertion at specific position ({position}) other than the both ends is not allowed."
+            )
 
-    def pop(self, position) -> int:
-        pass
+    def _pop(self, position) -> int:
+        if position == 0:
+            return self._list.pop(0)
+        elif position == -1:
+            return self._list.pop(self.count - 1)
+        else:
+            raise NotImplementedError(
+                f"Popping from a specific position ({position}) other than the both ends is not allowed."
+            )
 
-    def peek(self, position) -> int:
-        pass
+    def _peek(self, position) -> int:
+        if position == 0:
+            return self._list[0]
+        elif position == -1:
+            return self._list[self.count - 1]
+        else:
+            raise NotImplementedError(
+                f"Popping from a specific position ({position}) other than the both ends is not allowed."
+            )
 
 
 class LinkedList(Container):
@@ -295,7 +320,7 @@ class LinkedList(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -320,7 +345,7 @@ class BoundedLinkedList(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -345,7 +370,7 @@ class CircularLinkedList(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -370,7 +395,7 @@ class DoubleEndedLinkedList(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -395,7 +420,7 @@ class BoundedDoubleEndedLinkedList(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -420,7 +445,7 @@ class Deque(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -445,7 +470,7 @@ class BoundedDeque(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -470,7 +495,7 @@ class CircularDeque(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -495,7 +520,7 @@ class DoubleEndedDeque(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property
@@ -520,7 +545,7 @@ class BoundedDoubleEndedDeque(Container):
         pass
 
     @property
-    def size(self) -> int:
+    def count(self) -> int:
         pass
 
     @property

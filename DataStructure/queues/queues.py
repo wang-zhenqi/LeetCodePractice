@@ -16,8 +16,8 @@ class Queue:
         return str(self.container)
 
     @property
-    def size(self) -> int:
-        return self.container.size
+    def count(self) -> int:
+        return self.container.count
 
     @property
     def is_empty(self) -> bool:

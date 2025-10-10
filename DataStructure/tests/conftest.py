@@ -61,7 +61,7 @@ circular_queues = (
 
 double_ended_queues = (
     [
-        # lambda: Queue(config=ContainerConfig(max_size=5, variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(max_size=5, variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(max_size=4, implementation="linked", variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="double_ended")),
         lambda: Queue(config=ContainerConfig(variation="double_ended")),
@@ -69,7 +69,7 @@ double_ended_queues = (
         # lambda: Queue(config=ContainerConfig(implementation="deque", variation="double_ended")),
     ],
     [
-        # "DoubleEndedFixedArray",
+        "DoubleEndedFixedArray",
         # "BoundedDoubleEndedLinkedList",
         # "BoundedDoubleEndedDeque",
         "DoubleEndedDynamicArray",
