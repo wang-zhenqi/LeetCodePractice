@@ -9,7 +9,7 @@ repos:
       - id: trailing-whitespace
         additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 24.10.0
     hooks:
       - id: black
         args:
