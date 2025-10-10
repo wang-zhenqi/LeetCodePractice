@@ -15,9 +15,9 @@ pydantic = "^2.11"
 
 [tool.poetry.group.pre-commit.dependencies]
 pre-commit = "^3.8.0"
-black = "^24.8.0"
-flake8 = "^7.1"
-isort = "^5.13"
+black = "^25"
+flake8 = "^7"
+isort = "^6"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.1.1"

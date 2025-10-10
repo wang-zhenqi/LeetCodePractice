@@ -8,26 +8,28 @@ repos:
         additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
       - id: trailing-whitespace
         additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
-  - repo: https://github.com/psf/black
-    rev: 25.9.0
+  - repo: local
     hooks:
       - id: black
+        name: black
+        entry: black
+        language: system
+        types: [python]
         args:
           - --line-length=120
-        additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.3.0
-    hooks:
       - id: flake8
+        name: flake8
+        entry: flake8
+        language: system
+        types: [python]
         args:
           - --max-line-length=120
-        additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.1.0
-    hooks:
       - id: isort
-        args: ["--profile", "black", "--filter-files"]
-        additional_dependencies: [ "--index-url", "https://pypi.tuna.tsinghua.edu.cn/simple" ]
+        name: isort
+        entry: isort
+        language: system
+        types: [python]
+        args: [ "--profile", "black", "--filter-files" ]
   - repo: https://github.com/gitguardian/ggshield
     rev: v1.43.0
     hooks:

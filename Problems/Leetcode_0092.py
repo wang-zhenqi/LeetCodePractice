@@ -23,6 +23,7 @@
 
 进阶： 你可以使用一趟扫描完成反转吗？
 """
+
 from typing import Optional
 
 import pytest

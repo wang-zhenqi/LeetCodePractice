@@ -19,31 +19,25 @@ class Container(ABC):
     CONTAINER_TYPE: str
 
     @abstractmethod
-    def __init__(self, _: int | None = None):
-        ...
+    def __init__(self, _: int | None = None): ...
 
     @property
     @abstractmethod
-    def size(self) -> int:
-        ...
+    def size(self) -> int: ...
 
     @property
     @abstractmethod
-    def is_empty(self) -> bool:
-        ...
+    def is_empty(self) -> bool: ...
 
     @property
     @abstractmethod
-    def is_full(self) -> bool:
-        ...
+    def is_full(self) -> bool: ...
 
     @abstractmethod
-    def cleanup(self):
-        ...
+    def cleanup(self): ...
 
     @abstractmethod
-    def _insert(self, element: int, position: int):
-        ...
+    def _insert(self, element: int, position: int): ...
 
     def insert(self, element: int, position: int):
         if element is None or not isinstance(element, int):
@@ -51,8 +45,7 @@ class Container(ABC):
         self._insert(element, position)
 
     @abstractmethod
-    def _pop(self, position: int) -> int:
-        ...
+    def _pop(self, position: int) -> int: ...
 
     def pop(self, position: int) -> int:
         if self.is_empty:
@@ -60,8 +53,7 @@ class Container(ABC):
         return self._pop(0)
 
     @abstractmethod
-    def _peek(self, position: int) -> int:
-        ...
+    def _peek(self, position: int) -> int: ...
 
     def peek(self, position: int) -> int:
         if self.is_empty:
