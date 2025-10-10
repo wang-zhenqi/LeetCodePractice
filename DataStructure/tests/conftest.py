@@ -30,7 +30,7 @@ bounded_queues = (
 unbounded_queues = (
     [
         lambda: Queue(config=ContainerConfig()),
-        # lambda: Queue(config=ContainerConfig(variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(implementation="linked")),
         # lambda: Queue(config=ContainerConfig(implementation="linked", variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(implementation="deque")),
@@ -38,7 +38,7 @@ unbounded_queues = (
     ],
     [
         "DynamicArray",
-        # "DoubleEndedDynamicArray",
+        "DoubleEndedDynamicArray",
         # "LinkedList",
         # "DoubleEndedLinkedList",
         # "Deque",
@@ -64,7 +64,7 @@ double_ended_queues = (
         # lambda: Queue(config=ContainerConfig(max_size=5, variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(max_size=4, implementation="linked", variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="double_ended")),
-        # lambda: Queue(config=ContainerConfig(variation="double_ended")),
+        lambda: Queue(config=ContainerConfig(variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(implementation="linked", variation="double_ended")),
         # lambda: Queue(config=ContainerConfig(implementation="deque", variation="double_ended")),
     ],
@@ -72,9 +72,34 @@ double_ended_queues = (
         # "DoubleEndedFixedArray",
         # "BoundedDoubleEndedLinkedList",
         # "BoundedDoubleEndedDeque",
-        # "DoubleEndedDynamicArray",
+        "DoubleEndedDynamicArray",
         # "DoubleEndedLinkedList",
         # "DoubleEndedDeque",
+    ],
+)
+
+single_ended_queues = (
+    [
+        lambda: Queue(config=ContainerConfig(max_size=10)),
+        lambda: Queue(config=ContainerConfig(max_size=9, variation="circular")),
+        # lambda: Queue(config=ContainerConfig(max_size=7, implementation="linked")),
+        # lambda: Queue(config=ContainerConfig(max_size=6, implementation="linked", variation="circular")),
+        # lambda: Queue(config=ContainerConfig(max_size=4, implementation="deque")),
+        # lambda: Queue(config=ContainerConfig(max_size=3, implementation="deque", variation="circular")),
+        lambda: Queue(config=ContainerConfig()),
+        # lambda: Queue(config=ContainerConfig(implementation="linked")),
+        # lambda: Queue(config=ContainerConfig(implementation="deque")),
+    ],
+    [
+        "FixedArray",
+        "CircularBuffer",
+        # "BoundedLinkedList",
+        # "CircularLinkedList",
+        # "BoundedDeque",
+        # "CircularDeque",
+        "DynamicArray",
+        # "LinkedList",
+        # "Deque",
     ],
 )
 
@@ -105,4 +130,9 @@ def circular_queue(request):
 
 @pytest.fixture(params=double_ended_queues[0], ids=double_ended_queues[1], scope="function")
 def double_ended_queue(request):
+    return request.param()
+
+
+@pytest.fixture(params=single_ended_queues[0], ids=single_ended_queues[1], scope="function")
+def single_ended_queue(request):
     return request.param()

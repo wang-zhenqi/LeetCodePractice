@@ -185,11 +185,13 @@ class TestDoubleEndedQueue:
         assert double_ended_queue.size == 3, "Double-ended queue should have size 3 after pushing left"
         assert str(double_ended_queue) == "-1, 1, 2", "Double-ended queue string representation should reflect pushes"
 
-    def test_double_ended_queue_push_left_on_non_double_ended_raises_exception(self, general_queue):
+    def test_double_ended_queue_push_left_on_non_double_ended_raises_exception(self, single_ended_queue):
         with pytest.raises(QueueOperationNotSupportedError):
-            general_queue.push_left(0)
-        assert general_queue.is_empty is True, "Queue should remain empty after attempting to push_left on non-deque"
-        assert general_queue.size == 0, "Queue size should remain 0 after attempting to push_left on non-deque"
+            single_ended_queue.push_left(0)
+        assert (
+            single_ended_queue.is_empty is True
+        ), "Queue should remain empty after attempting to push_left on non-deque"
+        assert single_ended_queue.size == 0, "Queue size should remain 0 after attempting to push_left on non-deque"
 
     def test_double_ended_queue_pop_left_and_right(self, double_ended_queue):
         if double_ended_queue is None:

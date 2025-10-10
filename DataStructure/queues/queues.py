@@ -30,8 +30,6 @@ class Queue:
             raise QueueElementTypeError("Only non-None integers are allowed") from e
         except IndexError as e:
             raise QueueOverflowError("No space in queue for pushing") from e
-        except Exception as e:
-            raise e
 
     def pop(self):
         try:

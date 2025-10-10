@@ -42,6 +42,8 @@ class Container(ABC):
     def insert(self, element: int, position: int):
         if element is None or not isinstance(element, int):
             raise TypeError("Only integers are allowed to be added to the queue")
+        if self.is_full:
+            raise IndexError(f"{self.CONTAINER_TYPE} is full, insertion not allowed")
         self._insert(element, position)
 
     @abstractmethod
@@ -205,6 +207,8 @@ class CircularBuffer(Container):
 
 
 class DoubleEndedDynamicArray(Container):
+    CONTAINER_TYPE = "DoubleEndedDynamicArray"
+
     def __init__(self):
         self._storage: List[int] = []
         self.head: int = 0
@@ -230,14 +234,35 @@ class DoubleEndedDynamicArray(Container):
         self.head = 0
         self.tail = -1
 
-    def insert(self, element):
-        pass
+    def _insert(self, item: int, position: int):
+        if position == 0:
+            self._storage.insert(0, item)
+        elif position == -1:
+            self._storage.insert(self.size, item)
+        else:
+            raise NotImplementedError(
+                f"Insertion at specific position ({position}) other than the both ends is not allowed."
+            )
 
-    def pop(self, position) -> int:
-        pass
+    def _pop(self, position) -> int:
+        if position == 0:
+            return self._storage.pop(0)
+        elif position == -1:
+            return self._storage.pop(self.size - 1)
+        else:
+            raise NotImplementedError(
+                f"Popping from a specific position ({position}) other than the both ends is not allowed."
+            )
 
-    def peek(self, position) -> int:
-        pass
+    def _peek(self, position) -> int:
+        if position == 0:
+            return self._storage[0]
+        elif position == -1:
+            return self._storage[self.size - 1]
+        else:
+            raise NotImplementedError(
+                f"Peeking from a specific position ({position}) other than the both ends is not allowed."
+            )
 
 
 class DoubleEndedFixedArray(Container):
