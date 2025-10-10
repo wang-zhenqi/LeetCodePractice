@@ -2,7 +2,7 @@ from typing import Dict, Literal, Tuple, Type, TypeAlias
 
 from pydantic import BaseModel, Field, model_validator
 
-from DataStructure.queues import (
+from DataStructure.queues.containers import (
     BoundedDeque,
     BoundedDoubleEndedDeque,
     BoundedDoubleEndedLinkedList,
